@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FuncUtils {
     public static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
-    public static Pairing pairing = PairingFactory.getPairing("curves/a.properties");
+    public static Pairing pairing = PairingFactory.getPairing("assets/a.properties");
 
 
     public static Pairing getPairing() {

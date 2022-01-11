@@ -1,0 +1,27 @@
+
+k
+java:S3008
+"PRename this field "SPACE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Õ‚²Êúÿÿÿÿ
+U
+java:S1118	":Add a private constructor to hide the implicit public one.(™·åÀøÿÿÿÿ
+b	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘ŒŒG
+c
+java:S5361"HReplace this call to "replaceAll()" by a call to the "replace()" method.(¨Ú²¿ÿÿÿÿÿ
+c
+java:S5361"HReplace this call to "replaceAll()" by a call to the "replace()" method.(ÉàÆÎøÿÿÿÿ
+c	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»™òæ
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(»™òæ
+1
+java:S3626$"Remove this redundant jump.(ÉŠ©ƒ
+c	java:S100G"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ä¸º†
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ö…ßèþÿÿÿÿ
+n
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¼ØË_
+o
+java:S2293L"YReplace the type specification in this constructor call with the diamond operator ("<>").(Õ¸øÚ
+n
+java:S2293M"YReplace the type specification in this constructor call with the diamond operator ("<>").(¼ØË_
+Y
+java:S1155;">Use isEmpty() to check whether the collection is empty or not.(äññ½ùÿÿÿÿ

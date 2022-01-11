@@ -1,0 +1,33 @@
+
+`	java:S112j"FDefine and throw a dedicated exception instead of using a generic one.(™ÓÛäüÿÿÿÿ
+\	java:S112ö"FDefine and throw a dedicated exception instead of using a generic one.(ìÌá†
+o	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(‹“ÿ
+o	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(“š°–
+t	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(±‰¦‰øÿÿÿÿ
+P	java:S125"<This block of commented-out lines of code should be removed.(®§ŠF
+o	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(•ı«Ü
+V	java:S125'"<This block of commented-out lines of code should be removed.(¢©ë€üÿÿÿÿ
+Q	java:S1255"<This block of commented-out lines of code should be removed.(«ıš
+Q	java:S125F"<This block of commented-out lines of code should be removed.(™ƒõ’
+V	java:S125K"<This block of commented-out lines of code should be removed.(ş¦®óúÿÿÿÿ
+h	java:S100c"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.( ®—ãúÿÿÿÿ
+c	java:S100n"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(†›¾í
+h	java:S100r"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¿…ôÊùÿÿÿÿ
+h	java:S100y"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ûäøÿÿÿÿ
+d	java:S100€"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÅÅ‚Ä
+d	java:S100‹"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ñìëã
+d	java:S100“"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶Ææç
+P
+java:S2864Ì"4Iterate over the "entrySet" instead of the "keySet".(ØÊúÀıÿÿÿÿ
+K
+java:S2864Ñ"4Iterate over the "entrySet" instead of the "keySet".(ø×®’
+d	java:S100Ù"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡¨æÉ
+i	java:S100å"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ı®Àğúÿÿÿÿ
+i	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹™Èşÿÿÿÿ
+w
+java:S2118“"[Make the "org.bouncycastle.crypto.CipherParameters" class "Serializable" or don't write it.(ÇÚ«ˆıÿÿÿÿ
+i	java:S100£"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ãú›Îşÿÿÿÿ
+p
+java:S2293ı"YReplace the type specification in this constructor call with the diamond operator ("<>").(Èºü
+u
+java:S2293ƒ"YReplace the type specification in this constructor call with the diamond operator ("<>").(ª‰é†ûÿÿÿÿ

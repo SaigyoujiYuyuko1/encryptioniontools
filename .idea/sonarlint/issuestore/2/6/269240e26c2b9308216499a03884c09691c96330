@@ -1,0 +1,10 @@
+
+U
+java:S4719":Replace Charset.forName() call with StandardCharsets.UTF_8(Ê‹Œıÿÿÿÿ
+9
+java:S5542""#Use secure mode and padding scheme.(É©ü
+|
+java:S1488"aImmediately return this expression instead of assigning it to the temporary variable "secretKey".(ÈÒ—şÿÿÿÿ
+y
+java:S1488$"^Immediately return this expression instead of assigning it to the temporary variable "result".(¹òÀúÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(€Ì»€

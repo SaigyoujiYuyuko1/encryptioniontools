@@ -1,0 +1,5 @@
+
+f
+java:S1206F"PThis class overrides "equals()" and should therefore also override "hashCode()".(Ú¶±ª
+r	java:S127/"XRefactor the code in order to not assign to this loop counter from within the loop body.(­–„úÿÿÿÿ
+r	java:S127;"XRefactor the code in order to not assign to this loop counter from within the loop body.(­–„úÿÿÿÿ

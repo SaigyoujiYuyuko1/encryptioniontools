@@ -1,0 +1,101 @@
+
+Q	java:S125"<This block of commented-out lines of code should be removed.(š“¿
+j
+java:S1845»"SRename method "yytable" to prevent any misunderstanding/clash with field "yytable".(ÌŠåú
+j
+java:S1845Û"SRename method "yycheck" to prevent any misunderstanding/clash with field "yycheck".(îöÚÖ
+`
+java:S1124("EReorder the modifiers to comply with the Java Language Specification.(¤ÓÀâúÿÿÿÿ
+@
+java:S1197)"*Move the array designators [] to the type.(÷ÅıÜ
+c	java:S1000"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(éšüç
+c	java:S100?"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ïç¯¿
+h	java:S100C"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(úä›äùÿÿÿÿ
+b	java:S100G"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(â¸‹1
+h	java:S100N"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ËÆïúÿÿÿÿ
+h	java:S100W"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’×šÀşÿÿÿÿ
+@
+java:S1197i"*Move the array designators [] to the type.(À¾ÓÇ
+c	java:S100n"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œ¯šß
+h	java:S100u"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(”¯áæùÿÿÿÿ
+h	java:S100|"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(…¼øÿÿÿÿ
+d	java:S100ƒ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ë³¹§
+i	java:S100Œ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ßÂ‡°øÿÿÿÿ
+d	java:S100•"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥÷²Ğ
+\
+java:S1124Ÿ"EReorder the modifiers to comply with the Java Language Specification.(··û
+a
+java:S1124 "EReorder the modifiers to comply with the Java Language Specification.(Ø®òîşÿÿÿÿ
+\
+java:S1124¡"EReorder the modifiers to comply with the Java Language Specification.(¬¹Äù
+a
+java:S1124¢"EReorder the modifiers to comply with the Java Language Specification.(±öìäşÿÿÿÿ
+A
+java:S1197£"*Move the array designators [] to the type.(ğÓè‘
+\
+java:S1124£"EReorder the modifiers to comply with the Java Language Specification.(ğÓè‘
+F
+java:S1197¦"*Move the array designators [] to the type.(­úŸ…ıÿÿÿÿ
+a
+java:S1124¦"EReorder the modifiers to comply with the Java Language Specification.(­úŸ…ıÿÿÿÿ
+A
+java:S1197©"*Move the array designators [] to the type.(êçÁ
+\
+java:S1124©"EReorder the modifiers to comply with the Java Language Specification.(êçÁ
+F
+java:S1197¬"*Move the array designators [] to the type.(›…·Üşÿÿÿÿ
+a
+java:S1124¬"EReorder the modifiers to comply with the Java Language Specification.(›…·Üşÿÿÿÿ
+F
+java:S1197¯"*Move the array designators [] to the type.(Œö‹üÿÿÿÿ
+a
+java:S1124¯"EReorder the modifiers to comply with the Java Language Specification.(Œö‹üÿÿÿÿ
+F
+java:S1197²"*Move the array designators [] to the type.(‚µ¤øÿÿÿÿ
+a
+java:S1124²"EReorder the modifiers to comply with the Java Language Specification.(‚µ¤øÿÿÿÿ
+F
+java:S1197µ"*Move the array designators [] to the type.(¤‘¡íûÿÿÿÿ
+a
+java:S1124µ"EReorder the modifiers to comply with the Java Language Specification.(¤‘¡íûÿÿÿÿ
+a
+java:S1124¸"EReorder the modifiers to comply with the Java Language Specification.(Ñ´éˆüÿÿÿÿ
+A
+java:S1197¹"*Move the array designators [] to the type.(¦™—Ï
+A
+java:S1197Ù"*Move the array designators [] to the type.(±¯°â
+a
+java:S1124ù"EReorder the modifiers to comply with the Java Language Specification.(Ñ‘ ùÿÿÿÿ
+a
+java:S1124ú"EReorder the modifiers to comply with the Java Language Specification.(ë‘ŒÏşÿÿÿÿ
+A
+java:S1197û"*Move the array designators [] to the type.(ß³†î
+\
+java:S1124û"EReorder the modifiers to comply with the Java Language Specification.(ß³†î
+F
+java:S1197"*Move the array designators [] to the type.(’üú¾ıÿÿÿÿ
+a
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(’üú¾ıÿÿÿÿ
+_
+java:S5361œ"HReplace this call to "replaceAll()" by a call to the "replace()" method.(´ãÒ‚
+z
+java:S1157­"cReplace these toUpperCase()/toLowerCase() and equals() calls with a single equalsIgnoreCase() call.(¼µ–
+
+java:S1157±"cReplace these toUpperCase()/toLowerCase() and equals() calls with a single equalsIgnoreCase() call.(ûøÂÒÿÿÿÿÿ
+i	java:S100Â"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ñ‡Õ·øÿÿÿÿ
+i	java:S100Ê"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(·××üÿÿÿÿ
+j
+java:S3776ô"SRefactor this method to reduce its Cognitive Complexity from 155 to the 15 allowed.(ìæˆ
+=	java:S131†""Add a default case to this switch.(ü©Ÿ‘ûÿÿÿÿ
+^
+java:S1192ã"GDefine a constant instead of duplicating this literal "state " 5 times.(ËÙÍı
+E
+java:S1121š".Extract the assignment out of this expression.(¿ä½•
+E
+java:S1121®".Extract the assignment out of this expression.(¿ä½•
+J
+java:S1121Ê".Extract the assignment out of this expression.(•çå”üÿÿÿÿ
+J
+java:S1121Â".Extract the assignment out of this expression.(ĞÂÏùÿÿÿÿ
+o	java:S135…"YReduce the total number of break and continue statements in this loop to use at most one.(¤Şõ
+t	java:S135ş"YReduce the total number of break and continue statements in this loop to use at most one.(ıØ‡ùÿÿÿÿ
