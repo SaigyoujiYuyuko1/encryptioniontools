@@ -3,12 +3,14 @@ package com.example.asuredelete.service;
 import com.example.asuredelete.Utils.FuncUtils;
 import com.example.asuredelete.domain.BigComplex;
 import com.example.asuredelete.domain.Complex;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class BigDFastTransfer {
     int MAX = 1024;
     double PI =Math.acos(-1);
