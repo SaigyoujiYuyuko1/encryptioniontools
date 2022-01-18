@@ -49,27 +49,9 @@ public class Encrypt {
 
     public List<RCNode> computeRCNodes(Element secret,int num){
         List<RCNode> rcList=new ArrayList<>();
-        Complex[] x=new Complex[num];
-        for (int i = 0; i < num; i++) {
-            x[i]=new Complex(i,0);
-           // x[i]=new Complex(-2*Math.random()+1,0);
-        }
 
-        for (int i = 0; i < x.length; i++) {
-            System.out.println(x[i].getReal()+"  "+x[i].getImaginary());
-        }
-        System.out.println("---------------------");
-        FastFourierTransformer fft=new FastFourierTransformer(DftNormalization.STANDARD);
-        Complex[] y= fft.transform(x, TransformType.FORWARD);
-        for (int i = 0; i < x.length; i++) {
-            System.out.println(y[i].getReal()+"  "+y[i].getImaginary());
-        }
 
-        System.out.println("---------------------");
-        Complex[] z= fft.transform(y, TransformType.INVERSE);
-        for (int i = 0; i < x.length; i++) {
-            System.out.println(z[i].getReal()+"  "+z[i].getImaginary());
-        }
+
         return rcList;
 
     }
@@ -78,6 +60,17 @@ public class Encrypt {
     public static void main(String[] args) {
         Encrypt en=new Encrypt();
         List<RCNode> rcNodes = en.computeRCNodes(null, 4);
+        Pairing pairing = FuncUtils.getPairing();
+        Element rg = FuncUtils.getRandomFromG1();
+        Element zp = FuncUtils.getRandomFromZp();
+        System.out.println("g元素长度："+rg.toString().length());
+        System.out.println(rg.toString());
+        System.out.println("zp元素长度："+zp.toString().length());
+        System.out.println(zp.toString());
+        double dzp = Double.parseDouble(FuncUtils.getRandomFromZp().toString());
+
+        System.out.println(dzp);
+
 
 
     }

@@ -7,7 +7,7 @@ import org.apache.commons.math3.complex.Complex;
 @Slf4j
 public class FFT {
     private final static double Pi=Math.acos(-1.0);
-    int n,m;
+    static int n=1,m=2;
     static int l,limit=1;
     static Complex[] a=new Complex[1024];
     static Complex[] b=new Complex[1024];
@@ -57,12 +57,12 @@ public class FFT {
         }
         return arr;
     }
-   private void fast_fast_tle2(int limit,Complex[] a,int type)
+   private static Complex[] fast_fast_tle2(int limit, Complex[] a, int type) throws Exception
     {
-        if(limit==1) {return ;}//只有一个常数项
+        if(limit==1) {return null;}//只有一个常数项
         Complex[] a1=new Complex[limit>>1];
         Complex[] a2=new Complex[limit>>1];
-        for(int i=0;i<=limit;i+=2)//根据下标的奇偶性分类
+        for(int i=0;i<=limit-2;i+=2)//根据下标的奇偶性分类
         {   a1[i>>1]=a[i];
             a2[i>>1]=a[i+1];
         }
@@ -72,11 +72,17 @@ public class FFT {
         Complex w=new Complex(1,0);
         //Wn为单位根，w表示幂
         for(int i=0;i<(limit>>1);i++,w=w.multiply(Wn)) {//这里的w相当于公式中的k
-            a[i] = a1[i].add(w.multiply(a2[i]));
-            a[i + (limit >> 1)] = a1[i].subtract(w.multiply(a2[i]));//利用单位根的性质，O(1)得到另一部分
+
+            if(w!=null&& a1[i]!=null&&a2[i]!=null){
+                Complex temp=w.multiply(a2[i]);
+                a[i] = a1[i].add(temp);
+                a[i + (limit >> 1)] = a1[i].subtract(temp);//利用单位根的性质，O(1)得到另一部分
+            }
+
         }
+        return a;
     }
-    public static void main(String[] args) {
+    public static void test1(){
         int n=2,m=3;
         int total=m*n;
         System.out.println(total);
@@ -98,7 +104,7 @@ public class FFT {
         for(int i=0;i<limit;i++){
             r[i]= ( r[i>>1]>>1 )| ( (i&1)<<(l-1) ) ;
         }
-       Complex[] c= fast_fast_tle1(a,1);
+        Complex[] c= fast_fast_tle1(a,1);
         for (int i = 0; i < c.length; i++) {
             System.out.println(c[i].getReal()+"     "+c[i].getImaginary());
         }
@@ -106,10 +112,41 @@ public class FFT {
         for(int i=0;i<=limit;i++) {
             c[i]=c[i].multiply(d[i]);
         }
-       Complex[] res= fast_fast_tle1(c,-1);
+        Complex[] res= fast_fast_tle1(c,-1);
         for(int i=0;i<=n+m;i++){
 
             System.out.println((int)(res[i].getReal()/limit+0.5));
         }
     }
+
+    public static void test2() throws  Exception{
+
+        for (int i = 0; i <= 1; i++) {
+            a[i]=new Complex(i+1);
+            b[i]=new Complex(i+1);
+        }
+        b[2]=new Complex(1);
+        while(limit<=n+m) {
+            limit<<=1;
+        }
+        Complex[] ra = fast_fast_tle2(limit, a, 1);
+        Complex[] rb = fast_fast_tle2(limit, b, 1);
+        Complex[] res=new Complex[limit];
+        for (int i = 0; i < limit; i++) {
+            if(ra[i]!=null&&rb[i]!=null) {
+                res[i] = ra[i].multiply(rb[i]);
+            }
+        }
+        Complex[] result = fast_fast_tle2(limit, res, -1);
+        for (int i = 0; i < limit; i++) {
+            if (result[i]!=null) {
+            System.out.println((int)(res[i].getReal()/limit+0.5));
+
+            }
+        }
+    }
+    public static void main(String[] args) throws  Exception{
+        test2();
+    }
 }
+

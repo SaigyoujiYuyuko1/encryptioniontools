@@ -14,16 +14,25 @@ public class Complex {
             return Math.sqrt(i * i + j * j);
         }
 
-        public static Complex Add(Complex a, Complex b) {
+        public static Complex  Add(Complex a, Complex b) {
+            if(a!=null&&b!=null){
             return new Complex(a.i + b.i, a.j + b.j);
+            }
+            return new Complex(0,0);
         }
 
         public static Complex Subtract(Complex a, Complex b) {
+            if(a!=null&&b!=null){
             return new Complex(a.i - b.i, a.j - b.j);
+            }
+            return new Complex(0,0);
         }
 
         public static Complex Mul(Complex a, Complex b) {// 乘法
+            if(a!=null&&b!=null){
             return new Complex(a.i * b.i - a.j * b.j, a.i * b.j + a.j * b.i);
+            }
+                return new Complex(0,0);
         }
 
         public static Complex GetW(int k, int N) {
