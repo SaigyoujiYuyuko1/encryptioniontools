@@ -14,7 +14,7 @@ import java.util.List;
 public class BigDFastTransfer {
     int MAX = 1024;
     double PI =Math.acos(-1);
-    int lim = 1;
+     static int lim = 1;
     int l;
     int[] r=new int[MAX];
      static List<List<BigInteger>> result=new ArrayList<>();

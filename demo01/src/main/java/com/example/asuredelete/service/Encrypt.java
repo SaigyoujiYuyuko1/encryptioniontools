@@ -45,6 +45,10 @@ public class Encrypt {
     private BigDecimal one=BigDecimal.ONE;
     int MAX = 1024;
 
+    
+    public static  BigComplex[] xrays ;
+    public static  BigComplex[] ploys ;
+
     /**
      * 根据访问策略产生访问控制树（叶子节点）
      * @param policy 访问策略
@@ -79,19 +83,23 @@ public class Encrypt {
      */
     public List<RCNode> computeRCNodes(Parameter pp,Element secret,int num,List<String> policy){
         List<RCNode> rcList=new ArrayList<>();
-        BigComplex[] ploy=new BigComplex[MAX];
+        BigComplex[] ploy=new BigComplex[num];
         ploy[0]=new BigComplex(new BigDecimal(secret.toString()),zero);
         for (int i = 1; i < num; i++) {
             ploy[i]=new BigComplex(new BigDecimal(FuncUtils.getRandomFromZp().toString()),zero);
         }
         BigComplex[] xray = bigDFastTransfer.FFT(ploy, 1);
         BigComplex[] yray = computeY(xray, ploy);
-
+        //全局变量，删除请求时用到
+        xrays=xray;
+        ploys=ploy;
+        Element g = pp.getG();
         for (int i = 0; i < num; i++) {
             RCNode rc=new RCNode();
             rc.setXray(xray[i]);
             rc.setRoot(xray[i].toString());
             rc.setSecret(pairing.getZr().newElement(new BigInteger(yray[i].toString())));
+            rc.setGy(g.powZn(rc.getSecret()));
             rc.setStringElementMap(genAccessTree(policy.get(i)));
             rc.setLeafNodes(computeLeafNode(pp,rc));
         }

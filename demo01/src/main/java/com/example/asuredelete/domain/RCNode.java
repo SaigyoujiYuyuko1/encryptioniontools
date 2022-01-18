@@ -12,6 +12,7 @@ public class RCNode {
     String root;
     //单位根对应y值
     Element secret;
+    Element gy;
     //该节点对应的访问控制树
     Map<String, Element> stringElementMap;
     //
