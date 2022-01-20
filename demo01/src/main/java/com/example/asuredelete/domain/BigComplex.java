@@ -14,7 +14,7 @@ public class BigComplex {
     public static final BigComplex I = new BigComplex(new BigDecimal(Double.toString(0.0D )),new BigDecimal(Double.toString(1.0D)) );
     public static final BigComplex NaN = new BigComplex(new BigDecimal(Double.toString(0.0D / 0.0)),new BigDecimal(Double.toString(0.0D / 0.0)));
     public static final BigComplex INF = new BigComplex(new BigDecimal(Double.toString(1.0D / 0.0)),new BigDecimal(Double.toString(1.0D / 0.0 )));
-    public boolean isNaN() {
+    public  boolean isNaN() {
         return this.isNaN;
     }
 
@@ -63,7 +63,7 @@ public class BigComplex {
             //蝶形运算
             return new BigComplex[] { Add(a, Mul(w, b)), Subtract(a, Mul(w, b)) };
         }
-        public double abs() {
+        public  double abs() {
         if (this.isNaN) {
             return 0.0D / 0.0;
         } else if (this.isInfinite()) {
@@ -86,7 +86,7 @@ public class BigComplex {
         }
     }
 
-        public BigComplex log() {
+        public  BigComplex log() {
             return new BigComplex(new BigDecimal(Double.toString(FastMath.log(this.abs()))), new BigDecimal(Double.toString(FastMath.atan2(this.i.doubleValue(), this.j.doubleValue()))));
         }
         public BigComplex multiply(double factor) {
@@ -97,7 +97,7 @@ public class BigComplex {
                 return NaN;
             }
         }
-        public BigComplex exp() {
+        public  BigComplex exp() {
             if (this.isNaN) {
                 return NaN;
             } else {
@@ -107,7 +107,7 @@ public class BigComplex {
             }
         }
 
-        public BigComplex pow(double x) {
+        public  BigComplex pow(double x) {
             return this.log().multiply(x).exp();
         }
 

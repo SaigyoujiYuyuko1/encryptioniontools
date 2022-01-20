@@ -44,9 +44,10 @@ public class Encrypt {
     private BigDecimal zero=BigDecimal.ZERO;
     private BigDecimal one=BigDecimal.ONE;
     int MAX = 1024;
-
+    public static int coflen;
     
     public static  BigComplex[] xrays ;
+    public static  BigComplex[] aYrays ;
     public static  BigComplex[] ploys ;
 
     /**
@@ -91,7 +92,9 @@ public class Encrypt {
         BigComplex[] xray = bigDFastTransfer.FFT(ploy, 1);
         BigComplex[] yray = computeY(xray, ploy);
         //全局变量，删除请求时用到
+        coflen=num;
         xrays=xray;
+        aYrays=yray;
         ploys=ploy;
         Element g = pp.getG();
         for (int i = 0; i < num; i++) {

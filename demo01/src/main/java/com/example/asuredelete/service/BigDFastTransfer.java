@@ -15,13 +15,14 @@ public class BigDFastTransfer {
     int MAX = 1024;
     double PI =Math.acos(-1);
      static int lim = 1;
+
     int l;
     int[] r=new int[MAX];
      static List<List<BigInteger>> result=new ArrayList<>();
     BigComplex[] aa=new BigComplex[MAX];
     BigComplex[]bb=new BigComplex[MAX];
-    private final static BigDecimal zero=BigDecimal.ZERO;
-    private final static BigDecimal one=BigDecimal.ONE;
+     final static BigDecimal zero=BigDecimal.ZERO;
+    final static BigDecimal one=BigDecimal.ONE;
 
     public BigComplex[] FFT(BigComplex[] A, int type){
         for(int i = 0;i < lim;++i) {
