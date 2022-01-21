@@ -41,8 +41,8 @@ public class Encrypt {
 
 
     private Pairing pairing = FuncUtils.pairing;
-    private BigDecimal zero=BigDecimal.ZERO;
-    private BigDecimal one=BigDecimal.ONE;
+   // private BigDecimal zero=BigDecimal.ZERO;
+
     int MAX = 1024;
     public static int coflen;
     
@@ -85,9 +85,9 @@ public class Encrypt {
     public List<RCNode> computeRCNodes(Parameter pp,Element secret,int num,List<String> policy){
         List<RCNode> rcList=new ArrayList<>();
         BigComplex[] ploy=new BigComplex[num];
-        ploy[0]=new BigComplex(new BigDecimal(secret.toString()),zero);
+        ploy[0]=new BigComplex(new BigDecimal(String.valueOf(secret)),BigDecimal.ZERO);
         for (int i = 1; i < num; i++) {
-            ploy[i]=new BigComplex(new BigDecimal(FuncUtils.getRandomFromZp().toString()),zero);
+            ploy[i]=new BigComplex(new BigDecimal(FuncUtils.getRandomFromZp().toString()),BigDecimal.ZERO);
         }
         BigComplex[] xray = bigDFastTransfer.FFT(ploy, 1);
         BigComplex[] yray = computeY(xray, ploy);
@@ -132,7 +132,7 @@ public class Encrypt {
     public BigComplex[] computeY(BigComplex[] xray,BigComplex[] ploy){
         BigComplex[] yray=new BigComplex[xray.length];
         for (int i = 0; i < xray.length; i++) {
-            BigComplex res=new BigComplex(zero,zero);
+            BigComplex res=new BigComplex(BigDecimal.ZERO,BigDecimal.ZERO);
             for (int j = 0; j < ploy.length; j++) {
                 res=BigComplex.Add(res,BigComplex.Mul(ploy[j],xray[i].pow(j)));
             }
@@ -148,17 +148,17 @@ public class Encrypt {
      * @param num
      */
     @SneakyThrows
-    public CT encFile(Parameter pp,List<String> policy,int num){
+    public CT encFile(Parameter pp,PK pk,List<String> policy,int num){
         File file=new File("D:\\Desktop\\待看\\paper\\DATA SHARING.xlsx");
         byte[] fileBytes = Files.readAllBytes(file.toPath());
 
         Element g = pp.getG();
         Element alpha = pp.getAlpha();
-        Element s = FuncUtils.getRandomFromG1();
+        Element s = FuncUtils.getRandomFromZp();
         Element filekey = pairing.pairing(g, g).powZn(alpha.mul(s));
-        Element cipher = filekey.mul(pairing.getG1().newElementFromBytes(fileBytes));
+        Element cipher = filekey.mul(pairing.getGT().newElementFromBytes(fileBytes));
 
-        Element c = pp.getH().powZn(s);
+        Element c = pk.getH().powZn(s);
 
         List<RCNode> rcNodes = computeRCNodes(pp,alpha, num ,policy);
 

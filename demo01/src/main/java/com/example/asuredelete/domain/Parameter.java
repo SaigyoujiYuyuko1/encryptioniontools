@@ -17,5 +17,5 @@ public class Parameter {
     private Element g;
     private Element alpha;
     private Element beta;
-    private Element h;
+    //private Element h;
 }

@@ -6,7 +6,9 @@ import com.example.asuredelete.domain.PK;
 import com.example.asuredelete.domain.Parameter;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Setup {
    private Pairing pair = FuncUtils.getPairing();
     public Parameter setupPP(){
@@ -16,6 +18,7 @@ public class Setup {
                 FuncUtils.getRandomFromG1(),
                 FuncUtils.getRandomFromZp(),
                 FuncUtils.getRandomFromZp()
+
         );
 
     }
@@ -30,7 +33,7 @@ public class Setup {
         return pk;
     }
     public MSK setupMSK(Parameter pp){
-        Element sk = pair.pairing(pp.getBeta(), pp.getG().powZn(pp.getAlpha()));
-        return new MSK(sk);
+        Element sk =  pp.getG().powZn(pp.getAlpha());
+        return new MSK(pp.getBeta(),sk);
     }
 }

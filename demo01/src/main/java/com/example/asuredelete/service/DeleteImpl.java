@@ -23,7 +23,7 @@ public class DeleteImpl {
      BigDecimal one=BigDFastTransfer.one;
     int type=-1;
 
-    public void delImpl(Parameter pp,CT ct, DR dr){
+    public List<Element> delImpl(Parameter pp,CT ct, DR dr){
         List<RCNode> rcNodes = ct.getRcNodesList();
         List<Element> ployA = dr.getPloyA();
         List<Element> ployB = dr.getPloyB();
@@ -33,9 +33,9 @@ public class DeleteImpl {
             Element res = this.pairing.pairing(ployA.get(i), ployB.get(i));
             abm.add(res);
         }
-
+        return abm;
     }
-    public void proofGen(Parameter pp,List<Element> abm){
+    public Element proofGen(Parameter pp,List<Element> abm){
         //计算A*B的秘密值(生成证据)
         final Element[] temp = {FuncUtils.getOneFromG1()};
         abm.parallelStream().forEach(p->{
@@ -53,6 +53,6 @@ public class DeleteImpl {
 
         }
         Element g = pp.getG();
-        g.powZn(FuncUtils.getPairing().getZr().newElement(new BigInteger(res.toString())));
+        return g.powZn(FuncUtils.getPairing().getZr().newElement(new BigInteger(res.toString())));
     }
 }
