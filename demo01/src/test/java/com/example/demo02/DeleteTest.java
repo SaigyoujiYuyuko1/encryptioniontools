@@ -1,6 +1,7 @@
 package com.example.demo02;
 
 import com.example.Demo01ApplicationTests;
+import com.example.asuredelete.aop.EXCTime;
 import com.example.asuredelete.domain.*;
 import com.example.asuredelete.service.*;
 import it.unisa.dia.gas.jpbc.Element;
@@ -37,6 +38,7 @@ public class DeleteTest  {
 
 
     @Test
+    @EXCTime
     public void deleteTest(){
         List<String> policy =new ArrayList<>();
         policy.add(access_policy_example_1);
@@ -48,12 +50,14 @@ public class DeleteTest  {
         try{
             long start = System.currentTimeMillis();
             Parameter pp = setup.setupPP();
+
             MSK msk = setup.setupMSK(pp);
             PK pk = setup.setupPK(pp);
             CT ct = encrypt.encFile(pp,pk, policy, 5);
             DR dr = deleteRequest.delReq(pp, msk, pk, 5);
             List<Element> list = delete.delImpl(pp, ct, dr);
             Element proof = delete.proofGen(pp, list);
+
             Boolean judge = proofCheck.verifyProof(pp, proof);
 
             long end = System.currentTimeMillis();

@@ -1,19 +1,28 @@
 package com.example.asuredelete.domain;
 
 
-import org.apache.commons.math3.complex.Complex;
+
+import lombok.ToString;
 import org.apache.commons.math3.util.FastMath;
 
 import java.math.BigDecimal;
 
 public class BigComplex {
          public BigDecimal i;
-        public BigDecimal j;// 虚数部分
+
+    @Override
+    public String toString() {
+        String t=i+"";
+        final String[] split = t.split("\\.");
+        return split[0];
+    }
+
+    public BigDecimal j;// 虚数部分
     private final transient boolean isNaN;
     private final transient boolean isInfinite;
     public static final BigComplex I = new BigComplex(new BigDecimal(Double.toString(0.0D )),new BigDecimal(Double.toString(1.0D)) );
-    public static final BigComplex NaN = new BigComplex(new BigDecimal(Double.toString(0.0D / 0.0)),new BigDecimal(Double.toString(0.0D / 0.0)));
-    public static final BigComplex INF = new BigComplex(new BigDecimal(Double.toString(1.0D / 0.0)),new BigDecimal(Double.toString(1.0D / 0.0 )));
+    public static final BigComplex NaN = new BigComplex(new BigDecimal(Double.toString(0.0D )),new BigDecimal(Double.toString(0.0D )));
+    public static final BigComplex INF = new BigComplex(new BigDecimal(Double.toString(1.0D )),new BigDecimal(Double.toString(1.0D )));
     public  boolean isNaN() {
         return this.isNaN;
     }

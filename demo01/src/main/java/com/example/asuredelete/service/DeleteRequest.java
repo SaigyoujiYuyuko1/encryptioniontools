@@ -65,11 +65,13 @@ public class DeleteRequest {
             listB.add(g.powZn(tempB.div(div)));
         }
         for (int i = num; i < n; i++) {
-            Element tempA = pairing.getZr().newElement(new BigInteger(aY[i].toString()));
-            Element tempB = pairing.getZr().newElement(new BigInteger(bY[i].toString()));
-            Element div = pairing.getZr().newElement(n);
-            listA.add(g.powZn(tempA.div(div)));
-            listB.add(g.powZn(tempB));
+//            Element tempA = pairing.getZr().newElement(new BigInteger(aY[i].toString()));
+//            Element tempB = pairing.getZr().newElement(new BigInteger(bY[i].toString()));
+//            Element div = pairing.getZr().newElement(n);
+//            listA.add(g.powZn(tempA.div(div)));
+//            listB.add(g.powZn(tempB));
+            listA.add(g.powZn(pairing.getZr().newElement(0)));
+            listB.add(g.powZn(pairing.getZr().newElement(0)));
         }
 
         DR dr=new DR();

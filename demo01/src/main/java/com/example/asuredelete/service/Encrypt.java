@@ -1,7 +1,6 @@
 package com.example.asuredelete.service;
 
 import com.example.asuredelete.Utils.FuncUtils;
-import com.example.asuredelete.access.AccessControlEngine;
 import com.example.asuredelete.access.AccessControlParameter;
 import com.example.asuredelete.access.parser.ParserUtils;
 import com.example.asuredelete.access.tree.AccessTreeEngine;
@@ -10,22 +9,13 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.math3.FieldElement;
-import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.transform.DftNormalization;
-import org.apache.commons.math3.transform.FastFourierTransformer;
-import org.apache.commons.math3.transform.TransformType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,8 +79,15 @@ public class Encrypt {
         for (int i = 1; i < num; i++) {
             ploy[i]=new BigComplex(new BigDecimal(FuncUtils.getRandomFromZp().toString()),BigDecimal.ZERO);
         }
+        final long start = System.currentTimeMillis();
         BigComplex[] xray = bigDFastTransfer.FFT(ploy, 1);
+        final long end = System.currentTimeMillis();
+        System.out.println("fft时间:"+(end-start));
+//        final long start3 = System.currentTimeMillis();
         BigComplex[] yray = computeY(xray, ploy);
+//        final long end3 = System.currentTimeMillis();
+//        System.out.println("计算Y值"+(end3-start3));
+
         //全局变量，删除请求时用到
         coflen=num;
         xrays=xray;
@@ -101,10 +98,19 @@ public class Encrypt {
             RCNode rc=new RCNode();
             rc.setXray(xray[i]);
             rc.setRoot(xray[i].toString());
-            rc.setSecret(pairing.getZr().newElement(new BigInteger(yray[i].toString())));
+
+            BigInteger tt = new BigInteger(yray[i].toString());
+
+            final Element e = pairing.getZr().newElement(tt);
+
+            rc.setSecret(e);
+//            rc.setSecret(pairing.getZr().newElement(new BigInteger(yray[i].toString())));
             rc.setGy(g.powZn(rc.getSecret()));
             rc.setStringElementMap(genAccessTree(policy.get(i)));
+            final long start2 = System.currentTimeMillis();
             rc.setLeafNodes(computeLeafNode(pp,rc));
+            final long end2 = System.currentTimeMillis();
+            System.out.println("第"+i+"次计算子树"+(end2-start2));
         }
 
         return rcList;
@@ -149,19 +155,23 @@ public class Encrypt {
      */
     @SneakyThrows
     public CT encFile(Parameter pp,PK pk,List<String> policy,int num){
-        File file=new File("D:\\Desktop\\待看\\paper\\DATA SHARING.xlsx");
+        File file=new File("D:\\Desktop\\琐碎\\a.txt");
         byte[] fileBytes = Files.readAllBytes(file.toPath());
 
         Element g = pp.getG();
         Element alpha = pp.getAlpha();
         Element s = FuncUtils.getRandomFromZp();
         Element filekey = pairing.pairing(g, g).powZn(alpha.mul(s));
+        long start=System.currentTimeMillis();
         Element cipher = filekey.mul(pairing.getGT().newElementFromBytes(fileBytes));
+        long end=System.currentTimeMillis();
+        System.out.println("加密文件："+(end-start));
 
         Element c = pk.getH().powZn(s);
-
+        long start1=System.currentTimeMillis();
         List<RCNode> rcNodes = computeRCNodes(pp,alpha, num ,policy);
-
+        long end1=System.currentTimeMillis();
+        System.out.println("计算访问控制树："+(end1-start1));
         CT ct=new CT();
         ct.setCipher(cipher);
         ct.setC(c);
@@ -172,19 +182,10 @@ public class Encrypt {
 
 
     public static void main(String[] args) {
-        Encrypt en=new Encrypt();
-       // List<RCNode> rcNodes = en.computeRCNodes(null, 4);
-        Pairing pairing = FuncUtils.getPairing();
-        Element rg = FuncUtils.getRandomFromG1();
-        Element zp = FuncUtils.getRandomFromZp();
-        System.out.println("g元素长度："+rg.toString().length());
-        System.out.println(rg.toString());
-        System.out.println("zp元素长度："+zp.toString().length());
-        System.out.println(zp.toString());
-        double dzp = Double.parseDouble(FuncUtils.getRandomFromZp().toString());
-
-        System.out.println(dzp);
-
+     String s="123214.123";
+        final String[] split = s.split("\\.");
+        System.out.println(split.length);
+        System.out.println(split[0]);
 
 
     }

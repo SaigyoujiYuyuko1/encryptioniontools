@@ -5,6 +5,7 @@ import com.example.asuredelete.domain.*;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,8 +16,9 @@ import java.util.List;
 @Slf4j
 @Service
 public class DeleteImpl {
+
     private Pairing pairing = FuncUtils.pairing;
-    static  int mid=DeleteRequest.mid;
+
     int limit=BigDFastTransfer.lim;
     double PI =Math.acos(-1);
      BigDecimal zero=BigDFastTransfer.zero;
@@ -37,12 +39,14 @@ public class DeleteImpl {
     }
     public Element proofGen(Parameter pp,List<Element> abm){
         //计算A*B的秘密值(生成证据)
-        final Element[] temp = {FuncUtils.getOneFromG1()};
+        final Element[] temp = {pairing.getGT().newOneElement()};
         abm.parallelStream().forEach(p->{
             temp[0] = temp[0].mul(p);
         });
         Element result=temp[0];
-        BigComplex omg=new BigComplex(new BigDecimal(String.valueOf(Math.cos(PI/mid))),
+        int mid=DeleteRequest.mid;
+
+        BigComplex omg=new BigComplex(new BigDecimal(String.valueOf(Math.cos(PI / mid))),
                 new BigDecimal(String.valueOf(type * Math.sin(PI/mid))));
         BigComplex w=new BigComplex(one,zero);
         BigComplex res=new BigComplex(zero,zero);
