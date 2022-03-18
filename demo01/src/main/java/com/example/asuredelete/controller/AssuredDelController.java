@@ -36,7 +36,7 @@ public class AssuredDelController {
     String access_policy_example_3 = "(0 and 1 and 2) and (3 or 4 or 5)";
     String access_policy_example_4 = "(0 and 1 or 2) and (3 or 4 or 5)";
     String access_policy_example_5 = "(0 and 1 and 2) and (3 and 4 or 5)";
-
+    String filePath="D:\\Desktop\\琐碎\\ab.pdf";
 
     @GetMapping("/delete")
     @ResponseBody
@@ -61,7 +61,7 @@ public class AssuredDelController {
 
 
             long start4 = System.currentTimeMillis();
-            CT ct = encrypt.encFile(pp, pk,policy, 5);
+            CT ct = encrypt.encFile(pp, pk,policy, 5,filePath);
             long end4 = System.currentTimeMillis();
             System.out.println("加密总时间："+(end4-start4));
             ExpTime et1=new ExpTime();
@@ -71,7 +71,7 @@ public class AssuredDelController {
 
 
             long start5 = System.currentTimeMillis();
-            DR dr = deleteRequest.delReq(pp, msk, pk, 5);
+            DR dr = deleteRequest.delReq(pp, msk, pk,5);
             long end5 = System.currentTimeMillis();
             System.out.println("提出删除请求时间："+(end5-start5));
             ExpTime et2=new ExpTime();

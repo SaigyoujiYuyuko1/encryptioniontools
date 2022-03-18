@@ -6,11 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MSK {
     private Element beta;
-    private Element sk;
+    private Element gAlpha;
 }

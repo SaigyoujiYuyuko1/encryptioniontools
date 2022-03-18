@@ -53,25 +53,29 @@ public class DeleteRequest {
         mid=num;
         List<Element> listA=new ArrayList<>();
         List<Element> listB=new ArrayList<>();
+
         Element g = pp.getG();
-        for (int i = 0; i < num; i++) {
+        for (int i = 0; i < aY.length; i++) {
             Element tempA = pairing.getZr().newElement(new BigInteger(aY[i].toString()));
             Element tempB = pairing.getZr().newElement(new BigInteger(bY[i].toString()));
             /**
              * 多项式A这部分参数在密文中已经出现过，此处为重复计算，不计算时间
              */
-            listA.add(g.powZn(tempA));
-            Element div = pairing.getZr().newElement(n);
-            listB.add(g.powZn(tempB.div(div)));
+            Element div = pairing.getZr().newElement(i);
+            listA.add(g.powZn(tempA.mul(div)));
+
+            Element div1 = tempB.mul(div.negate());
+            listB.add(g.powZn(div1));
         }
-        for (int i = num; i < n; i++) {
+        for (int i = aY.length; i < n; i++) {
 //            Element tempA = pairing.getZr().newElement(new BigInteger(aY[i].toString()));
 //            Element tempB = pairing.getZr().newElement(new BigInteger(bY[i].toString()));
 //            Element div = pairing.getZr().newElement(n);
 //            listA.add(g.powZn(tempA.div(div)));
 //            listB.add(g.powZn(tempB));
-            listA.add(g.powZn(pairing.getZr().newElement(0)));
-            listB.add(g.powZn(pairing.getZr().newElement(0)));
+            Element div = pairing.getZr().newElement(i);
+            listA.add(g.powZn(pairing.getZr().newElement(i+1).mul(div)));
+            listB.add(g.powZn(pairing.getZr().newElement(i+1).mul(div.negate())));
         }
 
         DR dr=new DR();

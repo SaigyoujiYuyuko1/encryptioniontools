@@ -1,10 +1,8 @@
 package com.example.asuredelete.Utils;
- 
+
 import it.unisa.dia.gas.jpbc.Element;
-import org.bouncycastle.jce.provider.JCEMac;
 import org.springframework.stereotype.Component;
 
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
  
@@ -24,7 +22,11 @@ public class MerkleTrees {
         List<Element> tempTxList = new ArrayList<Element>();
  
         for (int i = 0; i < txList.size(); i++) {
-            tempTxList.add(txList.get(i).add(FuncUtils.getPairing().getG1().newElement(i)));
+            int j=0;
+            Element leaf = txList.get(i);
+            Element index = FuncUtils.getPairing().getG1().newElement(j++);
+            Element res= leaf.add(index);
+            tempTxList.add(res);
         }
  
         List<Element> newTxList = getNewTxList(tempTxList);
@@ -56,7 +58,7 @@ public class MerkleTrees {
                 right = tempTxList.get(index);
             }
             // sha2 hex value
-            Element sha2HexValue = hash2Zp(left,right);
+            Element sha2HexValue = hash2Zp(left.duplicate(),right.duplicate());
             newTxList.add(sha2HexValue);
             index++;
  
@@ -75,8 +77,8 @@ public class MerkleTrees {
 
     private Element hash2Zp(Element left,Element right){
 
-        Element res = left.add(right);
-        return FuncUtils.hashFromStringToZp(res.toString());
+        Element res = left.add(right).getImmutable();
+        return FuncUtils.hashFromStringToG1(res.toString());
 
     }
 }

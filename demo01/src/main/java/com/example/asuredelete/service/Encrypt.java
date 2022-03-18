@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -102,12 +103,15 @@ public class Encrypt {
             BigInteger tt = new BigInteger(yray[i].toString());
 
             final Element e = pairing.getZr().newElement(tt);
+            Element scrent = e.mul(pairing.getZr().newElement(i));
 
-            rc.setSecret(e);
+            rc.setSecret(scrent);
 //            rc.setSecret(pairing.getZr().newElement(new BigInteger(yray[i].toString())));
             rc.setGy(g.powZn(rc.getSecret()));
             rc.setStringElementMap(genAccessTree(policy.get(i)));
             final long start2 = System.currentTimeMillis();
+
+
             rc.setLeafNodes(computeLeafNode(pp,rc));
             final long end2 = System.currentTimeMillis();
             System.out.println("第"+i+"次计算子树"+(end2-start2));
@@ -154,8 +158,8 @@ public class Encrypt {
      * @param num
      */
     @SneakyThrows
-    public CT encFile(Parameter pp,PK pk,List<String> policy,int num){
-        File file=new File("D:\\Desktop\\琐碎\\a.txt");
+    public CT encFile(Parameter pp,PK pk,List<String> policy,int num,String filePath){
+        File file=new File(filePath);
         byte[] fileBytes = Files.readAllBytes(file.toPath());
 
         Element g = pp.getG();
