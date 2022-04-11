@@ -17,12 +17,13 @@ public class ExcuteTime  {
 
     @Around("showTime()")
     @SneakyThrows
-    public long expTime(ProceedingJoinPoint point){
-        final String name = point.getSignature().getName();
+    public Object expTime(ProceedingJoinPoint point){
+        String name = point.getSignature().getName();
         long start=System.currentTimeMillis();
         point.proceed();
         long end=System.currentTimeMillis();
-        log.info(name+"+{}",end-start);
-        return end-start;
+        String time = String.valueOf(end - start);
+        log.info(name+":{}",time);
+        return (Object) time;
     }
 }

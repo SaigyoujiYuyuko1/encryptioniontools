@@ -2,7 +2,9 @@ package com.example.asuredelete.Utils;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Base64Utils;
 
+import javax.crypto.Cipher;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -65,6 +67,29 @@ public class RSASign {
         signature.update(file);
         //验证签名
        return signature.verify(result);
+    }
+
+    @SneakyThrows
+    public static String encryptByPublicKey(byte[] data,RSAPublicKey rsaPublicKey) {
+
+        //数据加密
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE,rsaPublicKey);
+        byte[] bytes = cipher.doFinal(data);
+        return Base64Utils.encodeToString(bytes);
+    }
+
+    /**
+     * 私钥解密
+     * @param data 待解密数据
+     * @return byte[] 解密数据
+     * */
+    @SneakyThrows
+    public static String decryptByPrivateKey(byte[] data,RSAPrivateKey rsaPrivateKey) {
+        //数据解密
+        Cipher cipher=Cipher.getInstance(keyFactory.getAlgorithm());
+        cipher.init(Cipher.DECRYPT_MODE, rsaPrivateKey);
+        return new String(cipher.doFinal(data));
     }
 
 

@@ -7,6 +7,7 @@ import com.example.Xue.domain.XueCT;
 import com.example.asuredelete.Utils.FuncUtils;
 import com.example.asuredelete.Utils.MerkleTrees;
 import com.example.asuredelete.Utils.RSASign;
+import com.example.asuredelete.aop.EXCTime;
 import it.unisa.dia.gas.jpbc.Element;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class XueEncrypt {
     private MerkleTrees merkleTrees;
 
     @SneakyThrows
+    @EXCTime
     public UploadFile encrypt(XuePK xuePk, XueSK xueSk, int policyNum, String filePath){
         File file=new File(filePath);
         byte[] fileBytes = Files.readAllBytes(file.toPath());
