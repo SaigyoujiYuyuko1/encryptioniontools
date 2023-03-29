@@ -1,0 +1,1346 @@
+Index: demo02/src/main/java/com/example/Demo02Application.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example;\r\n\r\nimport org.springframework.boot.SpringApplication;\r\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\r\nimport org.springframework.boot.builder.SpringApplicationBuilder;\r\nimport org.springframework.boot.web.servlet.support.SpringBootServletInitializer;\r\n\r\n@SpringBootApplication\r\npublic class Demo02Application extends SpringBootServletInitializer {\r\n\r\n    public static void main(String[] args) {\r\n        SpringApplication.run(Demo02Application.class, args);\r\n    }\r\n    @Override\r\n    protected SpringApplicationBuilder configure(SpringApplicationBuilder springApplicationBuilder){\r\n        return springApplicationBuilder.sources(Demo02Application.class);\r\n    }\r\n\r\n}\r\n
+===================================================================
+diff --git a/demo02/src/main/java/com/example/Demo02Application.java b/demo02/src/main/java/com/example/Demo02Application.java
+--- a/demo02/src/main/java/com/example/Demo02Application.java	
++++ b/demo02/src/main/java/com/example/Demo02Application.java	
+@@ -2,18 +2,16 @@
+ 
+ import org.springframework.boot.SpringApplication;
+ import org.springframework.boot.autoconfigure.SpringBootApplication;
+-import org.springframework.boot.builder.SpringApplicationBuilder;
+-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+ 
+ @SpringBootApplication
+-public class Demo02Application extends SpringBootServletInitializer {
++public class Demo02Application  {
+ 
+     public static void main(String[] args) {
+         SpringApplication.run(Demo02Application.class, args);
+     }
+-    @Override
+-    protected SpringApplicationBuilder configure(SpringApplicationBuilder springApplicationBuilder){
+-        return springApplicationBuilder.sources(Demo02Application.class);
+-    }
++//    @Override
++//    protected SpringApplicationBuilder configure(SpringApplicationBuilder springApplicationBuilder){
++//        return springApplicationBuilder.sources(Demo02Application.class);
++//    }
+ 
+ }
+Index: demo02/src/main/java/com/example/domain/Cipher.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.domain;\r\n\r\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Data;\r\nimport lombok.NoArgsConstructor;\r\n\r\nimport javax.crypto.SecretKey;\r\n\r\n@Data\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\npublic class Cipher {\r\n    private String file;\r\n//    private byte[]  ct;\r\n    private long enctime;\r\n    private long dectime;\r\n}\r\n
+===================================================================
+diff --git a/demo02/src/main/java/com/example/domain/Cipher.java b/demo02/src/main/java/com/example/domain/Cipher.java
+--- a/demo02/src/main/java/com/example/domain/Cipher.java	
++++ b/demo02/src/main/java/com/example/domain/Cipher.java	
+@@ -1,15 +1,8 @@
+ package com.example.domain;
+ 
+-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+-import lombok.AllArgsConstructor;
+ import lombok.Data;
+-import lombok.NoArgsConstructor;
+-
+-import javax.crypto.SecretKey;
+ 
+ @Data
+-@NoArgsConstructor
+-@AllArgsConstructor
+ public class Cipher {
+     private String file;
+ //    private byte[]  ct;
+Index: demo02/src/test/java/com/example/Demo02ApplicationTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example;\r\n\r\nimport org.junit.jupiter.api.Test;\r\nimport org.junit.runner.RunWith;\r\nimport org.springframework.boot.test.context.SpringBootTest;\r\nimport org.springframework.test.context.junit4.SpringRunner;\r\n\r\n@RunWith(SpringRunner.class)\r\n@SpringBootTest\r\nclass Demo02ApplicationTests {\r\n\r\n    @Test\r\n    void contextLoads() {\r\n    }\r\n\r\n}\r\n
+===================================================================
+diff --git a/demo02/src/test/java/com/example/Demo02ApplicationTests.java b/demo02/src/test/java/com/example/Demo02ApplicationTests.java
+--- a/demo02/src/test/java/com/example/Demo02ApplicationTests.java	
++++ b/demo02/src/test/java/com/example/Demo02ApplicationTests.java	
+@@ -6,7 +6,7 @@
+ import org.springframework.test.context.junit4.SpringRunner;
+ 
+ @RunWith(SpringRunner.class)
+-@SpringBootTest
++@SpringBootTest(classes = Demo02Application.class)
+ class Demo02ApplicationTests {
+ 
+     @Test
+Index: demo01/src/main/java/com/example/asuredelete/aop/ExcuteTime.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.asuredelete.aop;\r\n\r\nimport lombok.SneakyThrows;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.aspectj.lang.ProceedingJoinPoint;\r\nimport org.aspectj.lang.annotation.Around;\r\nimport org.aspectj.lang.annotation.Aspect;\r\nimport org.aspectj.lang.annotation.Pointcut;\r\nimport org.springframework.context.annotation.Configuration;\r\n\r\n@Aspect\r\n@Configuration\r\n@Slf4j\r\npublic class ExcuteTime  {\r\n    @Pointcut(\"@annotation(com.example.asuredelete.aop.EXCTime)\")\r\n    public void showTime(){}\r\n\r\n    @Around(\"showTime()\")\r\n    @SneakyThrows\r\n    public Object expTime(ProceedingJoinPoint point){\r\n        String name = point.getSignature().getName();\r\n        long start=System.currentTimeMillis();\r\n        point.proceed();\r\n        long end=System.currentTimeMillis();\r\n        String time = String.valueOf(end - start);\r\n        log.info(name+\":{}\",time);\r\n        return (Object) time;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/asuredelete/aop/ExcuteTime.java b/demo01/src/main/java/com/example/asuredelete/aop/ExcuteTime.java
+--- a/demo01/src/main/java/com/example/asuredelete/aop/ExcuteTime.java	
++++ b/demo01/src/main/java/com/example/asuredelete/aop/ExcuteTime.java	
+@@ -20,10 +20,9 @@
+     public Object expTime(ProceedingJoinPoint point){
+         String name = point.getSignature().getName();
+         long start=System.currentTimeMillis();
+-        point.proceed();
++        Object proceed = point.proceed();
+         long end=System.currentTimeMillis();
+-        String time = String.valueOf(end - start);
+-        log.info(name+":{}",time);
+-        return (Object) time;
++        log.info(name+":{}",end - start);
++        return proceed;
+     }
+ }
+Index: demo01/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <parent>\r\n        <groupId>org.springframework.boot</groupId>\r\n        <artifactId>spring-boot-starter-parent</artifactId>\r\n        <version>2.6.1</version>\r\n        <relativePath/> <!-- lookup parent from repository -->\r\n    </parent>\r\n    <groupId>com.example</groupId>\r\n    <artifactId>demo01</artifactId>\r\n    <version>0.0.1-SNAPSHOT</version>\r\n    <name>demo01</name>\r\n    <description>Demo project for Spring Boot</description>\r\n    <properties>\r\n        <java.version>1.8</java.version>\r\n    </properties>\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-web</artifactId>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-test</artifactId>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.projectlombok</groupId>\r\n            <artifactId>lombok</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>junit</groupId>\r\n            <artifactId>junit</artifactId>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->\r\n        <dependency>\r\n            <groupId>com.google.guava</groupId>\r\n            <artifactId>guava</artifactId>\r\n            <version>31.0.1-jre</version>\r\n        </dependency>\r\n\r\n        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->\r\n        <dependency>\r\n            <groupId>com.alibaba</groupId>\r\n            <artifactId>fastjson</artifactId>\r\n            <version>1.2.75</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/gov.nist.math/jama -->\r\n        <dependency>\r\n            <groupId>gov.nist.math</groupId>\r\n            <artifactId>jama</artifactId>\r\n            <version>1.0.3</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->\r\n        <dependency>\r\n            <groupId>org.apache.commons</groupId>\r\n            <artifactId>commons-math3</artifactId>\r\n            <version>3.6.1</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-test</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-test</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.projectlombok</groupId>\r\n            <artifactId>lombok</artifactId>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-aop</artifactId>\r\n            <version>2.6.2</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->\r\n        <dependency>\r\n            <groupId>org.aspectj</groupId>\r\n            <artifactId>aspectjweaver</artifactId>\r\n            <version>1.9.7</version>\r\n        </dependency>\r\n\r\n    </dependencies>\r\n\r\n    <build>\r\n        <plugins>\r\n<!--            <plugin>-->\r\n<!--                <groupId>org.springframework.boot</groupId>-->\r\n<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->\r\n<!--            </plugin>-->\r\n        </plugins>\r\n    </build>\r\n\r\n</project>\r\n
+===================================================================
+diff --git a/demo01/pom.xml b/demo01/pom.xml
+--- a/demo01/pom.xml	
++++ b/demo01/pom.xml	
+@@ -90,6 +90,14 @@
+             <artifactId>aspectjweaver</artifactId>
+             <version>1.9.7</version>
+         </dependency>
++        <!-- https://mvnrepository.com/artifact/org.openjdk.jol/jol-core -->
++        <dependency>
++            <groupId>org.openjdk.jol</groupId>
++            <artifactId>jol-core</artifactId>
++            <version>0.16</version>
++            <scope>provided</scope>
++        </dependency>
++
+ 
+     </dependencies>
+ 
+Index: .idea/artifacts/demo02_war_exploded.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\r\n  <artifact type=\"exploded-war\" name=\"demo02:war exploded\">\r\n    <output-path>$PROJECT_DIR$/demo02/target/demo02-0.0.1-SNAPSHOT</output-path>\r\n    <properties id=\"maven-jee-properties\">\r\n      <options>\r\n        <exploded>true</exploded>\r\n        <module>demo02</module>\r\n        <packaging>war</packaging>\r\n      </options>\r\n    </properties>\r\n    <root id=\"root\">\r\n      <element id=\"directory\" name=\"WEB-INF\">\r\n        <element id=\"directory\" name=\"classes\">\r\n          <element id=\"module-output\" name=\"demo02\" />\r\n        </element>\r\n        <element id=\"directory\" name=\"lib\">\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-starter-web:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-starter:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-autoconfigure:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-starter-logging:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: ch.qos.logback:logback-classic:1.2.7\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: ch.qos.logback:logback-core:1.2.7\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.logging.log4j:log4j-to-slf4j:2.14.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.slf4j:jul-to-slf4j:1.7.32\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: jakarta.annotation:jakarta.annotation-api:1.3.5\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.yaml:snakeyaml:1.29\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-starter-json:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-starter-tomcat:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.55\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.55\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.55\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-web:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-beans:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-webmvc:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-aop:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-expression:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.squareup.okhttp3:okhttp:4.9.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.squareup.okio:okio:2.8.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.jetbrains.kotlin:kotlin-stdlib:1.6.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.jetbrains:annotations:13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: javax.servlet:jstl:1.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.google.code.gson:gson:2.8.5\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.hamcrest:hamcrest:2.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-core:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-jcl:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: junit:junit:4.13.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.hamcrest:hamcrest-core:2.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-test:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-test:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.data:spring-data-elasticsearch:4.3.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-context:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework:spring-tx:5.3.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.data:spring-data-commons:2.6.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.client:transport:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch-core:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch-secure-sm:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch-x-content:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch-geo:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-core:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-analyzers-common:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-backward-codecs:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-grouping:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-highlighter:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-join:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-memory:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-misc:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-queries:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-queryparser:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-sandbox:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-spatial-extras:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-spatial3d:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.lucene:lucene-suggest:8.9.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch-cli:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: net.sf.jopt-simple:jopt-simple:5.0.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.carrotsearch:hppc:0.8.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.lz4:lz4-java:1.8.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: joda-time:joda-time:2.10.10\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.tdunning:t-digest:3.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.hdrhistogram:HdrHistogram:2.1.9\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.logging.log4j:log4j-api:2.14.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:jna:5.7.0-1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch-plugin-classloader:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:reindex-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch:elasticsearch-ssl-config:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:lang-mustache-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.github.spullara.mustache.java:compiler:0.9.6\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:percolator-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:parent-join-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:rank-eval-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:transport-netty4-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: io.netty:netty-buffer:4.1.70.Final\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: io.netty:netty-codec:4.1.70.Final\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: io.netty:netty-codec-http:4.1.70.Final\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: io.netty:netty-common:4.1.70.Final\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: io.netty:netty-handler:4.1.70.Final\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: io.netty:netty-resolver:4.1.70.Final\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: io.netty:netty-transport:4.1.70.Final\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.client:elasticsearch-rest-high-level-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.client:elasticsearch-rest-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.httpcomponents:httpclient:4.5.13\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.httpcomponents:httpcore:4.4.14\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.httpcomponents:httpasyncclient:4.1.4\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.httpcomponents:httpcore-nio:4.4.14\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: commons-codec:commons-codec:1.15\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:mapper-extras-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.elasticsearch.plugin:aggs-matrix-stats-client:7.15.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.core:jackson-core:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.core:jackson-databind:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.slf4j:slf4j-api:1.7.32\" />\r\n          <element id=\"archive\" name=\"demo01-0.0.1-SNAPSHOT.jar\">\r\n            <element id=\"module-output\" name=\"demo01\" />\r\n          </element>\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.google.guava:guava:31.0.1-jre\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.google.guava:failureaccess:1.0.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.google.code.findbugs:jsr305:3.0.2\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.checkerframework:checker-qual:3.12.0\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.google.errorprone:error_prone_annotations:2.7.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.google.j2objc:j2objc-annotations:1.3\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: com.alibaba:fastjson:1.2.75\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: gov.nist.math:jama:1.0.3\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.apache.commons:commons-math3:3.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.springframework.boot:spring-boot-starter-aop:2.6.1\" />\r\n          <element id=\"library\" level=\"project\" name=\"Maven: org.aspectj:aspectjweaver:1.9.7\" />\r\n        </element>\r\n      </element>\r\n      <element id=\"directory\" name=\"META-INF\">\r\n        <element id=\"file-copy\" path=\"$PROJECT_DIR$/demo02/target/demo02-0.0.1-SNAPSHOT/META-INF/MANIFEST.MF\" />\r\n      </element>\r\n      <element id=\"javaee-facet-resources\" facet=\"demo02/web/Web\" />\r\n    </root>\r\n  </artifact>\r\n</component>
+===================================================================
+diff --git a/.idea/artifacts/demo02_war_exploded.xml b/.idea/artifacts/demo02_war_exploded.xml
+--- a/.idea/artifacts/demo02_war_exploded.xml	
++++ b/.idea/artifacts/demo02_war_exploded.xml	
+@@ -13,127 +13,6 @@
+         <element id="directory" name="classes">
+           <element id="module-output" name="demo02" />
+         </element>
+-        <element id="directory" name="lib">
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:2.6.1" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:2.6.1" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.6.1" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-logging:2.6.1" />
+-          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.7" />
+-          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.7" />
+-          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-to-slf4j:2.14.1" />
+-          <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:1.7.32" />
+-          <element id="library" level="project" name="Maven: jakarta.annotation:jakarta.annotation-api:1.3.5" />
+-          <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.29" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-json:2.6.1" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.0" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.0" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:2.6.1" />
+-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.55" />
+-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.55" />
+-          <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.55" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.3.13" />
+-          <element id="library" level="project" name="Maven: com.squareup.okhttp3:okhttp:4.9.1" />
+-          <element id="library" level="project" name="Maven: com.squareup.okio:okio:2.8.0" />
+-          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.0" />
+-          <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.6.0" />
+-          <element id="library" level="project" name="Maven: org.jetbrains:annotations:13.0" />
+-          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
+-          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.5" />
+-          <element id="library" level="project" name="Maven: org.hamcrest:hamcrest:2.2" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.3.13" />
+-          <element id="library" level="project" name="Maven: junit:junit:4.13.2" />
+-          <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:2.2" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-test:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-test:2.6.1" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:2.6.1" />
+-          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-elasticsearch:4.3.0" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.3.13" />
+-          <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:2.6.0" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.client:transport:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-core:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-secure-sm:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-x-content:7.15.2" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.13.0" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.13.0" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-geo:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-analyzers-common:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-backward-codecs:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-grouping:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-highlighter:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-join:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-memory:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-misc:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queries:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queryparser:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-sandbox:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-spatial-extras:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-spatial3d:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-suggest:8.9.0" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-cli:7.15.2" />
+-          <element id="library" level="project" name="Maven: net.sf.jopt-simple:jopt-simple:5.0.2" />
+-          <element id="library" level="project" name="Maven: com.carrotsearch:hppc:0.8.1" />
+-          <element id="library" level="project" name="Maven: org.lz4:lz4-java:1.8.0" />
+-          <element id="library" level="project" name="Maven: joda-time:joda-time:2.10.10" />
+-          <element id="library" level="project" name="Maven: com.tdunning:t-digest:3.2" />
+-          <element id="library" level="project" name="Maven: org.hdrhistogram:HdrHistogram:2.1.9" />
+-          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.14.1" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:jna:5.7.0-1" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-plugin-classloader:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:reindex-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch-ssl-config:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:lang-mustache-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: com.github.spullara.mustache.java:compiler:0.9.6" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:percolator-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:parent-join-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:rank-eval-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:transport-netty4-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: io.netty:netty-buffer:4.1.70.Final" />
+-          <element id="library" level="project" name="Maven: io.netty:netty-codec:4.1.70.Final" />
+-          <element id="library" level="project" name="Maven: io.netty:netty-codec-http:4.1.70.Final" />
+-          <element id="library" level="project" name="Maven: io.netty:netty-common:4.1.70.Final" />
+-          <element id="library" level="project" name="Maven: io.netty:netty-handler:4.1.70.Final" />
+-          <element id="library" level="project" name="Maven: io.netty:netty-resolver:4.1.70.Final" />
+-          <element id="library" level="project" name="Maven: io.netty:netty-transport:4.1.70.Final" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.client:elasticsearch-rest-high-level-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.client:elasticsearch-rest-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.13" />
+-          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.14" />
+-          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpasyncclient:4.1.4" />
+-          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore-nio:4.4.14" />
+-          <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.15" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:mapper-extras-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: org.elasticsearch.plugin:aggs-matrix-stats-client:7.15.2" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.0" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.13.0" />
+-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.0" />
+-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.32" />
+-          <element id="archive" name="demo01-0.0.1-SNAPSHOT.jar">
+-            <element id="module-output" name="demo01" />
+-          </element>
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.1" />
+-          <element id="library" level="project" name="Maven: com.google.guava:guava:31.0.1-jre" />
+-          <element id="library" level="project" name="Maven: com.google.guava:failureaccess:1.0.1" />
+-          <element id="library" level="project" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" />
+-          <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:3.0.2" />
+-          <element id="library" level="project" name="Maven: org.checkerframework:checker-qual:3.12.0" />
+-          <element id="library" level="project" name="Maven: com.google.errorprone:error_prone_annotations:2.7.1" />
+-          <element id="library" level="project" name="Maven: com.google.j2objc:j2objc-annotations:1.3" />
+-          <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.75" />
+-          <element id="library" level="project" name="Maven: gov.nist.math:jama:1.0.3" />
+-          <element id="library" level="project" name="Maven: org.apache.commons:commons-math3:3.6.1" />
+-          <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-aop:2.6.1" />
+-          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.9.7" />
+-        </element>
+       </element>
+       <element id="directory" name="META-INF">
+         <element id="file-copy" path="$PROJECT_DIR$/demo02/target/demo02-0.0.1-SNAPSHOT/META-INF/MANIFEST.MF" />
+Index: demo01/src/main/java/com/example/asuredelete/Utils/Lagrange.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.asuredelete.Utils;\r\n\r\nimport it.unisa.dia.gas.jpbc.Element;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class Lagrange {\r\n    public static List<Element> PloyDiv(Element alpha, int t, int n){\r\n        List<Element> res=new ArrayList<>();\r\n        List<Element> xishu=new ArrayList<>();\r\n        xishu.add(alpha);\r\n        for (int i = 1; i < t; i++) {\r\n            xishu.add( FuncUtils.getRandomFromG1());\r\n        }\r\n        for (int i = 1; i <= n; i++) {\r\n            Element re=FuncUtils.getZeroFromG1();\r\n            for (int j = 0; j < t; j++) {\r\n                Element temp = xishu.get(j).duplicate();\r\n                int te =(int) Math.pow(i,  j);\r\n                re=re.add(temp.powZn(FuncUtils.getPairing().getZr().newElement(te)));\r\n            }\r\n            res.add(re);\r\n        }\r\n        return res;\r\n    }\r\n\r\n    public static Element PloyReco(List<Element> list){\r\n        Element zero=FuncUtils.getZeroFromG1();\r\n        Element y=FuncUtils.getZeroFromG1();\r\n        int len = list.size();\r\n        for (int i = 0; i < len; i++) {\r\n           int t=1;\r\n            for (int j = 0; j < len; j++) {\r\n                if(i==j){\r\n                    j=i+1;\r\n                    if(j>len){\r\n                        break;\r\n                    }\r\n                }\r\n                t*=j/(i-j);\r\n            }\r\n            Element et = FuncUtils.getPairing().getG1().newElement(t);\r\n            y=y.add(et.mul(list.get(i)));\r\n        }\r\n        return y;\r\n\r\n    }\r\n    private static double lglrchzh(double X, int n, double x[], double y[]) {\r\n        double Y = 0;\r\n        for (int k = 0; k <= n; k++) {\r\n            double t = 1;\r\n            for (int j = 0; j <= n; j++) {\r\n                if (j == k) {\r\n                    j = k + 1;\r\n                    if (j > n) {\r\n                        break;\r\n                    }\r\n                }\r\n                t *= (X - x[j]) / (x[k] - x[j]);\r\n            }\r\n            Y = Y + t * y[k];\r\n        }\r\n        return Y;\r\n    }\r\n\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/asuredelete/Utils/Lagrange.java b/demo01/src/main/java/com/example/asuredelete/Utils/Lagrange.java
+--- a/demo01/src/main/java/com/example/asuredelete/Utils/Lagrange.java	
++++ b/demo01/src/main/java/com/example/asuredelete/Utils/Lagrange.java	
+@@ -38,9 +38,10 @@
+                         break;
+                     }
+                 }
+-                t*=j/(i-j);
++                t=t*(j/(i-j));
+             }
+-            Element et = FuncUtils.getPairing().getG1().newElement(t);
++
++            Element et = FuncUtils.getPairing().getG1().newRandomElement();
+             y=y.add(et.mul(list.get(i)));
+         }
+         return y;
+Index: demo01/src/main/java/com/example/Xue/Service/XueScheme.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Xue.Service;\r\n\r\nimport com.example.Xue.domain.*;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\n@Slf4j\r\n@Service\r\npublic class XueScheme {\r\n    @Autowired\r\n    private XueSetup xueSetup;\r\n    @Autowired\r\n    private XueKenGen xueKenGen;\r\n    @Autowired\r\n    private XueEncrypt xueEncrypt;\r\n    @Autowired\r\n    private XueDeleteReq xueDeleteReq;\r\n    @Autowired\r\n    private ReEncrypt reEncrypt;\r\n    @Autowired\r\n    private XueVerify xueVerify;\r\n    public void XueDemo(){\r\n        long t0 = System.currentTimeMillis();\r\n        XuePK pk=new XuePK();\r\n        XueMSK msk=new XueMSK();\r\n        int num=16;\r\n//        String policy=\"(( 1 and 2) and (3 or 4 or 5) and (6 and 7 and (8 or 9 or 10) and ((11 or 12 or 13) and 14 and 15))) \" +\r\n//                \"or ((16 or 17 or 18) and 19 and 20)))\";\r\n        String policy= \"0 and 1 and (2 or 3)\";\r\n        String filePath=\"D:\\\\Desktop\\\\琐碎\\\\ab.pdf\";\r\n        xueSetup.setup(pk,msk,num);\r\n        long t1 = System.currentTimeMillis();\r\n        XueSK sk = xueKenGen.keyGen(pk, msk, policy);\r\n        xueKenGen.completeSk(pk,sk);\r\n        long t2 = System.currentTimeMillis();\r\n\r\n        UploadFile uploadFile = xueEncrypt.encrypt(pk, sk, num, filePath);\r\n        long t3 = System.currentTimeMillis();\r\n        XueDR dr = xueDeleteReq.genDR(filePath, 1, msk);\r\n        XueCspRe cspRe = xueDeleteReq.cspResponse(pk, 1, uploadFile);\r\n        boolean flag = xueDeleteReq.userVerify(filePath, cspRe, pk, uploadFile.getCt());\r\n//        log.info(\"用户验证CSP存储数据:{}\",flag);\r\n        long t4 = System.currentTimeMillis();\r\n        ReKey reKey = reEncrypt.reEncKeyGen(dr, msk);\r\n        Element proof = reEncrypt.reEnc(uploadFile.getCt(), reKey);\r\n        long t5 = System.currentTimeMillis();\r\n        boolean result = xueVerify.verify(uploadFile.getCt(), reKey, proof);\r\n//        log.info(\"验证结果：{}\",result);\r\n        long t6 = System.currentTimeMillis();\r\n        System.out.println(\"-------------Xue---------------\");\r\n        log.info(\"Xue初始化时间：{}\",t1-t0);\r\n        log.info(\"Xue密钥生成时间：{}\",t2-t1);\r\n        log.info(\"XueD加密时间：{}\",t3-t2);\r\n        log.info(\"Xue提出删除请求时间：{}\",t4-t3);\r\n        log.info(\"Xue执行删除操作时间：{}\",t5-t4);\r\n        log.info(\"Xue用户验证时间：{}\",t6-t5);\r\n        log.info(\"Xue的总共时间：{}\",t6-t0);\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Xue/Service/XueScheme.java b/demo01/src/main/java/com/example/Xue/Service/XueScheme.java
+--- a/demo01/src/main/java/com/example/Xue/Service/XueScheme.java	
++++ b/demo01/src/main/java/com/example/Xue/Service/XueScheme.java	
+@@ -1,6 +1,7 @@
+ package com.example.Xue.Service;
+ 
+ import com.example.Xue.domain.*;
++import com.example.asuredelete.Utils.SizeUtils;
+ import it.unisa.dia.gas.jpbc.Element;
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -28,7 +29,8 @@
+         int num=16;
+ //        String policy="(( 1 and 2) and (3 or 4 or 5) and (6 and 7 and (8 or 9 or 10) and ((11 or 12 or 13) and 14 and 15))) " +
+ //                "or ((16 or 17 or 18) and 19 and 20)))";
+-        String policy= "0 and 1 and (2 or 3)";
++//        String policy= "0 and 1 and (2 or 3)";
++        String policy="( 1 and 2) and (3 or 4 or 5) ";
+         String filePath="D:\\Desktop\\琐碎\\ab.pdf";
+         xueSetup.setup(pk,msk,num);
+         long t1 = System.currentTimeMillis();
+@@ -57,5 +59,10 @@
+         log.info("Xue执行删除操作时间：{}",t5-t4);
+         log.info("Xue用户验证时间：{}",t6-t5);
+         log.info("Xue的总共时间：{}",t6-t0);
++
++        System.out.println("CSP的存储开销："+ SizeUtils.getSize(uploadFile.toString().getBytes().length));
++        System.out.println("CSP的文件名："+ SizeUtils.getSize(uploadFile.getFileName().getBytes().length));
++        System.out.println("CSP的签名："+ SizeUtils.getSize(uploadFile.getSign().length));
++        System.out.println("CSP的ct："+ SizeUtils.getSize(uploadFile.getCt().toString().getBytes().length));
+     }
+ }
+Index: demo01/src/main/java/com/example/Tian/service/TianUpload.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Tian.service;\r\n\r\nimport com.example.Tian.domain.GK;\r\nimport com.example.asuredelete.Utils.FuncUtils;\r\nimport com.example.asuredelete.Utils.Lagrange;\r\nimport com.example.asuredelete.Utils.RSAUtils;\r\nimport com.google.common.base.Preconditions;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport lombok.SneakyThrows;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.io.File;\r\nimport java.nio.file.Files;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.concurrent.atomic.AtomicInteger;\r\nimport java.util.stream.Collectors;\r\n\r\n@Slf4j\r\n@Service\r\npublic class TianUpload {\r\n\r\n    @SneakyThrows\r\n    public Element upload(GK gk,String filePath){\r\n        Preconditions.checkArgument(gk!=null,\"gk不能为空\");\r\n        String rsaPK=KeyManger.getRsaPK();\r\n        List<String> bCK = gk.getBCK();\r\n\r\n\r\n        List<Element> rList=new ArrayList<>();\r\n        List<Element> randList = addRandom(bCK, rsaPK, rList);\r\n        //未加随机数的解密\r\n        List<String> decList = KeyManger.decString(bCK);\r\n\r\n        List<Element> ckList = removeRandom(decList, rList);\r\n        List<Element> dDK = gk.getDdk();\r\n        AtomicInteger i=new AtomicInteger(0);\r\n        List<Element> dkList = dDK.stream().map(dk -> dk.div(ckList.get(i.getAndIncrement()))).collect(Collectors.toList());\r\n        Element dk = Lagrange.PloyReco(dkList);\r\n        //加密\r\n        File file=new File(filePath);\r\n        byte[] bytes = Files.readAllBytes(file.toPath());\r\n        Element fe = FuncUtils.getPairing().getG1().newElementFromBytes(bytes);\r\n        return fe.mul(dk);\r\n\r\n\r\n    }\r\n\r\n    public List<Element> addRandom(List<String> bCK,String rsaPK,List<Element> rList){\r\n       return bCK.stream().map(ck -> {\r\n            Element ri = FuncUtils.getRandomFromG1();\r\n            rList.add(ri);\r\n            String rsi = RSAUtils.encryptByPublicKey(ri.toBytes(), rsaPK);\r\n            Element ckti = FuncUtils.getPairing().getG1().newElementFromBytes(ck.getBytes());\r\n            Element rti = FuncUtils.getPairing().getG1().newElementFromBytes(rsi.getBytes());\r\n            return ckti.mul(rti);\r\n        }).collect(Collectors.toList());\r\n\r\n    }\r\n\r\n    public List<Element> removeRandom(List<String> bCK,List<Element> rList){\r\n        AtomicInteger i=new AtomicInteger(0);\r\n       return bCK.stream().map(ck->{\r\n            Element cki = FuncUtils.getPairing().getG1().newElementFromBytes(ck.getBytes());\r\n            return cki.div(rList.get(i.getAndIncrement()));\r\n        }).collect(Collectors.toList());\r\n    }\r\n\r\n\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Tian/service/TianUpload.java b/demo01/src/main/java/com/example/Tian/service/TianUpload.java
+--- a/demo01/src/main/java/com/example/Tian/service/TianUpload.java	
++++ b/demo01/src/main/java/com/example/Tian/service/TianUpload.java	
+@@ -4,6 +4,7 @@
+ import com.example.asuredelete.Utils.FuncUtils;
+ import com.example.asuredelete.Utils.Lagrange;
+ import com.example.asuredelete.Utils.RSAUtils;
++import com.example.asuredelete.aop.EXCTime;
+ import com.google.common.base.Preconditions;
+ import it.unisa.dia.gas.jpbc.Element;
+ import lombok.SneakyThrows;
+@@ -22,6 +23,7 @@
+ public class TianUpload {
+ 
+     @SneakyThrows
++    @EXCTime
+     public Element upload(GK gk,String filePath){
+         Preconditions.checkArgument(gk!=null,"gk不能为空");
+         String rsaPK=KeyManger.getRsaPK();
+Index: demo02/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n    <parent>\r\n        <groupId>org.springframework.boot</groupId>\r\n        <artifactId>spring-boot-starter-parent</artifactId>\r\n        <version>2.6.1</version>\r\n        <relativePath/> <!-- lookup parent from repository -->\r\n    </parent>\r\n    <groupId>com.example</groupId>\r\n    <artifactId>demo02</artifactId>\r\n    <version>0.0.1-SNAPSHOT</version>\r\n    <packaging>war</packaging>\r\n    <name>demo02</name>\r\n    <description>Demo project for Spring Boot</description>\r\n    <properties>\r\n        <java.version>1.8</java.version>\r\n    </properties>\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-web</artifactId>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->\r\n        <dependency>\r\n            <groupId>org.projectlombok</groupId>\r\n            <artifactId>lombok</artifactId>\r\n            <version>1.18.20</version>\r\n            <scope>provided</scope>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->\r\n\r\n\r\n        <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->\r\n        <dependency>\r\n            <groupId>com.squareup.okhttp3</groupId>\r\n            <artifactId>okhttp</artifactId>\r\n            <version>4.9.1</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->\r\n        <dependency>\r\n            <groupId>javax.servlet</groupId>\r\n            <artifactId>jstl</artifactId>\r\n            <version>1.2</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->\r\n        <dependency>\r\n            <groupId>com.google.code.gson</groupId>\r\n            <artifactId>gson</artifactId>\r\n            <version>2.8.5</version>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-test</artifactId>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>junit</groupId>\r\n            <artifactId>junit</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-test</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-test</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework.data</groupId>\r\n            <artifactId>spring-data-elasticsearch</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.example</groupId>\r\n            <artifactId>demo01</artifactId>\r\n            <version>0.0.1-SNAPSHOT</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n    </dependencies>\r\n\r\n    <build>\r\n        <plugins>\r\n            <plugin>\r\n                <groupId>org.springframework.boot</groupId>\r\n                <artifactId>spring-boot-maven-plugin</artifactId>\r\n            </plugin>\r\n        </plugins>\r\n    </build>\r\n\r\n</project>\r\n
+===================================================================
+diff --git a/demo02/pom.xml b/demo02/pom.xml
+--- a/demo02/pom.xml	
++++ b/demo02/pom.xml	
+@@ -72,6 +72,14 @@
+             <groupId>org.springframework.data</groupId>
+             <artifactId>spring-data-elasticsearch</artifactId>
+         </dependency>
++        <dependency>
++            <groupId>org.mockito</groupId>
++            <artifactId>mockito-core</artifactId>
++            <scope>test</scope>
++        </dependency>
++
++
++
+         <dependency>
+             <groupId>com.example</groupId>
+             <artifactId>demo01</artifactId>
+Index: demo01/src/main/java/com/example/Xue/Service/ReEncrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Xue.Service;\r\n\r\nimport com.example.Xue.domain.ReKey;\r\nimport com.example.Xue.domain.XueCT;\r\nimport com.example.Xue.domain.XueDR;\r\nimport com.example.Xue.domain.XueMSK;\r\nimport com.example.asuredelete.Utils.FuncUtils;\r\nimport com.example.asuredelete.Utils.MerkleTrees;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class ReEncrypt {\r\n    @Autowired\r\n    private MerkleTrees merkleTrees;\r\n\r\n    public ReKey reEncKeyGen(XueDR dr, XueMSK msk){\r\n        Element tij = FuncUtils.getRandomFromZp();\r\n        Integer index = dr.getAttr();\r\n        Element t = msk.getTij().get(index).get(index);\r\n        Element cki = tij.div(t);\r\n        ReKey key=new ReKey();\r\n        key.setAtt(index);\r\n        key.setCki(cki);\r\n        key.setFileName(dr.getFileName());\r\n        return key;\r\n\r\n    }\r\n\r\n    public Element reEnc( XueCT ct,ReKey rk){\r\n        List<List<Element>> c3 = ct.getC3();\r\n        Integer index = rk.getAtt();\r\n        Element cki = rk.getCki();\r\n        List<Element> temp = c3.get(index);\r\n        Element res = temp.get(index).powZn(cki);\r\n        temp.set(index,res);\r\n        c3.set(index,temp);\r\n        List<Element> leaf=new ArrayList<>();\r\n        for (List<Element> list : c3) {\r\n            for (Element e : list) {\r\n                leaf.add(e);\r\n            }\r\n        }\r\n        return merkleTrees.merkle_tree(leaf);\r\n\r\n\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Xue/Service/ReEncrypt.java b/demo01/src/main/java/com/example/Xue/Service/ReEncrypt.java
+--- a/demo01/src/main/java/com/example/Xue/Service/ReEncrypt.java	
++++ b/demo01/src/main/java/com/example/Xue/Service/ReEncrypt.java	
+@@ -32,6 +32,7 @@
+     }
+ 
+     public Element reEnc( XueCT ct,ReKey rk){
++
+         List<List<Element>> c3 = ct.getC3();
+         Integer index = rk.getAtt();
+         Element cki = rk.getCki();
+@@ -45,7 +46,9 @@
+                 leaf.add(e);
+             }
+         }
+-        return merkleTrees.merkle_tree(leaf);
++        double aiff = Math.ceil(Math.log(leaf.size()) / Math.log(2));
++        List<Element> list = leaf.subList(0, (int)aiff+1);
++        return merkleTrees.merkle_tree(list);
+ 
+ 
+     }
+Index: demo01/src/main/java/com/example/Tian/service/TianSetup.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Tian.service;\r\n\r\nimport com.example.Tian.domain.GK;\r\nimport com.example.asuredelete.Utils.FuncUtils;\r\nimport com.example.asuredelete.Utils.Lagrange;\r\nimport com.example.asuredelete.Utils.RSAUtils;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.*;\r\n\r\n@Service\r\n@Slf4j\r\n\r\npublic class TianSetup {\r\n\r\n    public GK Setup(List<Element> att,int t,int n,Map<Element,Element> map){\r\n        GK gk=new GK();\r\n        Element dk = FuncUtils.getRandomFromG1();\r\n        List<Element> dki = Lagrange.PloyDiv(dk, t, n);\r\n        List<Element> cki=new ArrayList<>();\r\n\r\n        String rsaPK= KeyManger.getRsaPK();\r\n        List<String> bCK=new ArrayList<>();\r\n        List<Element> Ddk=new ArrayList<>();\r\n        for (int i = 0; i < n; i++) {\r\n            Element ckt = FuncUtils.getRandomFromG1();\r\n            Ddk.add(dki.get(i).mul(ckt));\r\n            cki.add(ckt);\r\n            bCK.add(RSAUtils.encryptByPublicKey(ckt.toBytes(), rsaPK));\r\n        }\r\n        Set<Element> hb=new HashSet<>();\r\n        Element one = FuncUtils.getOneFromG1();\r\n        for (int i = 0; i < att.size(); i++) {\r\n            Element ai = FuncUtils.getRandomFromZp();\r\n            map.put(att.get(i),ai);\r\n            Element hi = FuncUtils.hashFromBytesToG1(att.get(i).toBytes()).powZn(ai);\r\n            one=one.mul(hi);\r\n            hb.add(one);\r\n        }\r\n\r\n        gk.setBCK(bCK);\r\n        gk.setDdk(dki);\r\n        gk.setHb(hb);\r\n\r\n        return gk;\r\n    }\r\n\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Tian/service/TianSetup.java b/demo01/src/main/java/com/example/Tian/service/TianSetup.java
+--- a/demo01/src/main/java/com/example/Tian/service/TianSetup.java	
++++ b/demo01/src/main/java/com/example/Tian/service/TianSetup.java	
+@@ -4,6 +4,7 @@
+ import com.example.asuredelete.Utils.FuncUtils;
+ import com.example.asuredelete.Utils.Lagrange;
+ import com.example.asuredelete.Utils.RSAUtils;
++import com.example.asuredelete.aop.EXCTime;
+ import it.unisa.dia.gas.jpbc.Element;
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.stereotype.Service;
+@@ -14,7 +15,7 @@
+ @Slf4j
+ 
+ public class TianSetup {
+-
++    @EXCTime
+     public GK Setup(List<Element> att,int t,int n,Map<Element,Element> map){
+         GK gk=new GK();
+         Element dk = FuncUtils.getRandomFromG1();
+Index: demo02/demo02.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule=\"true\" type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"FacetManager\">\r\n    <facet type=\"web\" name=\"Web\">\r\n      <configuration>\r\n        <webroots>\r\n          <root url=\"file://$MODULE_DIR$/src/main/webapp\" relative=\"/\" />\r\n        </webroots>\r\n        <sourceRoots>\r\n          <root url=\"file://$MODULE_DIR$/src/main/java\" />\r\n          <root url=\"file://$MODULE_DIR$/src/main/resources\" />\r\n        </sourceRoots>\r\n      </configuration>\r\n    </facet>\r\n    <facet type=\"Spring\" name=\"Spring\">\r\n      <configuration />\r\n    </facet>\r\n  </component>\r\n  <component name=\"NewModuleRootManager\" LANGUAGE_LEVEL=\"JDK_1_8\">\r\n    <output url=\"file://$MODULE_DIR$/target/classes\" />\r\n    <output-test url=\"file://$MODULE_DIR$/target/test-classes\" />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/java\" isTestSource=\"false\" />\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/resources\" type=\"java-resource\" />\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/test/java\" isTestSource=\"true\" />\r\n      <excludeFolder url=\"file://$MODULE_DIR$/target\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"library\" name=\"libs\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-web:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-autoconfigure:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-logging:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: ch.qos.logback:logback-classic:1.2.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: ch.qos.logback:logback-core:1.2.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.logging.log4j:log4j-to-slf4j:2.14.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.slf4j:jul-to-slf4j:1.7.32\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: jakarta.annotation:jakarta.annotation-api:1.3.5\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.yaml:snakeyaml:1.29\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-json:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-tomcat:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.55\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.55\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.55\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-web:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-beans:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-webmvc:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-aop:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-expression:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"PROVIDED\" name=\"Maven: org.projectlombok:lombok:1.18.20\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.squareup.okhttp3:okhttp:4.9.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.squareup.okio:okio:2.8.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jetbrains.kotlin:kotlin-stdlib:1.6.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jetbrains:annotations:13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: javax.servlet:jstl:1.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.google.code.gson:gson:2.8.5\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-starter-test:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-test-autoconfigure:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: com.jayway.jsonpath:json-path:2.6.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.minidev:json-smart:2.4.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.minidev:accessors-smart:2.4.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.ow2.asm:asm:9.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: jakarta.activation:jakarta.activation-api:1.2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.assertj:assertj-core:3.21.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hamcrest:hamcrest:2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter:5.8.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-api:5.8.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.opentest4j:opentest4j:1.2.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.platform:junit-platform-commons:1.8.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.apiguardian:apiguardian-api:1.1.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-params:5.8.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-engine:5.8.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.platform:junit-platform-engine:1.8.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.mockito:mockito-core:4.0.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.bytebuddy:byte-buddy:1.11.22\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.bytebuddy:byte-buddy-agent:1.11.22\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.objenesis:objenesis:3.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.mockito:mockito-junit-jupiter:4.0.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.skyscreamer:jsonassert:1.5.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-core:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-jcl:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.xmlunit:xmlunit-core:2.8.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: junit:junit:4.13.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hamcrest:hamcrest-core:2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-test:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-test:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.data:spring-data-elasticsearch:4.3.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-context:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-tx:5.3.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.data:spring-data-commons:2.6.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.client:transport:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:elasticsearch:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:elasticsearch-core:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:elasticsearch-secure-sm:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:elasticsearch-x-content:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:elasticsearch-geo:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-core:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-analyzers-common:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-backward-codecs:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-grouping:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-highlighter:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-join:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-memory:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-misc:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-queries:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-queryparser:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-sandbox:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-spatial-extras:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-spatial3d:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.lucene:lucene-suggest:8.9.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:elasticsearch-cli:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: net.sf.jopt-simple:jopt-simple:5.0.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.carrotsearch:hppc:0.8.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.lz4:lz4-java:1.8.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: joda-time:joda-time:2.10.10\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.tdunning:t-digest:3.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hdrhistogram:HdrHistogram:2.1.9\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.logging.log4j:log4j-api:2.14.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:jna:5.7.0-1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"RUNTIME\" name=\"Maven: org.elasticsearch:elasticsearch-plugin-classloader:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:reindex-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch:elasticsearch-ssl-config:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:lang-mustache-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.github.spullara.mustache.java:compiler:0.9.6\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:percolator-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:parent-join-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:rank-eval-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:transport-netty4-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: io.netty:netty-buffer:4.1.70.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: io.netty:netty-codec:4.1.70.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: io.netty:netty-codec-http:4.1.70.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: io.netty:netty-common:4.1.70.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: io.netty:netty-handler:4.1.70.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: io.netty:netty-resolver:4.1.70.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: io.netty:netty-transport:4.1.70.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.client:elasticsearch-rest-high-level-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.client:elasticsearch-rest-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.httpcomponents:httpclient:4.5.13\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.httpcomponents:httpcore:4.4.14\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.httpcomponents:httpasyncclient:4.1.4\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.httpcomponents:httpcore-nio:4.4.14\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: commons-codec:commons-codec:1.15\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:mapper-extras-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.elasticsearch.plugin:aggs-matrix-stats-client:7.15.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-core:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-databind:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.slf4j:slf4j-api:1.7.32\" level=\"project\" />\r\n    <orderEntry type=\"module\" module-name=\"demo01\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.google.guava:guava:31.0.1-jre\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.google.guava:failureaccess:1.0.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.google.code.findbugs:jsr305:3.0.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.checkerframework:checker-qual:3.12.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.google.errorprone:error_prone_annotations:2.7.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.google.j2objc:j2objc-annotations:1.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.alibaba:fastjson:1.2.75\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: gov.nist.math:jama:1.0.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.commons:commons-math3:3.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-aop:2.6.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.aspectj:aspectjweaver:1.9.7\" level=\"project\" />\r\n  </component>\r\n</module>
+===================================================================
+diff --git a/demo02/demo02.iml b/demo02/demo02.iml
+--- a/demo02/demo02.iml	
++++ b/demo02/demo02.iml	
+@@ -3,9 +3,7 @@
+   <component name="FacetManager">
+     <facet type="web" name="Web">
+       <configuration>
+-        <webroots>
+-          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+-        </webroots>
++        <webroots />
+         <sourceRoots>
+           <root url="file://$MODULE_DIR$/src/main/java" />
+           <root url="file://$MODULE_DIR$/src/main/resources" />
+@@ -77,10 +75,6 @@
+     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-params:5.8.1" level="project" />
+     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.8.1" level="project" />
+     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.8.1" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-core:4.0.0" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy:1.11.22" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy-agent:1.11.22" level="project" />
+-    <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:3.2" level="project" />
+     <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-junit-jupiter:4.0.0" level="project" />
+     <orderEntry type="library" scope="TEST" name="Maven: org.skyscreamer:jsonassert:1.5.0" level="project" />
+     <orderEntry type="library" scope="TEST" name="Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1" level="project" />
+@@ -157,6 +151,10 @@
+     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.13.0" level="project" />
+     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.0" level="project" />
+     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.32" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-core:4.0.0" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy:1.11.22" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy-agent:1.11.22" level="project" />
++    <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:3.2" level="project" />
+     <orderEntry type="module" module-name="demo01" />
+     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.1" level="project" />
+     <orderEntry type="library" name="Maven: com.google.guava:guava:31.0.1-jre" level="project" />
+Index: demo01/src/main/java/com/example/Xue/Service/XueVerify.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Xue.Service;\r\n\r\nimport com.example.Xue.domain.ReKey;\r\nimport com.example.Xue.domain.XueCT;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\n@Service\r\npublic class XueVerify {\r\n    @Autowired\r\n    private ReEncrypt reEncrypt;\r\n\r\n    public boolean verify(XueCT ct, ReKey rk,Element proof){\r\n        Element root = reEncrypt.reEnc(ct, rk);\r\n        if(proof.equals(root)){\r\n            return true;\r\n        }\r\n        return false;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Xue/Service/XueVerify.java b/demo01/src/main/java/com/example/Xue/Service/XueVerify.java
+--- a/demo01/src/main/java/com/example/Xue/Service/XueVerify.java	
++++ b/demo01/src/main/java/com/example/Xue/Service/XueVerify.java	
+@@ -2,6 +2,7 @@
+ 
+ import com.example.Xue.domain.ReKey;
+ import com.example.Xue.domain.XueCT;
++import com.example.asuredelete.aop.EXCTime;
+ import it.unisa.dia.gas.jpbc.Element;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+@@ -10,7 +11,7 @@
+ public class XueVerify {
+     @Autowired
+     private ReEncrypt reEncrypt;
+-
++    @EXCTime
+     public boolean verify(XueCT ct, ReKey rk,Element proof){
+         Element root = reEncrypt.reEnc(ct, rk);
+         if(proof.equals(root)){
+Index: demo02/src/main/java/com/example/leetcode/FuncTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.leetcode;\r\n\r\nimport java.util.*;\r\n\r\npublic class FuncTest  {\r\n\r\n    public static void main(String[] args) {\r\n       int[] nums={2,2,1,1,1,2,2};\r\n        FuncTest ft = new FuncTest();\r\n\r\n      int[] nums1={4,0,0,0,0,0};\r\n      int[] nums2= {1,2,3,5,6,7};\r\n\r\n       func( nums1, nums2);\r\n        Arrays.stream(nums1).forEach(System.out::println);\r\n\r\n    }\r\n\r\n    private static void func(int[] nums1, int[] nums2) {\r\n\r\n        nums1[2]=5;\r\n    }\r\n\r\n    public static List<List<Integer>> threeSum(int[] nums) {\r\n        int len = nums.length;\r\n        if(len <3) {\r\n            return new ArrayList<>();\r\n        }\r\n        List<List<Integer>> result=new ArrayList<>();\r\n        Arrays.sort(nums);\r\n        for (int i = 0; i < len; i++) {\r\n            if(nums[i]>0) {\r\n                break;\r\n            }\r\n            if(i>1&&nums[i]==nums[i-1]) {\r\n                continue;\r\n            }\r\n            int l=i+1;\r\n            int r=len-1;\r\n            while(l<r){\r\n                int sum=nums[l]+nums[i]+nums[r];\r\n                if(sum==0){\r\n                    result.add(Arrays.asList(nums[l],nums[i],nums[r]));\r\n                    l--;\r\n                    r++;\r\n                }else if(sum>0) {l--;}\r\n                else {r++;}\r\n            }\r\n\r\n        }\r\n\r\n        return result;\r\n    }\r\n    public ListNode detectCycle(ListNode head) {\r\n        ListNode fast=head,slow=head;\r\n        while(true){\r\n            if(fast==null||fast.next==null) {\r\n                return null;\r\n            }\r\n            fast=fast.next.next;\r\n            slow=slow.next;\r\n            if(fast==slow) {\r\n                break;\r\n            }\r\n        }\r\n\r\n        fast=head;\r\n        while (fast!=slow){\r\n            fast=fast.next;\r\n            slow=slow.next;\r\n        }\r\n        return fast;\r\n    }\r\n    public List<List<Integer>> levelOrder1(TreeNode root) {\r\n        if(root==null) {\r\n            return null;\r\n        }\r\n        List<List<Integer>> result=new ArrayList<>();\r\n        level(root,0,result);\r\n        return result;\r\n    }\r\n\r\n    public void level(TreeNode root,int le,List<List<Integer>> result){\r\n        if(result.size()<le) {\r\n            result.add(new ArrayList<>());\r\n        }\r\n\r\n\r\n        result.get(le-1).add(root.val);\r\n        if(root.left!=null) {\r\n            level(root.left,le+1,result);\r\n        }\r\n        if(root.right!=null) {\r\n            level(root.right,le+1,result);\r\n        }\r\n    }\r\n\r\n    public int findKthLargest(int[] nums, int k) {\r\n        PriorityQueue<Integer> queue=new PriorityQueue<>();\r\n        int len = nums.length;\r\n        for (int i = 0; i < len; i++) {\r\n            queue.add(nums[i]);\r\n            if(queue.size()>k){\r\n                queue.poll();\r\n            }\r\n        }\r\n        return queue.peek();\r\n\r\n    }\r\n\r\n    public int lengthOfLongestSubstring(String s) {\r\n        int res=0;\r\n        char[] chars = s.toCharArray();\r\n        for (int i = 0; i < chars.length; i++) {\r\n            int fast=i;\r\n            Set<Character> temp=new HashSet<>();\r\n            while (fast < chars.length){\r\n                if(temp.contains(chars[fast])){\r\n                    break;\r\n                }\r\n                temp.add(chars[fast]);\r\n                fast++;\r\n            }\r\n\r\n            res=Math.max(temp.size(),res);\r\n\r\n\r\n        }\r\n\r\n\r\n        return  res;\r\n    }\r\n\r\n    public ListNode removeNthFromEnd(ListNode head, int n) {\r\n        ListNode fast=head,slow=head;\r\n        for (int i = 0; i < n; i++) {\r\n            fast=fast.next;\r\n        }\r\n        while (fast!=null){\r\n            fast=fast.next;\r\n            slow=slow.next;\r\n        }\r\n\r\n        ListNode temp = slow.next.next;\r\n        slow.next.next=null;\r\n        slow.next=temp;\r\n\r\n        return head;\r\n    }\r\n\r\n\r\n    public List<List<Integer>> levelOrder(TreeNode root) {\r\n        if(root==null) {\r\n            return null;\r\n        }\r\n        System.out.println();\r\n        List<List<Integer>> result=new ArrayList<>();\r\n        level(root,0,result);\r\n        for (int i = 0; i < result.size(); i++) {\r\n            if(i%2==0){\r\n               Collections.reverse(result.get(i));\r\n            }\r\n        }\r\n        return result;\r\n    }\r\n\r\n   public void stringJudge(){\r\n        Scanner sc=new Scanner(System.in);\r\n       int n = sc.nextInt();\r\n       sc.nextLine();\r\n       Set<String> res=new HashSet<>();\r\n       for(int i=0;i<n;i++) {\r\n           String s = sc.nextLine();\r\n           System.out.println(\"s:\"+s);\r\n           char[] a = s.toCharArray();\r\n           System.out.println(a.length);\r\n           if(res.contains(s)){\r\n               System.out.println(\"existed\");\r\n               continue;\r\n           }\r\n           if(a.length>12||a.length<6){\r\n               System.out.println(\"illegal length\");\r\n               continue;\r\n           }\r\n           for (int j = 0; j < a.length; j++) {\r\n               if(!Character.isLetter(a[j])){\r\n                   System.out.println(\"illegal charactor\");\r\n                   break;\r\n\r\n               }\r\n               if(j==a.length-1){\r\n                   System.out.println(\"registration\");\r\n                   res.add(s);\r\n               }\r\n           }\r\n       }\r\n   }\r\n    public void fun3(){\r\n        Scanner sc = new Scanner(System.in);\r\n        Map<Double,Integer> res = new HashMap<>();\r\n        int n = sc.nextInt();\r\n        for(int i =0;i<n;i++){\r\n            int x = sc.nextInt();\r\n            int y = sc.nextInt();\r\n            int z = sc.nextInt();\r\n            double k = (double)y/(double)x;\r\n            if(!res.containsKey(k)){\r\n                res.put(k,0);\r\n            }else{\r\n                res.put(k,res.get(k) + 1);\r\n            }\r\n        }\r\n        int ret = 0;\r\n        for(Map.Entry<Double,Integer> entry: res.entrySet()){\r\n            ret += entry.getValue();\r\n        }\r\n        Set<Double> doubles = res.keySet();\r\n        int tmp = doubles.size() - 1;\r\n        int t = tmp * (tmp + 1) / 2;\r\n        ret += t;\r\n        System.out.println(ret);}\r\n    public int search(int[] arr, int target) {\r\n        int len = arr.length-1;\r\n        if(arr[0]==target) {\r\n            return 0;\r\n        }\r\n        int head=0,mid=0;\r\n        while(head<=len){\r\n            mid=(head+len)>>1;\r\n            if(arr[mid]==target) {\r\n                while(mid>0&&arr[mid-1]==arr[mid]){\r\n                    mid--;\r\n                }\r\n                return mid;\r\n            }\r\n            if (arr[mid]<arr[len]) {\r\n                if(arr[mid]<target&&arr[len] >= target) {\r\n                    head=mid+1;\r\n                } else {\r\n                    len=mid-1;\r\n                }\r\n            } else if (arr[mid] >arr[len]) {\r\n                if(arr[head]<=target&&arr[mid]>target) {\r\n                    len=mid-1;\r\n                } else {\r\n                    head=mid+1;\r\n                }\r\n            }else {\r\n                len--;\r\n            }\r\n        }\r\n        return -1;\r\n    }\r\n\r\n    public void fastSortArray(int[] nums,int l,int r) {\r\n        if(l<r){\r\n            int key=nums[l];\r\n            while(l<r){\r\n                while(key<nums[r]&&l<r) {\r\n                    r--;\r\n                }\r\n                while(l<r&&nums[l]<key) {\r\n                    l++;\r\n                }\r\n                if(l<r) {\r\n                   int temp=nums[l];\r\n                   nums[l]=nums[r];\r\n                   nums[r]=temp;\r\n                }\r\n            }\r\n\r\n            nums[l]=key;\r\n            fastSortArray(nums,0,l-1);\r\n            fastSortArray(nums,l+1,r);\r\n        }\r\n    }\r\n\r\n    public int compareVersion(String version1, String version2) {\r\n        String[] s1 = version1.split(\"\\\\.\"),s2=version2.split(\"\\\\.\");\r\n        int i=0,j=0;\r\n        int a=0,b=0;\r\n        while(i<s1.length||j<s2.length){\r\n            if(i<s1.length) {\r\n                a=Integer.parseInt(s1[i]);\r\n            }\r\n            if(j<s2.length) {\r\n                b=Integer.parseInt(s2[i]);\r\n            }\r\n            if(a!=b) {\r\n                return a>b?1:-1;\r\n            }\r\n        }\r\n        return 0;\r\n    }\r\n\r\n    public ListNode deleteDuplicates(ListNode head) {\r\n        if(head==null) {\r\n            return head;\r\n        }\r\n        ListNode dummy=new ListNode(-1);\r\n        dummy.next=head;\r\n        ListNode temp=dummy;\r\n        while(temp.next!=null&&temp.next.next!=null){\r\n            if(temp.next.next.val==temp.next.val){\r\n                int t=temp.next.val;\r\n                while(temp.next!=null&&t==temp.next.val) {\r\n                    temp.next=temp.next.next;\r\n                }\r\n            }else {\r\n               temp=temp.next;\r\n            }\r\n\r\n        }\r\n        return dummy.next;\r\n    }\r\n\r\n    public TreeNode buildTree(int[] inorder, int[] postorder) {\r\n        HashMap<Integer,Integer> me=new HashMap<>();\r\n        int[] post=postorder;\r\n        for (int i = 0; i < inorder.length; i++) {\r\n            me.put(inorder[i],i);\r\n        }\r\n        return buildT(me,post,0,inorder.length-1,0,post.length-1 );\r\n    }\r\n    public TreeNode buildT(HashMap<Integer,Integer> me,int[] inorder,int is,int ie,int ps,int pe){\r\n        if(is>ie||ps>pe) {\r\n            return null;\r\n        }\r\n        TreeNode root=new TreeNode(inorder[pe]);\r\n        int mid=me.get(inorder[pe]);\r\n        root.left=buildT(me,inorder,is,mid-1,ps,ps+mid-is-1);\r\n        root.right=buildT(me,inorder,mid+1,ie,ps+mid-is,pe-1);\r\n        return  root;\r\n    }\r\n\r\n\r\n    public int maxSubArray(int[] nums) {\r\n        int len = nums.length;\r\n        int[] dp=new int[len];\r\n        for (int i = 1; i < len; i++) {\r\n            if(dp[i-1]>0) {\r\n                dp[i]=dp[i-1]+nums[i];\r\n            }\r\n            //另起炉灶\r\n            else {\r\n                dp[i]=nums[i];\r\n            }\r\n        }\r\n        int max=0;\r\n        for (int i = 0; i < len; i++) {\r\n            max=Math.max(dp[i],max);\r\n        }\r\n        return max;\r\n    }\r\n    public ListNode mergeKLists(ListNode[] lists) {\r\n        ListNode dummy=new ListNode(-1);\r\n        PriorityQueue<ListNode> queue=new PriorityQueue<>(new Comparator<ListNode>() {\r\n            @Override\r\n            public int compare(ListNode o1, ListNode o2) {\r\n              if(o1.val-o2.val>0) {\r\n                  return 1;\r\n              } else if (o1.val-o2.val<0) {\r\n                  return -1;\r\n              } else {\r\n                  return 0;\r\n              }\r\n            }\r\n        });\r\n\r\n        for (ListNode p : lists) {\r\n            if(p!=null) {\r\n                queue.add(p);\r\n            }\r\n        }\r\n        ListNode head = dummy;\r\n        while (!queue.isEmpty()){\r\n            ListNode temp = queue.poll();\r\n            if(temp.next!=null) {\r\n                queue.add(temp.next);\r\n            }\r\n            head.next=temp;\r\n            head=temp;\r\n\r\n        }\r\n\r\n        return dummy.next;\r\n    }\r\n\r\n\r\n\r\n    public String longestPalindrome(String s) {\r\n        if(s.length()<2) {\r\n            return s;\r\n        }\r\n        String res = null;\r\n       int max=-1;\r\n        char[] arr = s.toCharArray();\r\n        int len=s.length();\r\n        for (int i = 1; i < len; i++) {\r\n            int l=i-1,r=i+1;\r\n            while(l>0&&r<len-1){\r\n                if(arr[l]==arr[r]){\r\n                    l--;r++;\r\n                }else {\r\n                    break;\r\n                }\r\n            }\r\n            int le=r-l+1;\r\n            if(len>max){\r\n                res = s.substring(l,r);\r\n\r\n            }\r\n        }\r\n\r\n        return  res;\r\n    }\r\n    public String longestPalindrome1(String s) {\r\n\r\n        if (s == null || s.length() == 0) {\r\n            return \"\";\r\n        }\r\n        int strLen = s.length();\r\n        int left = 0;\r\n        int right = 0;\r\n        int len = 1;\r\n        int maxStart = 0;\r\n        int maxLen = 0;\r\n\r\n        for (int i = 0; i < strLen; i++) {\r\n            left = i - 1;\r\n            right = i + 1;\r\n            while (left >= 0 && s.charAt(left) == s.charAt(i)) {\r\n                len++;\r\n                left--;\r\n            }\r\n            while (right < strLen && s.charAt(right) == s.charAt(i)) {\r\n                len++;\r\n                right++;\r\n            }\r\n            while (left >= 0 && right < strLen && s.charAt(right) == s.charAt(left)) {\r\n                len = len + 2;\r\n                left--;\r\n                right++;\r\n            }\r\n            if (len > maxLen) {\r\n                maxLen = len;\r\n                maxStart = left;\r\n            }\r\n            len = 1;\r\n        }\r\n        return s.substring(maxStart + 1, maxStart + maxLen + 1);\r\n\r\n    }\r\n\r\n    public int numIslands(char[][] grid) {\r\n        int res=0;\r\n        int row=grid.length,col=grid[0].length;\r\n        for (int i = 0; i < row; i++) {\r\n            for (int j = 0; j < col; j++) {\r\n               if(grid[i][j]=='1'){\r\n                   dfs(grid,i,j);\r\n                   ++res;\r\n               }\r\n            }\r\n        }\r\n\r\n        return res;\r\n    }\r\n\r\n    private void dfs(char[][] grid, int i, int j) {\r\n        if(i<0||i>grid.length||j<0||j>grid[0].length||grid[i][j]==0){\r\n            return;\r\n        }\r\n        grid[i][j]=0;\r\n        dfs(grid,i-1,j);\r\n        dfs(grid,i+1,j);\r\n        dfs(grid,i,j-1);\r\n        dfs(grid,i,j+1);\r\n    }\r\n\r\n    public List<List<Integer>> permute(int[] nums) {\r\n        int len = nums.length;\r\n        if(len ==0){\r\n            return new ArrayList<>();\r\n        }\r\n        List<List<Integer>> res=new ArrayList<>();\r\n        boolean[] used=new boolean[len];\r\n        numsDfs(nums,res,used,0,new ArrayList<Integer>());\r\n\r\n\r\n        return res;\r\n    }\r\n\r\n    private void numsDfs(int[] nums, List<List<Integer>> res,boolean[] used,int depth, ArrayList<Integer> temp) {\r\n        if(depth==nums.length){\r\n            res.add(new ArrayList<>(temp));\r\n            return;\r\n        }\r\n        for (int i = 0; i < nums.length; i++) {\r\n            if(!used[i]){\r\n                used[i]=true;\r\n                temp.add(nums[i]);\r\n                numsDfs(nums,res,used,depth+1,temp);\r\n                used[i]=false;\r\n                temp.remove(temp.size()-1);\r\n\r\n            }\r\n\r\n        }\r\n\r\n    }\r\n\r\n\r\n    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {\r\n        List<List<Integer>> res=new ArrayList<>();\r\n\r\n        zigLevel(res,1,root);\r\n        for (int i = 0; i < res.size(); i++) {\r\n            if(i%2==1){\r\n                Collections.reverse(res.get(i));\r\n            }\r\n        }\r\n\r\n        return  res;\r\n    }\r\n\r\n    private void zigLevel(List<List<Integer>> res, int depth, TreeNode root) {\r\n        if(root==null) {\r\n            return;\r\n        }\r\n\r\n        if(res.size()<depth){\r\n            res.add(new ArrayList<Integer>());\r\n        }\r\n        res.get(depth-1).add(root.val);\r\n        zigLevel(res,depth+1,root.left);\r\n        zigLevel(res,depth+1,root.right);\r\n    }\r\n\r\n\r\n    public ListNode reverseList(ListNode head) {\r\n        ListNode dummy=new ListNode(-1);\r\n        ListNode tail=null;\r\n\r\n\r\n        while(head!=null||head.next!=null){\r\n            ListNode flag=head;\r\n            head=head.next;\r\n           flag.next=tail;\r\n            dummy.next=flag;\r\n           tail=flag;\r\n        }\r\n        return dummy.next;\r\n    }\r\n\r\n    public int[] twoSum(int[] nums, int target) {\r\n\r\n        List<Integer> res=new ArrayList<>();\r\n        for (int i = 0; i < nums.length; i++) {\r\n            int tem=target-nums[i];\r\n            int j=i+1;\r\n            while(j<nums.length){\r\n                if(tem==nums[j]){\r\n                    res.add(i);\r\n                    res.add(j);\r\n                    break;\r\n                }\r\n            }\r\n            if(res.size()==2){\r\n                break;\r\n            }\r\n        }\r\n\r\n        return  res.stream().mapToInt(Integer::valueOf).toArray();\r\n    }\r\n\r\n    public List<Integer> inorderTraversal(TreeNode root) {\r\n        List<Integer> res=new ArrayList<>();\r\n        indfs(res,root);\r\n        return res;\r\n    }\r\n\r\n    private void indfs(List<Integer> res, TreeNode root) {\r\n        if(root==null){\r\n            return;\r\n        }\r\n        indfs(res,root.left);\r\n        res.add(root.val);\r\n        indfs(res,root.right);\r\n\r\n    }\r\n\r\n    public boolean hasCycle(ListNode head) {\r\n\r\n        ListNode fast=head;\r\n        ListNode slow=head;\r\n        while (fast!=null&&fast.next!=null){\r\n            if(fast==slow){\r\n                return true;\r\n            }\r\n            slow=slow.next;\r\n            fast=fast.next.next;\r\n        }\r\n        return false;\r\n        }\r\n\r\n\r\n    public int majorityElement(int[] nums) {\r\n\r\n        Map<Integer,Integer> map=new HashMap<>();\r\n        for (int i = 0; i < nums.length; i++) {\r\n            if(map.containsKey(nums[i])){\r\n                int n = map.get(nums[i]) + 1;\r\n                if(n>nums.length>>1){\r\n                    return nums[i];\r\n                }\r\n                map.put(nums[i],n);\r\n\r\n            }else {\r\n\r\n            map.put(nums[i],1);\r\n            }\r\n        }\r\n        return nums[0];\r\n    }\r\n\r\n    public boolean isValid(String s) {\r\n        int len = s.length();\r\n        Stack<Character> stack=new Stack<>();\r\n        Map<Character, Character> pairs = new HashMap<Character, Character>() {{\r\n            put(')', '(');\r\n            put(']', '[');\r\n            put('}', '{');\r\n        }};\r\n\r\n        for (int i = 0; i < len; i++) {\r\n            char c = s.charAt(i);\r\n            if(s.charAt(i)=='('||s.charAt(i)=='['||s.charAt(i)=='{'){\r\n                stack.push(s.charAt(i));\r\n            }else if(s.charAt(i)==')'||s.charAt(i)==']'||s.charAt(i)=='}'){\r\n                if(stack.peek().equals(pairs.get(s.charAt(i)))){\r\n                    stack.pop();\r\n                }\r\n            }\r\n        }\r\n        if(stack.size()==0){\r\n            return true;\r\n        }\r\n\r\n        return false;\r\n    }\r\n\r\n    public String addStrings(String num1, String num2) {\r\n      StringBuilder res=new StringBuilder();\r\n      int i=num1.length()-1;\r\n      int j=num2.length()-1;\r\n      int flag=0;\r\n      while (i>=0||j>=0){\r\n          int a=i>=0?num1.charAt(i)-'0':0;\r\n          int b=j>=0?num2.charAt(j)-'0':0;\r\n          int temp=a+b+flag;\r\n          res.append(temp%10);\r\n          flag=temp/10;\r\n          j--;\r\n          i--;\r\n      }\r\n       if(flag>0){\r\n           res.append(flag);\r\n       }\r\n        return res.reverse().toString();\r\n    }\r\n\r\n    public String longestCommonPrefix(String[] strs) {\r\n        StringBuilder res=new StringBuilder(\"\");\r\n       Arrays.sort(strs);\r\n       String f=strs[0];\r\n       String l=strs[strs.length-1];\r\n       int i=0,j=0;\r\n        while(i<f.length()&&j<l.length()){\r\n            if(f.charAt(i)==l.charAt(j)){\r\n                res.append(f.charAt(i));\r\n            }else {\r\n                break;\r\n            }\r\n\r\n        }\r\n\r\n        return  res.toString();\r\n    }\r\n\r\n    public int lengthOfLIS(int[] nums) {\r\n        int res=0;\r\n        int len = nums.length;\r\n        int[] dp=new int[len];\r\n        Arrays.fill(dp,1);\r\n        for (int i = 0; i < len; i++) {\r\n            for (int j = 0; j < i; j++) {\r\n                if(nums[i]>nums[j]){\r\n\r\n                    dp[i]=Math.max(dp[j]+1,dp[i]);\r\n                }\r\n            }\r\n            res=Math.max(res,dp[i]);\r\n        }\r\n\r\n        return res;\r\n    }\r\n\r\n    public int longestCommonSubsequence(String text1, String text2) {\r\n        int m = text1.length(),n=text2.length();\r\n        int[][] dp=new int[m+1][n+1];\r\n        for (int i = 1; i <= m; i++) {\r\n            char a=text1.charAt(i-1);\r\n            for (int j = 1; j <= n; j++) {\r\n                char b=text2.charAt(j-1);\r\n                if(a==b){\r\n                    dp[i][j]=dp[i-1][j-1]+1;\r\n                }else {\r\n                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);\r\n                }\r\n            }\r\n        }\r\n\r\n        return dp[m][n];\r\n    }\r\n\r\n    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {\r\n        int car=0;\r\n        ListNode dummy=new ListNode(-1);\r\n        ListNode temp=dummy;\r\n        while (l1!=null||l2!=null){\r\n            int a=l1!=null?l1.val:0;\r\n            int b=l2!=null?l2.val:0;\r\n            int t=a+b+car;\r\n            car=t/10;\r\n            t=t%10;\r\n            temp.next=new ListNode(t);\r\n            temp=temp.next;\r\n            if(l1!=null){\r\n                l1=l1.next;\r\n            }\r\n            if(l2!=null){\r\n                l2=l2.next;\r\n            }\r\n\r\n        }\r\n        if(car>0){\r\n            temp.next=new ListNode(car);\r\n\r\n        }\r\n        return dummy.next;\r\n    }\r\n\r\n    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {\r\n\r\n        if(root==null||root==p||root==q){\r\n            return root;\r\n        }\r\n        TreeNode left = lowestCommonAncestor(root.left, p, q);\r\n        TreeNode right = lowestCommonAncestor(root.right, p, q);\r\n        if(left==null){\r\n            return right;\r\n        }\r\n        if(right==null){\r\n            return left;\r\n        }\r\n        if(left==null&&right==null){\r\n            return null;\r\n        }\r\n        return root;\r\n    }\r\n\r\n    public List<Integer> spiralOrder(int[][] matrix) {\r\n    List<Integer> res=new ArrayList<>();\r\n    int s=0,l=0;\r\n    int row=matrix.length-1;\r\n    int col=matrix[0].length-1;\r\n       while (true){\r\n           //从左向右遍历\r\n           for (int i=l;i<=col;i++){\r\n               res.add(matrix[s][i]);\r\n           }\r\n           //设置上边界\r\n           if(++s>row){\r\n               break;\r\n           }\r\n           //从上向下遍历\r\n           for(int i=s;i<=row;i++){\r\n               res.add(matrix[i][col]);\r\n           }\r\n           //设置右边界\r\n           if(--col<l){\r\n               break;\r\n           }\r\n           //从右向左遍历\r\n           for (int i=col;i>=l;i--){\r\n               res.add(matrix[row][i]);\r\n           }\r\n           //设置下边界\r\n           if(--row<s){\r\n               break;\r\n           }\r\n           //从下向上遍历\r\n           for (int i=row;i>=s;i--){\r\n               res.add(matrix[i][l]);\r\n           }\r\n           //设置做边界\r\n           if (++l>col){\r\n               break;\r\n           }\r\n       }\r\n\r\n\r\n\r\n        return res;\r\n    }\r\n\r\n    public int maxProfit(int[] prices) {\r\n        int[] dp=new int[prices.length];\r\n        int min=prices[0];\r\n        for (int i = 1; i < prices.length; i++) {\r\n            min=Math.min(min,prices[i]);\r\n            dp[i] = Math.max(prices[i] -min, dp[i-1]);\r\n\r\n        }\r\n\r\n        return dp[prices.length-1];\r\n    }\r\n\r\n\r\n    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {\r\n        ListNode a=headA,b=headB;\r\n        while(a!=b){\r\n            a=a==null?headB:a.next;\r\n            b=b==null?headA:b.next;\r\n        }\r\n        return a;\r\n    }\r\n\r\n\r\n    public void merge(int[] nums1, int m, int[] nums2, int n) {\r\n        if(m==0){\r\n          System.arraycopy(nums2,0,nums1,0,n);\r\n        }\r\n        if(n==0){\r\n            return;\r\n        }\r\n        List<Integer> list =new ArrayList<>();\r\n       int i=0,j=0;\r\n       while(i<m||j<n) {\r\n           if (i == m) {\r\n               list.add(nums2[j++]);\r\n           } else if (j == n) {\r\n               list.add(nums1[i++]);\r\n           } else if (nums1[i] <= nums2[j]) {\r\n               list.add(nums1[i++]);\r\n           } else {\r\n               list.add(nums2[j++]);\r\n           }\r\n       }\r\n        int[] res = list.stream().mapToInt(Integer::valueOf).toArray();\r\n        for (int k = 0; k < nums1.length; k++) {\r\n            if(nums1[k]!=res[k]){\r\n                nums1[k]=res[k];\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n\r\n}\r\n\r\n\r\n  class ListNode {\r\n      int val;\r\n      ListNode next;\r\n      ListNode(int x) {\r\n          val = x;\r\n          next = null;\r\n      }\r\n  }\r\n\r\n\r\n    class TreeNode {\r\n    int val;\r\n    TreeNode left;\r\n    TreeNode right;\r\n\r\n    TreeNode() {\r\n    }\r\n\r\n    TreeNode(int val) {\r\n        this.val = val;\r\n    }\r\n\r\n    TreeNode(int val, TreeNode left, TreeNode right) {\r\n        this.val = val;\r\n        this.left = left;\r\n        this.right = right;\r\n    }\r\n}\r\n\r\n\r\n    class DNode {\r\n        int val;\r\n        int key;\r\n        DNode pre;\r\n        DNode next;\r\n        public DNode(){};\r\n        public DNode(int val, int key) {\r\n            this.val = val;\r\n            this.key = key;\r\n        }\r\n    }\r\n
+===================================================================
+diff --git a/demo02/src/main/java/com/example/leetcode/FuncTest.java b/demo02/src/main/java/com/example/leetcode/FuncTest.java
+--- a/demo02/src/main/java/com/example/leetcode/FuncTest.java	
++++ b/demo02/src/main/java/com/example/leetcode/FuncTest.java	
+@@ -866,6 +866,87 @@
+         }
+     }
+ 
++    public int strStr(String haystack, String needle) {
++        if(needle.isEmpty()){
++            return 0;
++        }
++        if(haystack.isEmpty()){
++            return -1;
++        }
++        int hlen=haystack.length();
++        int nlen=needle.length();
++        for (int i = 0; i < hlen-nlen+1; i++) {
++            char c=haystack.charAt(i);
++            int j;
++            for (j= 0; j < nlen; j++) {
++                    if(needle.charAt(j)!=haystack.charAt(i+j)){
++                       break;
++                    }
++                }
++                if(j==nlen){
++                    return i;
++                }
++
++        }
++
++        return -1;
++    }
++
++    public List<TreeNode> generateTrees(int n) {
++        if(n==0){
++            return new ArrayList<>();
++        }
++        return dfsSearchTree(1,n);
++    }
++
++    private List<TreeNode> dfsSearchTree(int start, int end) {
++        List<TreeNode> res=new ArrayList<>();
++        if(start>end){
++            res.add(null);
++            return res;
++        }
++
++
++        for(int i=start;i<=end;i++){
++            List<TreeNode> left=dfsSearchTree(start,i-1);
++            List<TreeNode> right=dfsSearchTree(i+1,end);
++            for (TreeNode l : left) {
++                for (TreeNode r : right) {
++                    TreeNode root =new TreeNode(i);
++                    root.left=l;
++                    root.right=r;
++                    res.add(root);
++                }
++            }
++        }
++        return res;
++
++    }
++
++
++    public int search2(int[] nums, int target) {
++      int start=0,end=nums.length-1;
++        while(start<=end){
++            int mid=start+(end-start)/2;
++
++            if(nums[mid]>target){
++                end=mid-1;
++            }else if(target>nums[mid]){
++                start=mid+1;
++            }else if(target==nums[mid]){
++                //寻找左边界
++                end=mid-1;
++            }
++        }
++        //判断是否越界
++        if(end>= nums.length||nums[start]!=target){
++            return -1;
++        }
++        return nums[end];
++    }
++
++
++
+ 
+ 
+ }
+Index: demo01/src/main/java/com/example/asuredelete/Utils/MerkleTrees.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.asuredelete.Utils;\r\n\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport org.springframework.stereotype.Component;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n \r\n/**\r\n * Created by andyfeng on 2017/12/20.\r\n */\r\n@Component\r\npublic class MerkleTrees {\r\n\r\n\r\n \r\n    /**\r\n     * execute merkle_tree and set root.\r\n     */\r\n    public Element merkle_tree(List<Element> txList) {\r\n \r\n        List<Element> tempTxList = new ArrayList<Element>();\r\n \r\n        for (int i = 0; i < txList.size(); i++) {\r\n            int j=0;\r\n            Element leaf = txList.get(i);\r\n            Element index = FuncUtils.getPairing().getG1().newElement(j++);\r\n            Element res= leaf.add(index);\r\n            tempTxList.add(res);\r\n        }\r\n \r\n        List<Element> newTxList = getNewTxList(tempTxList);\r\n \r\n        //执行循环，直到只剩下一个hash值\r\n        while (newTxList.size() != 1) {\r\n            newTxList = getNewTxList(newTxList);\r\n        }\r\n \r\n      return newTxList.get(0);\r\n    }\r\n \r\n    /**\r\n     * return Node Hash List.\r\n     * @param tempTxList\r\n     * @return\r\n     */\r\n    private List<Element> getNewTxList(List<Element> tempTxList) {\r\n \r\n        List<Element> newTxList = new ArrayList<Element>();\r\n        int index = 0;\r\n        while (index < tempTxList.size()) {\r\n            // left\r\n            Element left = tempTxList.get(index);\r\n            index++;\r\n            // right\r\n            Element right =FuncUtils.getZeroFromG1();\r\n            if (index != tempTxList.size()) {\r\n                right = tempTxList.get(index);\r\n            }\r\n            // sha2 hex value\r\n            Element sha2HexValue = hash2Zp(left.duplicate(),right.duplicate());\r\n            newTxList.add(sha2HexValue);\r\n            index++;\r\n \r\n        }\r\n \r\n        return newTxList;\r\n    }\r\n \r\n\r\n\r\n    /**\r\n     * Get Root\r\n     * @return\r\n     */\r\n\r\n\r\n    private Element hash2Zp(Element left,Element right){\r\n\r\n        Element res = left.add(right).getImmutable();\r\n        return FuncUtils.hashFromStringToG1(res.toString());\r\n\r\n    }\r\n}
+===================================================================
+diff --git a/demo01/src/main/java/com/example/asuredelete/Utils/MerkleTrees.java b/demo01/src/main/java/com/example/asuredelete/Utils/MerkleTrees.java
+--- a/demo01/src/main/java/com/example/asuredelete/Utils/MerkleTrees.java	
++++ b/demo01/src/main/java/com/example/asuredelete/Utils/MerkleTrees.java	
+@@ -17,7 +17,7 @@
+     /**
+      * execute merkle_tree and set root.
+      */
+-    public Element merkle_tree(List<Element> txList) {
++    public static Element merkle_tree(List<Element> txList) {
+  
+         List<Element> tempTxList = new ArrayList<Element>();
+  
+@@ -44,7 +44,7 @@
+      * @param tempTxList
+      * @return
+      */
+-    private List<Element> getNewTxList(List<Element> tempTxList) {
++    private static List<Element> getNewTxList(List<Element> tempTxList) {
+  
+         List<Element> newTxList = new ArrayList<Element>();
+         int index = 0;
+@@ -75,10 +75,20 @@
+      */
+ 
+ 
+-    private Element hash2Zp(Element left,Element right){
++    private static Element hash2Zp(Element left,Element right){
+ 
+         Element res = left.add(right).getImmutable();
+         return FuncUtils.hashFromStringToG1(res.toString());
+ 
+     }
++
++    public static void main(String[] args) {
++        MerkleTrees mk=new MerkleTrees();
++        Element le = FuncUtils.getZeroFromG1();
++        Element ri = FuncUtils.getRandomFromG1();
++        long s = System.currentTimeMillis();
++        mk.hash2Zp(le, ri);
++        long e = System.currentTimeMillis();
++        System.out.println(e-s);
++    }
+ }
+\ No newline at end of file
+Index: demo01/src/test/java/com/example/demo02/TianTest.java
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo02/TianTest.java b/demo01/src/test/java/com/example/demo01/TianTest.java
+rename from demo01/src/test/java/com/example/demo02/TianTest.java
+rename to demo01/src/test/java/com/example/demo01/TianTest.java
+--- a/demo01/src/test/java/com/example/demo02/TianTest.java	
++++ b/demo01/src/test/java/com/example/demo01/TianTest.java	
+@@ -1,15 +1,19 @@
+-package com.example.demo02;
++package com.example.demo01;
+ 
+ import com.example.Demo01ApplicationTests;
+ import com.example.Tian.domain.GK;
+ import com.example.Tian.service.*;
+ import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.SizeUtils;
+ import it.unisa.dia.gas.jpbc.Element;
+ import lombok.extern.slf4j.Slf4j;
+ import org.junit.Test;
+ import org.springframework.beans.factory.annotation.Autowired;
+ 
+-import java.util.*;
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
+ 
+ @Slf4j
+ public class TianTest extends Demo01ApplicationTests {
+@@ -28,21 +32,31 @@
+     private static int attNum=5;
+     String filePath="D:\\Desktop\\琐碎\\ab.pdf";
+ 
++
++
+     @Test
+     public void tianTest(){
++        long s = System.currentTimeMillis();
+         List<Element> attTotal=new ArrayList<>();
+         List<Element> att=new ArrayList<>();
+         List<Element> delatt=new ArrayList<>();
+-        for (int i = 0; i < attNum; i++) {
++        for (int i = 0; i < attNum<<1; i++) {
+             Element a = FuncUtils.getRandomFromG1();
+             attTotal.add(a);
+             int j=0;
+-            if(j<attNum>>1){
++            if(j<attNum){
+                 att.add(a);
+                 delatt.add(a);
+             }
+ 
+         }
++        long drS = System.currentTimeMillis();
++        ArrayList<Element> del = new ArrayList<>();
++        for (int i = 0; i < attNum-1; i++) {
++            del.add(att.get(i));
++        }
++        long drE = System.currentTimeMillis();
++        System.out.println("DelReq"+(drE-drS));
+         delatt.remove(delatt.size()-1);
+         Map<Element,Element> map=new HashMap<>();
+         GK gk = tianSetup.Setup(att, 3, attNum,map);
+@@ -50,5 +64,12 @@
+         Element file = tianDownLoad.dec(gk,ct, att, map);
+         GK gkNew = tianDel.updateKey(gk, delatt);
+          tianDelConfirm.confirm(gk, delatt, map);
++        long e = System.currentTimeMillis();
++        System.out.println(e-s);
++        List<Element> pn=new ArrayList<>();
++        for (int i = 0; i < attNum; i++) {
++            pn.add(FuncUtils.hashFromStringToG1(i+""));
++        }
++        System.out.println("CSP的存储开销："+ SizeUtils.getSize(ct.toString().getBytes().length+gk.toString().getBytes().length+pn.toString().getBytes().length));
+     }
+ }
+Index: demo01/src/test/java/com/example/demo02/ComparableTest.java
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo02/ComparableTest.java b/demo01/src/test/java/com/example/demo01/ComparableTest.java
+rename from demo01/src/test/java/com/example/demo02/ComparableTest.java
+rename to demo01/src/test/java/com/example/demo01/ComparableTest.java
+--- a/demo01/src/test/java/com/example/demo02/ComparableTest.java	
++++ b/demo01/src/test/java/com/example/demo01/ComparableTest.java	
+@@ -1,4 +1,4 @@
+-package com.example.demo02;
++package com.example.demo01;
+ 
+ import com.example.Demo01ApplicationTests;
+ import com.example.Xue.Service.XueScheme;
+@@ -12,6 +12,7 @@
+     @Autowired
+     private XueScheme xueScheme;
+ 
++
+     @Test
+     public  void  timeTest(){
+ //        csad.CSADDemo();
+Index: demo01/src/test/java/com/example/demo02/DeleteTest.java
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo02/DeleteTest.java b/demo01/src/test/java/com/example/demo01/DeleteTest.java
+rename from demo01/src/test/java/com/example/demo02/DeleteTest.java
+rename to demo01/src/test/java/com/example/demo01/DeleteTest.java
+--- a/demo01/src/test/java/com/example/demo02/DeleteTest.java	
++++ b/demo01/src/test/java/com/example/demo01/DeleteTest.java	
+@@ -1,7 +1,9 @@
+-package com.example.demo02;
++package com.example.demo01;
+ 
+ import com.example.Demo01ApplicationTests;
+ import com.example.Xue.Service.XueScheme;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.SizeUtils;
+ import com.example.asuredelete.aop.EXCTime;
+ import com.example.asuredelete.domain.*;
+ import com.example.asuredelete.service.*;
+@@ -39,13 +41,14 @@
+     @EXCTime
+     public void deleteTest(){
+         int num=5;
++        int att=5;
+         long ss = System.currentTimeMillis();
+         List<String> policy =new ArrayList<>();
+-        policy.add(access_policy_example_1);
+-        policy.add(access_policy_example_2);
+-        policy.add(access_policy_example_3);
+-        policy.add(access_policy_example_4);
+-        policy.add(access_policy_example_5);
++        for (int i = 0; i < num; i++) {
++            policy.add(access_policy_example_5);
++        }
++
++
+         try{
+             long start = System.currentTimeMillis();
+             Parameter pp = setup.setupPP();
+@@ -61,6 +64,15 @@
+ 
+             long end = System.currentTimeMillis();
+             System.out.println(end-start);
++            List<Element> res=new ArrayList<>();
++                Element g = FuncUtils.getRandomFromG1();
++                Element a = FuncUtils.getRandomFromZp();
++            for (int i = 0; i < att; i++) {
++                res.add(g.powZn(a));
++                res.add(FuncUtils.hashFromStringToG1(i+"").powZn(a));
++            }
++
++        System.out.println("CSP的存储开销："+ SizeUtils.getSize(ct.toString().getBytes().length+res.toString().getBytes().length));
+         }catch (Exception e){log.info("",e);}
+         long ee = System.currentTimeMillis();
+         log.info("我的总共时间：{}",ee-ss);
+Index: demo01/src/test/java/com/example/demo02/FFTTest.java
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo02/FFTTest.java b/demo01/src/test/java/com/example/demo01/FFTTest.java
+rename from demo01/src/test/java/com/example/demo02/FFTTest.java
+rename to demo01/src/test/java/com/example/demo01/FFTTest.java
+--- a/demo01/src/test/java/com/example/demo02/FFTTest.java	
++++ b/demo01/src/test/java/com/example/demo01/FFTTest.java	
+@@ -1,4 +1,4 @@
+-package com.example.demo02;
++package com.example.demo01;
+ 
+ 
+ import com.example.Demo01ApplicationTests;
+Index: demo01/src/main/java/com/example/Tian/service/TianDel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Tian.service;\r\n\r\nimport com.example.Tian.domain.GK;\r\nimport com.google.common.collect.Iterables;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\nimport java.util.Objects;\r\n\r\n@Slf4j\r\n@Service\r\npublic class TianDel {\r\n    public GK updateKey(GK gk,List<Element> delAttList){\r\n        List<Element> Ddk = gk.getDdk();\r\n        List<String> bCk = gk.getBCK();\r\n        int len = delAttList.size();\r\n        for (int i = 0; i < len; i++) {\r\n            int  index = (int)(Math.random() * len);\r\n            Ddk.set(index,null);\r\n            bCk.set(index,null);\r\n        }\r\n        Iterables.removeIf(Ddk, Objects::isNull);\r\n        Iterables.removeIf(bCk, Objects::isNull);\r\n        //删除RSA私钥h\r\n        return gk;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Tian/service/TianDel.java b/demo01/src/main/java/com/example/Tian/service/TianDel.java
+--- a/demo01/src/main/java/com/example/Tian/service/TianDel.java	
++++ b/demo01/src/main/java/com/example/Tian/service/TianDel.java	
+@@ -1,6 +1,7 @@
+ package com.example.Tian.service;
+ 
+ import com.example.Tian.domain.GK;
++import com.example.asuredelete.aop.EXCTime;
+ import com.google.common.collect.Iterables;
+ import it.unisa.dia.gas.jpbc.Element;
+ import lombok.extern.slf4j.Slf4j;
+@@ -12,12 +13,13 @@
+ @Slf4j
+ @Service
+ public class TianDel {
++    @EXCTime
+     public GK updateKey(GK gk,List<Element> delAttList){
+         List<Element> Ddk = gk.getDdk();
+         List<String> bCk = gk.getBCK();
+         int len = delAttList.size();
+         for (int i = 0; i < len; i++) {
+-            int  index = (int)(Math.random() * len);
++            int  index = (int)(Math.random() * (len>>1));
+             Ddk.set(index,null);
+             bCk.set(index,null);
+         }
+Index: demo01/src/main/java/com/example/Tian/service/TianDownLoad.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Tian.service;\r\n\r\nimport com.example.Tian.domain.GK;\r\nimport com.example.asuredelete.Utils.FuncUtils;\r\nimport com.example.asuredelete.Utils.Lagrange;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Map;\r\nimport java.util.Set;\r\nimport java.util.concurrent.atomic.AtomicInteger;\r\nimport java.util.stream.Collectors;\r\n\r\n@Slf4j\r\n@Service\r\npublic class TianDownLoad {\r\n    @Autowired\r\n    private TianUpload tianUpload;\r\n\r\n\r\n    public Element dec(GK gk,Element ct, List<Element> att, Map<Element,Element> map){\r\n        //计算自身属性\r\n        Element hb1 = FuncUtils.getOneFromG1();\r\n        for (int i = 0; i < att.size(); i++) {\r\n            Element ai = map.get(att.get(i));\r\n            Element hi = FuncUtils.hashFromBytesToG1(att.get(i).toBytes()).powZn(ai);\r\n            hb1=hb1.mul(hi);\r\n        }\r\n\r\n        Set<Element> hb = gk.getHb();\r\n        //csp判断\r\n        if(!hb.contains(hb1)){\r\n            log.info(\"属性不符合\");\r\n        }\r\n        String rsaPK=KeyManger.getRsaPK();\r\n        List<String> bCK = gk.getBCK();\r\n\r\n\r\n        List<Element> rList=new ArrayList<>();\r\n        List<Element> randList = tianUpload.addRandom(bCK, rsaPK, rList);\r\n        //未加随机数的解密\r\n        List<String> decList = KeyManger.decString(bCK);\r\n\r\n        List<Element> ckList = tianUpload.removeRandom(decList, rList);\r\n        List<Element> dDK = gk.getDdk();\r\n        AtomicInteger i=new AtomicInteger(0);\r\n        List<Element> dkList = dDK.stream().map(dk -> dk.div(ckList.get(i.getAndIncrement()))).collect(Collectors.toList());\r\n        Element dk = Lagrange.PloyReco(dkList);\r\n        //解密\r\n        return ct.div(dk);\r\n\r\n    }\r\n\r\n\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Tian/service/TianDownLoad.java b/demo01/src/main/java/com/example/Tian/service/TianDownLoad.java
+--- a/demo01/src/main/java/com/example/Tian/service/TianDownLoad.java	
++++ b/demo01/src/main/java/com/example/Tian/service/TianDownLoad.java	
+@@ -3,6 +3,7 @@
+ import com.example.Tian.domain.GK;
+ import com.example.asuredelete.Utils.FuncUtils;
+ import com.example.asuredelete.Utils.Lagrange;
++import com.example.asuredelete.aop.EXCTime;
+ import it.unisa.dia.gas.jpbc.Element;
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -21,7 +22,7 @@
+     @Autowired
+     private TianUpload tianUpload;
+ 
+-
++    @EXCTime
+     public Element dec(GK gk,Element ct, List<Element> att, Map<Element,Element> map){
+         //计算自身属性
+         Element hb1 = FuncUtils.getOneFromG1();
+@@ -33,9 +34,9 @@
+ 
+         Set<Element> hb = gk.getHb();
+         //csp判断
+-        if(!hb.contains(hb1)){
+-            log.info("属性不符合");
+-        }
++//        if(!hb.contains(hb1)){
++//            log.info("属性不符合");
++//        }
+         String rsaPK=KeyManger.getRsaPK();
+         List<String> bCK = gk.getBCK();
+ 
+Index: demo01/src/test/java/com/example/demo02/MSTest.java
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo02/MSTest.java b/demo01/src/test/java/com/example/demo01/MSTest.java
+rename from demo01/src/test/java/com/example/demo02/MSTest.java
+rename to demo01/src/test/java/com/example/demo01/MSTest.java
+--- a/demo01/src/test/java/com/example/demo02/MSTest.java	
++++ b/demo01/src/test/java/com/example/demo01/MSTest.java	
+@@ -1,4 +1,4 @@
+-package com.example.demo02;
++package com.example.demo01;
+ 
+ import java.util.*;
+ 
+Index: demo01/src/test/java/com/example/demo02/XueTest.java
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo02/XueTest.java b/demo01/src/test/java/com/example/demo01/XueTest.java
+rename from demo01/src/test/java/com/example/demo02/XueTest.java
+rename to demo01/src/test/java/com/example/demo01/XueTest.java
+--- a/demo01/src/test/java/com/example/demo02/XueTest.java	
++++ b/demo01/src/test/java/com/example/demo01/XueTest.java	
+@@ -1,5 +1,6 @@
+-package com.example.demo02;
++package com.example.demo01;
+ 
++import com.example.DADDA.service.DAScheme;
+ import com.example.Demo01ApplicationTests;
+ import com.example.Xue.Service.XueScheme;
+ import lombok.extern.slf4j.Slf4j;
+@@ -9,6 +10,8 @@
+ public class XueTest extends Demo01ApplicationTests {
+     @Autowired
+     private XueScheme xueScheme;
++    @Autowired
++    private DAScheme daScheme;
+ 
+ 
+     @Test
+@@ -17,5 +20,10 @@
+         xueScheme.XueDemo();
+         long e = System.currentTimeMillis();
+         log.info("Xue的总共时间：{}",e-s);
++    }
++    @Test
++    public void daTest(){
++        daScheme.dadda();
++
+     }
+ }
+Index: demo01/src/main/java/com/example/Tian/service/TianDelConfirm.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.Tian.service;\r\n\r\nimport com.example.Tian.domain.GK;\r\nimport com.example.asuredelete.Utils.FuncUtils;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Map;\r\nimport java.util.Set;\r\n\r\n@Slf4j\r\n@Service\r\npublic class TianDelConfirm {\r\n    public Boolean confirm(GK gk, List<Element> att, Map<Element,Element> map){\r\n        //计算自身属性\r\n        List<Element> hb=new ArrayList<>();\r\n        Element one = FuncUtils.getOneFromG1();\r\n        for (int i = 0; i < att.size(); i++) {\r\n            Element ai = FuncUtils.getRandomFromZp();\r\n            map.put(att.get(i),ai);\r\n            Element hi = FuncUtils.hashFromBytesToG1(att.get(i).toBytes()).powZn(ai);\r\n            one=one.mul(hi);\r\n            hb.add(one);\r\n        }\r\n        Set<Element> hSet = gk.getHb();\r\n        for (Element e : hb) {\r\n            if(hSet.contains(e)){\r\n                return false;\r\n            }\r\n        }\r\n\r\n        return true;\r\n    }\r\n\r\n\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Tian/service/TianDelConfirm.java b/demo01/src/main/java/com/example/Tian/service/TianDelConfirm.java
+--- a/demo01/src/main/java/com/example/Tian/service/TianDelConfirm.java	
++++ b/demo01/src/main/java/com/example/Tian/service/TianDelConfirm.java	
+@@ -2,6 +2,7 @@
+ 
+ import com.example.Tian.domain.GK;
+ import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
+ import it.unisa.dia.gas.jpbc.Element;
+ import lombok.extern.slf4j.Slf4j;
+ import org.springframework.stereotype.Service;
+@@ -14,6 +15,7 @@
+ @Slf4j
+ @Service
+ public class TianDelConfirm {
++    @EXCTime
+     public Boolean confirm(GK gk, List<Element> att, Map<Element,Element> map){
+         //计算自身属性
+         List<Element> hb=new ArrayList<>();
+Index: demo02/src/main/java/com/example/leetcode/AliTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.leetcode;\r\n\r\nimport java.util.*;\r\n\r\npublic class AliTest {\r\n//    public static void main(String[] args) {\r\n//        Scanner sc=new Scanner(System.in);\r\n//        int n = sc.nextInt();\r\n//        List<Integer> dis=new ArrayList<>();\r\n//        for (int i = 0; i < n; i++) {\r\n//             int d = sc.nextInt();\r\n//             dis.add(d);\r\n//        }\r\n//        sc.close();\r\n//        if(dis.size()==2) System.out.println(Math.abs(dis.get(0)-dis.get(1)));\r\n//        else{\r\n//            int l=dis.get(0);\r\n//            int r=dis.get(dis.size()-1);\r\n//            int max=Integer.MAX_VALUE;\r\n//            for (int i = 0; i < dis.size(); i++) {\r\n//                int le=Math.abs(l-dis.get(i));\r\n//                int ri=Math.abs(r-dis.get(i));\r\n//                int res= Math.abs(ri-le);\r\n//                max=Math.min(max,res);\r\n//            }\r\n//            System.out.println(max);\r\n//        }\r\n//\r\n//\r\n//    }\r\n//public static void main(String[] args) {\r\n//    Scanner sc=new Scanner(System.in);\r\n//    int n = sc.nextInt();\r\n//    sc.nextLine();\r\n//    List<Integer> nums=new ArrayList<>();\r\n//   int[][] res=new int[n+1][7];\r\n//\r\n//    for (int i = 0; i < n; i++) {\r\n//       nums.add(sc.nextInt());\r\n//    }\r\n//    sc.close();\r\n//    res[0][0]=Integer.MIN_VALUE;\r\n//    res[0][1]=Integer.MIN_VALUE;\r\n//    for (int i = 1; i < n; i++) {\r\n//        int x=nums.get(i-1)%7;\r\n//        res[i][0]=Math.max(res[i-1][0],res[i-1][(7-x)%7]+nums.get(i-1));\r\n//        res[i][1]=Math.max(res[i-1][1],res[i-1][(7-x+1)%7]+nums.get(i-1));\r\n//        res[i][2]=Math.max(res[i-1][2],res[i-1][(7-x+2)%7]+nums.get(i-1));\r\n//        res[i][3]=Math.max(res[i-1][3],res[i-1][(7-x+3)%7]+nums.get(i-1));\r\n//        res[i][4]=Math.max(res[i-1][4],res[i-1][(7-x+4)%7]+nums.get(i-1));\r\n//        res[i][5]=Math.max(res[i-1][5],res[i-1][(7-x+5)%7]+nums.get(i-1));\r\n//        res[i][6]=Math.max(res[i-1][6],res[i-1][(7-x+6)%7]+nums.get(i-1));\r\n//    }\r\n//    System.out.println(res[n][0]);\r\n//\r\n//}\r\n//public static void main(String[] args) {\r\n//    Scanner sc=new Scanner(System.in);\r\n//        int n = sc.nextInt();\r\n//        sc.nextLine();\r\n//        List<Integer> nums=new ArrayList<>();\r\n//        for (int i = 0; i < n; i++) {\r\n//             nums.add(sc.nextInt());\r\n//        }\r\n//        sc.close();\r\n//        Collections.sort(nums);\r\n//        int max=Integer.MIN_VALUE;\r\n//    for (int i = nums.size() - 1; i >= 0; i--) {\r\n//       int l=i-1;\r\n//       if(max>nums.get(i)) break;\r\n//        while(l>0){\r\n//            int sum = nums.get(i) + nums.get(l);\r\n//            if(sum%7==0){\r\n//                max=Math.max(max,sum);\r\n//                break;\r\n//            }\r\n//            else l--;\r\n//        }\r\n//    }\r\n//    System.out.println(max);\r\n//}\r\n//\r\n//    public static void main(String[] args) {\r\n//            Scanner sc=new Scanner(System.in);\r\n//            int n = sc.nextInt();\r\n//        sc.nextLine();\r\n//        int res=0;\r\n//        List<Integer> nums=new ArrayList<>();\r\n//        for (int i = 0; i < n; i++) {\r\n//            int d = sc.nextInt();\r\n//            nums.add(d);\r\n//            res+=d;\r\n//\r\n//        }\r\n//        sc.close();\r\n//        int l=3;\r\n//        while (l<nums.size()){\r\n//            for (int i = 0; i < n-l+1; i++) {\r\n//                List<Integer> temp=new ArrayList<>();\r\n//                for (int j = l; j > 0; j--) {\r\n//                    temp.set(j,nums.get(i+j));\r\n//                }\r\n//                Collections.sort(temp);\r\n//                res+=temp.get((l-1)>>1);\r\n//            }\r\n//            l+=2;\r\n//        }\r\n//        System.out.println(res);\r\n//    }\r\npublic static TreeNode createBiTree(TreeNode root, int[] a, int i) {\r\n    if (i < a.length) {\r\n        if (a[i] == 0) {\r\n            root = null;\r\n        } else {\r\n            TreeNode left = new TreeNode();\r\n            TreeNode right = new TreeNode();\r\n            root.val = a[i];\r\n            root.left = createBiTree(left, a, ++i);\r\n            root.right = createBiTree(right, a, ++i);\r\n        }\r\n    }\r\n    return root;\r\n}\r\n\r\n    public static void main(String[] args) {\r\n        AliTest al=new AliTest();\r\n        al.findx();\r\n        Scanner sc=new Scanner(System.in);\r\n        int n = sc.nextInt();\r\n        int res=0;\r\n        for (int i = 0; i < n; i++) {\r\n            int l=sc.nextInt();\r\n            sc.nextLine();\r\n            String s = sc.nextLine();\r\n            Map<Character, Integer> map=new HashMap<>();\r\n            for (int j = 0; j < 3*l; j++) {\r\n                char c = s.charAt(j);\r\n                if(map.containsKey(c)){\r\n                    map.put(c,map.get(c)+1);\r\n                }\r\n                map.put(c,1);\r\n            }\r\n            int la=map.get('A');\r\n            int lb=map.get('B');\r\n            int lc=map.get('C');\r\n            if(la==lb&&la==lc){\r\n                res=0;\r\n            }\r\n            if(la==0||lb==0||lc==0){\r\n                res=2;\r\n            }\r\n            List<Integer> lista=new ArrayList<>();\r\n            List<Integer> listb=new ArrayList<>();\r\n            List<Integer> listc=new ArrayList<>();\r\n                for (int j = 0; j < 3*l; j++) {\r\n                    char c = s.charAt(j);\r\n                    if(c=='A'){\r\n                        int t=j;\r\n                        while (j<3*l&&c==s.charAt(j+1)){\r\n                            j++;\r\n                        }\r\n                        lista.add(j-t);\r\n                    }else if(c=='B'){\r\n                        int t=j;\r\n                        while (j<3*l&&c==s.charAt(j+1)){\r\n                            j++;\r\n                        }\r\n                        listb.add(j-t);\r\n                    }else{\r\n                        int t=j;\r\n                        while (j<3*l&&c==s.charAt(j+1)){\r\n                            j++;\r\n                        }\r\n                        listc.add(j-t);\r\n                    }\r\n                }\r\n                Collections.sort(lista, new Comparator<Integer>() {\r\n                    @Override\r\n                    public int compare(Integer o1, Integer o2) {\r\n                        return o2-o1;\r\n                    }\r\n                });\r\n                Collections.sort(listb, new Comparator<Integer>() {\r\n                    @Override\r\n                    public int compare(Integer o1, Integer o2) {\r\n                        return o2-o1;\r\n                    }\r\n                });\r\n                Collections.sort(listc, new Comparator<Integer>() {\r\n                    @Override\r\n                    public int compare(Integer o1, Integer o2) {\r\n                        return o2-o1;\r\n                    }\r\n                });\r\n                if(la>n){\r\n                    int tb=n-lb;\r\n                    int tc=n-lc;\r\n                    for (int k = 0; k < lista.size(); k++) {\r\n                        int t=lista.get(k);\r\n                        if(t>Math.max(tb,tc)){\r\n\r\n                        }\r\n                    }\r\n\r\n                }\r\n\r\n            System.out.println(res);\r\n        }\r\n\r\n    }\r\n\r\n    public void findx(){\r\n        Scanner sc=new Scanner(System.in);\r\n        int n = sc.nextInt();\r\n        long start=sc.nextLong();\r\n        sc.nextLine();\r\n        String s = sc.nextLine();\r\n\r\n        for (int i = 0; i < n; i++) {\r\n            char c = s.charAt(i);\r\n            if(c=='U'){\r\n                if(start==1){\r\n                    continue;\r\n                }\r\n                start=start/2;\r\n            }else if(c=='R'){\r\n                start=start*2+1;\r\n            }else {\r\n                start=start*2;\r\n            }\r\n        }\r\n        System.out.println(start);\r\n    }\r\n\r\n    public void color() {\r\n        Scanner sc = new Scanner(System.in);\r\n        int n = sc.nextInt();\r\n\r\n        for (int i = 0; i < n; i++) {\r\n            int l = sc.nextInt();\r\n            sc.nextLine();\r\n            String s = sc.nextLine();\r\n            Map<Character, Integer> map = new HashMap<>();\r\n            for (int j = 0; j < 3 * l; j++) {\r\n                char c = s.charAt(j);\r\n                if (map.containsKey(c)) {\r\n                    map.put(c, map.get(c) + 1);\r\n                }\r\n                map.put(c, 1);\r\n            }\r\n            int la =(map.get('A')-l)>0?(map.get('A')-l):0;\r\n            int lb =(map.get('B')-l)>0?(map.get('b')-l):0;\r\n            int lc = (map.get('C')-l)>0?(map.get('C')-l):0;\r\n\r\n            if (la == 0 && lb == 0 && lc == 0) {\r\n                System.out.println(0);\r\n            } else if ((la > 0 && lb > 0) || (la > 0 && lc > 0) || (lc > 0 && lb > 0)) {\r\n                System.out.println(1);\r\n            } else {\r\n                System.out.println(2);\r\n            }\r\n        }\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/demo02/src/main/java/com/example/leetcode/AliTest.java b/demo02/src/main/java/com/example/leetcode/AliTest.java
+--- a/demo02/src/main/java/com/example/leetcode/AliTest.java	
++++ b/demo02/src/main/java/com/example/leetcode/AliTest.java	
+@@ -1,264 +1,115 @@
+ package com.example.leetcode;
+ 
+-import java.util.*;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.HashMap;
++import java.util.List;
++import java.util.stream.Collectors;
+ 
+ public class AliTest {
+-//    public static void main(String[] args) {
+-//        Scanner sc=new Scanner(System.in);
+-//        int n = sc.nextInt();
+-//        List<Integer> dis=new ArrayList<>();
+-//        for (int i = 0; i < n; i++) {
+-//             int d = sc.nextInt();
+-//             dis.add(d);
+-//        }
+-//        sc.close();
+-//        if(dis.size()==2) System.out.println(Math.abs(dis.get(0)-dis.get(1)));
+-//        else{
+-//            int l=dis.get(0);
+-//            int r=dis.get(dis.size()-1);
+-//            int max=Integer.MAX_VALUE;
+-//            for (int i = 0; i < dis.size(); i++) {
+-//                int le=Math.abs(l-dis.get(i));
+-//                int ri=Math.abs(r-dis.get(i));
+-//                int res= Math.abs(ri-le);
+-//                max=Math.min(max,res);
+-//            }
+-//            System.out.println(max);
+-//        }
+-//
+-//
+-//    }
+-//public static void main(String[] args) {
+-//    Scanner sc=new Scanner(System.in);
+-//    int n = sc.nextInt();
+-//    sc.nextLine();
+-//    List<Integer> nums=new ArrayList<>();
+-//   int[][] res=new int[n+1][7];
+-//
+-//    for (int i = 0; i < n; i++) {
+-//       nums.add(sc.nextInt());
+-//    }
+-//    sc.close();
+-//    res[0][0]=Integer.MIN_VALUE;
+-//    res[0][1]=Integer.MIN_VALUE;
+-//    for (int i = 1; i < n; i++) {
+-//        int x=nums.get(i-1)%7;
+-//        res[i][0]=Math.max(res[i-1][0],res[i-1][(7-x)%7]+nums.get(i-1));
+-//        res[i][1]=Math.max(res[i-1][1],res[i-1][(7-x+1)%7]+nums.get(i-1));
+-//        res[i][2]=Math.max(res[i-1][2],res[i-1][(7-x+2)%7]+nums.get(i-1));
+-//        res[i][3]=Math.max(res[i-1][3],res[i-1][(7-x+3)%7]+nums.get(i-1));
+-//        res[i][4]=Math.max(res[i-1][4],res[i-1][(7-x+4)%7]+nums.get(i-1));
+-//        res[i][5]=Math.max(res[i-1][5],res[i-1][(7-x+5)%7]+nums.get(i-1));
+-//        res[i][6]=Math.max(res[i-1][6],res[i-1][(7-x+6)%7]+nums.get(i-1));
+-//    }
+-//    System.out.println(res[n][0]);
+-//
+-//}
+-//public static void main(String[] args) {
+-//    Scanner sc=new Scanner(System.in);
+-//        int n = sc.nextInt();
+-//        sc.nextLine();
+-//        List<Integer> nums=new ArrayList<>();
+-//        for (int i = 0; i < n; i++) {
+-//             nums.add(sc.nextInt());
+-//        }
+-//        sc.close();
+-//        Collections.sort(nums);
+-//        int max=Integer.MIN_VALUE;
+-//    for (int i = nums.size() - 1; i >= 0; i--) {
+-//       int l=i-1;
+-//       if(max>nums.get(i)) break;
+-//        while(l>0){
+-//            int sum = nums.get(i) + nums.get(l);
+-//            if(sum%7==0){
+-//                max=Math.max(max,sum);
+-//                break;
+-//            }
+-//            else l--;
+-//        }
+-//    }
+-//    System.out.println(max);
+-//}
+-//
+-//    public static void main(String[] args) {
+-//            Scanner sc=new Scanner(System.in);
+-//            int n = sc.nextInt();
+-//        sc.nextLine();
+-//        int res=0;
+-//        List<Integer> nums=new ArrayList<>();
+-//        for (int i = 0; i < n; i++) {
+-//            int d = sc.nextInt();
+-//            nums.add(d);
+-//            res+=d;
+-//
+-//        }
+-//        sc.close();
+-//        int l=3;
+-//        while (l<nums.size()){
+-//            for (int i = 0; i < n-l+1; i++) {
+-//                List<Integer> temp=new ArrayList<>();
+-//                for (int j = l; j > 0; j--) {
+-//                    temp.set(j,nums.get(i+j));
+-//                }
+-//                Collections.sort(temp);
+-//                res+=temp.get((l-1)>>1);
+-//            }
+-//            l+=2;
+-//        }
+-//        System.out.println(res);
+-//    }
+-public static TreeNode createBiTree(TreeNode root, int[] a, int i) {
+-    if (i < a.length) {
+-        if (a[i] == 0) {
+-            root = null;
+-        } else {
+-            TreeNode left = new TreeNode();
+-            TreeNode right = new TreeNode();
+-            root.val = a[i];
+-            root.left = createBiTree(left, a, ++i);
+-            root.right = createBiTree(right, a, ++i);
+-        }
+-    }
+-    return root;
+-}
+ 
++
++    static int x;
+     public static void main(String[] args) {
+-        AliTest al=new AliTest();
+-        al.findx();
+-        Scanner sc=new Scanner(System.in);
+-        int n = sc.nextInt();
+-        int res=0;
+-        for (int i = 0; i < n; i++) {
+-            int l=sc.nextInt();
+-            sc.nextLine();
+-            String s = sc.nextLine();
+-            Map<Character, Integer> map=new HashMap<>();
+-            for (int j = 0; j < 3*l; j++) {
+-                char c = s.charAt(j);
+-                if(map.containsKey(c)){
+-                    map.put(c,map.get(c)+1);
+-                }
+-                map.put(c,1);
+-            }
+-            int la=map.get('A');
+-            int lb=map.get('B');
+-            int lc=map.get('C');
+-            if(la==lb&&la==lc){
+-                res=0;
+-            }
+-            if(la==0||lb==0||lc==0){
+-                res=2;
+-            }
+-            List<Integer> lista=new ArrayList<>();
+-            List<Integer> listb=new ArrayList<>();
+-            List<Integer> listc=new ArrayList<>();
+-                for (int j = 0; j < 3*l; j++) {
+-                    char c = s.charAt(j);
+-                    if(c=='A'){
+-                        int t=j;
+-                        while (j<3*l&&c==s.charAt(j+1)){
+-                            j++;
+-                        }
+-                        lista.add(j-t);
+-                    }else if(c=='B'){
+-                        int t=j;
+-                        while (j<3*l&&c==s.charAt(j+1)){
+-                            j++;
+-                        }
+-                        listb.add(j-t);
+-                    }else{
+-                        int t=j;
+-                        while (j<3*l&&c==s.charAt(j+1)){
+-                            j++;
+-                        }
+-                        listc.add(j-t);
+-                    }
+-                }
+-                Collections.sort(lista, new Comparator<Integer>() {
+-                    @Override
+-                    public int compare(Integer o1, Integer o2) {
+-                        return o2-o1;
+-                    }
+-                });
+-                Collections.sort(listb, new Comparator<Integer>() {
+-                    @Override
+-                    public int compare(Integer o1, Integer o2) {
+-                        return o2-o1;
+-                    }
+-                });
+-                Collections.sort(listc, new Comparator<Integer>() {
+-                    @Override
+-                    public int compare(Integer o1, Integer o2) {
+-                        return o2-o1;
+-                    }
+-                });
+-                if(la>n){
+-                    int tb=n-lb;
+-                    int tc=n-lc;
+-                    for (int k = 0; k < lista.size(); k++) {
+-                        int t=lista.get(k);
+-                        if(t>Math.max(tb,tc)){
+-
+-                        }
+-                    }
+-
+-                }
+-
+-            System.out.println(res);
+-        }
+-
+-    }
+-
+-    public void findx(){
+-        Scanner sc=new Scanner(System.in);
+-        int n = sc.nextInt();
+-        long start=sc.nextLong();
+-        sc.nextLine();
+-        String s = sc.nextLine();
+-
+-        for (int i = 0; i < n; i++) {
+-            char c = s.charAt(i);
+-            if(c=='U'){
+-                if(start==1){
+-                    continue;
+-                }
+-                start=start/2;
+-            }else if(c=='R'){
+-                start=start*2+1;
+-            }else {
+-                start=start*2;
+-            }
+-        }
+-        System.out.println(start);
+-    }
+-
+-    public void color() {
+-        Scanner sc = new Scanner(System.in);
+-        int n = sc.nextInt();
+-
+-        for (int i = 0; i < n; i++) {
+-            int l = sc.nextInt();
+-            sc.nextLine();
+-            String s = sc.nextLine();
+-            Map<Character, Integer> map = new HashMap<>();
+-            for (int j = 0; j < 3 * l; j++) {
+-                char c = s.charAt(j);
+-                if (map.containsKey(c)) {
+-                    map.put(c, map.get(c) + 1);
+-                }
+-                map.put(c, 1);
+-            }
+-            int la =(map.get('A')-l)>0?(map.get('A')-l):0;
+-            int lb =(map.get('B')-l)>0?(map.get('b')-l):0;
+-            int lc = (map.get('C')-l)>0?(map.get('C')-l):0;
+-
+-            if (la == 0 && lb == 0 && lc == 0) {
+-                System.out.println(0);
+-            } else if ((la > 0 && lb > 0) || (la > 0 && lc > 0) || (lc > 0 && lb > 0)) {
+-                System.out.println(1);
+-            } else {
+-                System.out.println(2);
+-            }
++
++        double d=34.4;
++
++
++
++    }
++    public int solution(int[] A) {
++        // write your code in Java SE 8
++        int len= A.length;
++        if(A.length<3){
++            return A.length;
++        }
++        List<Integer> list = Arrays.stream(A).boxed().collect(Collectors.toList());
++        System.out.println(list.size());
++        List<Integer> collect = list.stream().distinct().collect(Collectors.toList());
++        System.out.println(collect.size());
++        if(collect.size()<3){
++            return A.length;
++        }
++
++        int[] type={-1,-1};
++       int[] fina={-1,-1};
++       int max=0,cur=0;
++       for(int i=0;i<len;i++){
++           if(type[0]==-1&&type[1]==-1){
++               cur++;
++               type[0]=A[i];
++               fina[0]=i;
++           }else if(type[0]!=-1&&type[1]==-1){
++               cur++;
++               if(type[0]==A[i]){
++                   fina[0]=i;
++               }else{
++                   type[1]=A[i];
++                   fina[1]=i;
++               }
++           }else {
++               if(type[0]==A[i]){
++                   cur++;
++                   fina[0]=i;
++               }else if(type[1]==A[i]){
++                   cur++;
++                   fina[1]=i;
++               }else {
++                   max=Math.max(max,cur);
++                   if(fina[0]<fina[1]){
++                       cur=i-fina[0];
++                       type[0]=A[i];
++                       fina[0]=i;
++                   }else {
++                       cur=i-fina[1];
++                       type[1]=A[i];
++                       fina[1]=i;
++                   }
++               }
++           }
++       }
++       int maxlen=Math.max(max,cur);
++        return maxlen;
++    }
++
++    public int solution(int A, int B) {
++        // write your code in Java SE 8
++        long a=A,b=B;
++        long n=a*b;
++        int count=0;
++        while(n!=0){
++            count++;
++            n=n&(n-1);
++        }
++        return count;
++
++    }
++
++    class Solution {
++        public int lengthOfLongestSubstringKDistinct(String s, int k) {
++            int n = s.length();
++            if (n < k+1){
++                return n;
++            }
++
++            int left = 0;
++            int right = 0;
++            //K-V：K是对应字符，V是最后一次出现的位置。
++            HashMap<Character, Integer> hashmap = new HashMap<Character, Integer>();
++            int max_len = 0;
++            while (right < n) {
++                //符合要求就继续向右扩
++                if (hashmap.size() < k+1){
++                    hashmap.put(s.charAt(right), right++);
++                }
++                if (hashmap.size() == k+1) {
++                    int index = Collections.min(hashmap.values());
++                    hashmap.remove(s.charAt(index));
++                    left = index + 1;
++                }
++                max_len = Math.max(max_len, right - left);
++            }
++            return max_len;
+         }
+     }
+ }
+Index: demo01/src/main/java/com/example/asuredelete/service/CSAD.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.asuredelete.service;\r\n\r\nimport com.example.asuredelete.aop.EXCTime;\r\nimport com.example.asuredelete.domain.*;\r\nimport it.unisa.dia.gas.jpbc.Element;\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n@Slf4j\r\n@Service\r\npublic class CSAD {\r\n    @Autowired\r\n    private Encrypt encrypt;\r\n    @Autowired\r\n    private DeleteImpl delete;\r\n    @Autowired\r\n    private DeleteRequest deleteRequest;\r\n    @Autowired\r\n    private Setup setup;\r\n    @Autowired\r\n    private ProofCheck proofCheck;\r\n\r\n\r\n    String access_policy_example_1 = \"0 and 1 and (2 or 3)\";\r\n    String access_policy_example_2 = \"(( 1 and 2) and (3 or 4 or 5) and (6 and 7 and (8 or 9 or 10)))\";\r\n    String access_policy_example_3 = \"(1 and 2) and (3 or 4 or 5)\";\r\n    String access_policy_example_4 = \"( 1 or 2) and (3 or 4 or 5)\";\r\n    String access_policy_example_5 = \"( 1 and 2) and (3 and 4 or 5)\";\r\n    String filePath=\"D:\\\\Desktop\\\\琐碎\\\\ab.pdf\";\r\n    int policyNum=14;\r\n\r\n    @EXCTime\r\n    public void CSADDemo(){\r\n        int num=7;\r\n        long t0 = System.currentTimeMillis();\r\n        List<String> policy =new ArrayList<>();\r\n        policy.add(access_policy_example_1);\r\n        policy.add(access_policy_example_1);\r\n        policy.add(access_policy_example_1);\r\n        policy.add(access_policy_example_1);\r\n        policy.add(access_policy_example_1);\r\n        policy.add(access_policy_example_1);\r\n        policy.add(access_policy_example_1);\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n        try{\r\n            long t1 = System.currentTimeMillis();\r\n            Parameter pp = setup.setupPP();\r\n            long t12 = System.currentTimeMillis();\r\n            PK pk = setup.setupPK(pp);\r\n            MSK msk = setup.setupMSK(pp);\r\n            SK sk = setup.ketGen(msk, pk, pp, policyNum);\r\n            long t2 = System.currentTimeMillis();\r\n            CT ct = encrypt.encFile(pp,pk, policy, num,filePath);\r\n            long t3 = System.currentTimeMillis();\r\n\r\n            DR dr = deleteRequest.delReq(pp, msk, pk, num);\r\n            long t4 = System.currentTimeMillis();\r\n            List<Element> list = delete.delImpl(pp, ct, dr);\r\n            long t5 = System.currentTimeMillis();\r\n            Element proof = delete.proofGen(pp, list);\r\n            long t6 = System.currentTimeMillis();\r\n            Boolean judge = proofCheck.verifyProof(pp, proof);\r\n\r\n            long t7= System.currentTimeMillis();\r\n            System.out.println(\"-------------CSAD-------------\");\r\n        log.info(\"CSAD初始化时间：{}\",t12-t1);\r\n        log.info(\"CSAD密钥生成时间：{}\",t2-t12);\r\n        log.info(\"CSAD加密时间：{}\",t3-t2);\r\n        log.info(\"CSAD提出删除请求时间：{}\",t4-t3);\r\n        log.info(\"CSAD执行删除操作时间：{}\",t5-t4);\r\n        log.info(\"CSAD生成证据时间：{}\",t6-t5);\r\n        log.info(\"CSAD中CSP删除总时间：{}\",t6-t4);\r\n        log.info(\"CSAD用户验证时间：{}\",t7-t6);\r\n        log.info(\"我的总共时间：{}\",t7-t0);\r\n        }catch (Exception e){log.info(\"\",e);}\r\n\r\n\r\n\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/demo01/src/main/java/com/example/asuredelete/service/CSAD.java b/demo01/src/main/java/com/example/asuredelete/service/CSAD.java
+--- a/demo01/src/main/java/com/example/asuredelete/service/CSAD.java	
++++ b/demo01/src/main/java/com/example/asuredelete/service/CSAD.java	
+@@ -1,5 +1,6 @@
+ package com.example.asuredelete.service;
+ 
++import com.example.asuredelete.Utils.SizeUtils;
+ import com.example.asuredelete.aop.EXCTime;
+ import com.example.asuredelete.domain.*;
+ import it.unisa.dia.gas.jpbc.Element;
+@@ -35,7 +36,7 @@
+ 
+     @EXCTime
+     public void CSADDemo(){
+-        int num=7;
++        int num=6;
+         long t0 = System.currentTimeMillis();
+         List<String> policy =new ArrayList<>();
+         policy.add(access_policy_example_1);
+@@ -45,6 +46,7 @@
+         policy.add(access_policy_example_1);
+         policy.add(access_policy_example_1);
+         policy.add(access_policy_example_1);
++        //
+ 
+ 
+ 
+@@ -82,6 +84,7 @@
+         log.info("CSAD中CSP删除总时间：{}",t6-t4);
+         log.info("CSAD用户验证时间：{}",t7-t6);
+         log.info("我的总共时间：{}",t7-t0);
++            System.out.println("CSP的存储开销："+ SizeUtils.getSize(ct.toString().getBytes().length));
+         }catch (Exception e){log.info("",e);}
+ 
+ 

@@ -1,0 +1,2969 @@
+Index: demo01/src/main/java/com/example/DDSD/domain/DDMSK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/domain/DDMSK.java b/demo01/src/main/java/com/example/DDSD/domain/DDMSK.java
+new file mode 100644
+--- /dev/null	(date 1680069901595)
++++ b/demo01/src/main/java/com/example/DDSD/domain/DDMSK.java	(date 1680069901595)
+@@ -0,0 +1,12 @@
++package com.example.DDSD.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class DDMSK {
++    Element beta;
++    Element gAlpha;
++    TreeNode root;
++    int leafNum;
++}
+Index: demo02/src/main/java/com/example/leetcode/child.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/leetcode/child.java b/demo02/src/main/java/com/example/leetcode/child.java
+new file mode 100644
+--- /dev/null	(date 1680069901610)
++++ b/demo02/src/main/java/com/example/leetcode/child.java	(date 1680069901610)
+@@ -0,0 +1,10 @@
++package com.example.leetcode;
++
++public class child {
++
++
++
++
++
++
++}
+Index: demo01/src/main/java/com/example/DDSD/domain/DDSK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/domain/DDSK.java b/demo01/src/main/java/com/example/DDSD/domain/DDSK.java
+new file mode 100644
+--- /dev/null	(date 1680069901610)
++++ b/demo01/src/main/java/com/example/DDSD/domain/DDSK.java	(date 1680069901610)
+@@ -0,0 +1,14 @@
++package com.example.DDSD.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class DDSK {
++    Element d1;
++    Element d2t;
++    List<Element> d31;
++    List<Element> d32;
++}
+Index: demo01/src/main/java/com/example/asuredelete/Utils/SizeUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/asuredelete/Utils/SizeUtils.java b/demo01/src/main/java/com/example/asuredelete/Utils/SizeUtils.java
+new file mode 100644
+--- /dev/null	(date 1680069901579)
++++ b/demo01/src/main/java/com/example/asuredelete/Utils/SizeUtils.java	(date 1680069901579)
+@@ -0,0 +1,45 @@
++package com.example.asuredelete.Utils;
++
++import com.example.DDSD.domain.DDMSK;
++import lombok.SneakyThrows;
++
++import java.nio.file.Files;
++import java.nio.file.Paths;
++import java.text.DecimalFormat;
++
++public class SizeUtils {
++
++    public static String getSize(int  size) {
++//        String byteCount=ClassLayout.parseInstance(e).toPrintable();
++//        int size=Integer.valueOf(byteCount);
++        //获取到的size为：1705230
++        int GB = 1024 * 1024 * 1024;//定义GB的计算常量
++        int MB = 1024 * 1024;//定义MB的计算常量
++        int KB = 1024;//定义KB的计算常量
++        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
++        String resultSize = "";
++        if (size / GB >= 1) {
++            //如果当前Byte的值大于等于1GB
++            resultSize = df.format(size / (float) GB) + "GB   ";
++        } else if (size / MB >= 1) {
++            //如果当前Byte的值大于等于1MB
++            resultSize = df.format(size / (float) MB) + "MB   ";
++        } else if (size / KB >= 1) {
++            //如果当前Byte的值大于等于1KB
++            resultSize = df.format(size / (float) KB) + "KB   ";
++        } else {
++            resultSize = size + "B   ";
++        }
++        return resultSize;
++    }
++
++    @SneakyThrows
++    public static void main(String[] args) {
++        DDMSK msk=new DDMSK();
++        msk.setLeafNum(10);
++        msk.setBeta(FuncUtils.getRandomFromZp());
++        System.out.println(msk.toString().getBytes().length);
++
++        Files.write(Paths.get("D:\\Desktop\\a.txt"), msk.toString().getBytes());
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/service/TimeAndDelete.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/TimeAndDelete.java b/demo01/src/main/java/com/example/Yue/service/TimeAndDelete.java
+new file mode 100644
+--- /dev/null	(date 1680069901579)
++++ b/demo01/src/main/java/com/example/Yue/service/TimeAndDelete.java	(date 1680069901579)
+@@ -0,0 +1,55 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.*;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.MerkleTrees;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class TimeAndDelete {
++    @EXCTime
++    public YueTP sendAndDelete( YueMSK msk,YueCT ct,String filePath, int time){
++
++        YueTP tp=new YueTP();
++        //TA send to CSP
++        Element tt= FuncUtils.hashFromStringToG1(time+"").powZn(msk.getDelta());
++        //CSP
++        YueTD td = ct.getTd();
++        Element te = FuncUtils.getPairing().pairing(tt, td.getX());
++        Element te2 = FuncUtils.hashFromStringToZp(te.toString());
++        td.setY(td.getZ().sub(te2));
++        List<Element> list=new ArrayList<>();
++        list.add(FuncUtils.hashFromStringToG1("user"));
++        list.add(FuncUtils.hashFromStringToG1(filePath));
++        list.add(FuncUtils.hashFromStringToG1("A"));
++        list.add(FuncUtils.hashFromStringToG1(td.toString()));
++        list.add(FuncUtils.hashFromBytesToG1(ct.getC0()));
++        list.add(FuncUtils.hashFromStringToG1(ct.getC1().toString()));
++        list.add(ct.getC2());
++        List<Element> l1 = ct.getC31();
++        List<Element> l2 = ct.getC32();
++        for (int i = 0; i < l1.size(); i++) {
++            Element e1 = l1.get(i);
++            Element e2 = l2.get(i);
++            list.add(e1.add(e2));
++        }
++        Element root = MerkleTrees.merkle_tree(list);
++        double aiff = Math.ceil(Math.log(list.size()) / Math.log(2));
++        List<Element> aai = list.subList(0, (int)aiff+1);
++
++        tp.setUserName("user");
++        tp.setFileName(filePath);
++        tp.setHr(root);
++        tp.setAai(aai);
++
++
++        return tp;
++    }
++
++
++}
+Index: demo01/src/main/java/com/example/DDSD/service/DDSDSetup.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/DDSDSetup.java b/demo01/src/main/java/com/example/DDSD/service/DDSDSetup.java
+new file mode 100644
+--- /dev/null	(date 1680069901595)
++++ b/demo01/src/main/java/com/example/DDSD/service/DDSDSetup.java	(date 1680069901595)
+@@ -0,0 +1,111 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.DDMSK;
++import com.example.DDSD.domain.DDPK;
++import com.example.DDSD.domain.TreeNode;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.LinkedList;
++import java.util.List;
++
++@Service
++public class DDSDSetup {
++
++    @Autowired
++    private SKGen skGen;
++
++    /**
++     *
++     * @param pk
++     * @param msk
++     * @param n 叶子节点数
++     */
++    @EXCTime
++    public void setup(DDPK pk, DDMSK msk, int n){
++        Element alpha = FuncUtils.getRandomFromZp();
++        Element beta = FuncUtils.getRandomFromZp();
++        Element g = FuncUtils.getRandomFromG1();
++        msk.setBeta(beta);
++        msk.setGAlpha(g.mulZn(alpha));
++        msk.setLeafNum(n);
++        TreeNode root = skGen.buildTree(new TreeNode(), 2*n, 1);
++
++     LinkedList<TreeNode> path=new LinkedList<>();
++        searchNode(root,path,4 );
++        //levelOrder(root);
++        msk.setRoot(root);
++        //System.out.println("root"+root.val);
++        //
++        pk.setG(g);
++        pk.setH(g.powZn(beta));
++        pk.setF(g.powZn(FuncUtils.getOneFromZp().div(beta)));
++        pk.setEggAlpha(FuncUtils.getPairing().pairing(g,g).powZn(alpha));
++        List<Element> vlist=new ArrayList<>();
++        for (int i = 0; i <= Math.log(n)/Math.log(2); i++) {
++            vlist.add(FuncUtils.getRandomFromZp());
++        }
++
++        pk.setVlist(vlist);
++        //System.out.println(vlist.size());
++    }
++    public void levelOrder(TreeNode root) {
++
++        List<List<Integer>> result=new ArrayList<>();
++        level(root,1,result);
++        for (List<Integer> list : result) {
++            for (Integer i : list) {
++                System.out.print(i+" ");
++            }
++            System.out.println();
++        }
++    }
++
++    private void level(TreeNode root,int le,List<List<Integer>> result){
++        if(root==null) {
++            return;
++        }
++        if(result.size()<le) {
++            result.add(new ArrayList<>());
++        }
++
++        result.get(le-1).add(root.val);
++
++
++        if(root.left!=null) {
++            level(root.left,le+1,result);
++        }
++        if(root.right!=null) {
++            level(root.right,le+1,result);
++        }
++    }
++    public  boolean searchNode(TreeNode root,LinkedList<TreeNode> s, int target) {
++        if(root == null) {
++            return false;
++        }
++        s.push(root);
++        if(root.val == target) {
++            return true;
++        }
++        boolean b = false;
++        //先去左子树找
++        if(root.left != null) {
++            b = searchNode(root.left,s,target);
++        }
++        //左子树找不到并且右子树不为空的情况下才去找
++        if(!b && root.right != null) {
++            b = searchNode(root.right,s,target);
++        }
++        //左右都找不到，弹出栈顶元素
++        if(!b) {
++            s.pop();
++        }
++        return b;
++    }
++
++
++}
+Index: demo01/src/main/java/com/example/SelfDoc/domain/XiongMSK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/domain/XiongMSK.java b/demo01/src/main/java/com/example/SelfDoc/domain/XiongMSK.java
+new file mode 100644
+--- /dev/null	(date 1680069901564)
++++ b/demo01/src/main/java/com/example/SelfDoc/domain/XiongMSK.java	(date 1680069901564)
+@@ -0,0 +1,14 @@
++package com.example.SelfDoc.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class XiongMSK {
++
++
++    Element y;
++    List<Element> tl;
++}
+Index: demo01/src/main/java/com/example/SelfDoc/domain/XiongPk.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/domain/XiongPk.java b/demo01/src/main/java/com/example/SelfDoc/domain/XiongPk.java
+new file mode 100644
+--- /dev/null	(date 1680069901564)
++++ b/demo01/src/main/java/com/example/SelfDoc/domain/XiongPk.java	(date 1680069901564)
+@@ -0,0 +1,20 @@
++package com.example.SelfDoc.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++
++public class XiongPk {
++    //密文分量
++    int n;
++    int d;
++    int u;
++    int v;
++    Element g;
++    Element eggy;
++    List<Element> gtl;
++
++}
+Index: demo01/src/main/java/com/example/DDSD/service/SKGen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/SKGen.java b/demo01/src/main/java/com/example/DDSD/service/SKGen.java
+new file mode 100644
+--- /dev/null	(date 1680069901564)
++++ b/demo01/src/main/java/com/example/DDSD/service/SKGen.java	(date 1680069901564)
+@@ -0,0 +1,121 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.DDMSK;
++import com.example.DDSD.domain.DDPK;
++import com.example.DDSD.domain.DDSK;
++import com.example.DDSD.domain.TreeNode;
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.LinkedList;
++import java.util.List;
++@Service
++public class SKGen {
++    /**
++     *
++     * @param msk
++     * @param pk
++     * @param attNum DU的属性数量
++     * @param state 叶子节点从左到右的编号，从1开始
++     * @return
++     */
++
++
++    private DDMSK msk;
++    public  Element stSave;
++
++    public DDSK skGen(DDMSK mk, DDPK pk, int attNum, int state){
++        this.msk=mk;
++        DDSK sk=new DDSK();
++        Element g = pk.getG();
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        Element r = FuncUtils.getRandomFromZp();
++        for (int i = 0; i < attNum; i++) {
++            Element ri = FuncUtils.getRandomFromZp();
++            Element hash = FuncUtils.hashFromBytesToG1(("" + i).getBytes()).powZn(ri);
++            l1.add((g.powZn(r)).mul(hash));
++            l2.add(g.powZn(ri));
++        }
++        sk.setD31(l1);
++        sk.setD31(l2);
++        stSave=getSt(pk,state);
++        sk.setD2t(pk.getH().powZn(stSave));
++
++        Element gAlpha = msk.getGAlpha();
++        Element div = FuncUtils.getOneFromZp().div(msk.getBeta());
++        sk.setD1((gAlpha.mul(g.powZn(r))).powZn(div));
++
++
++        return sk;
++
++    }
++
++    public TreeNode buildTree(TreeNode root, int nums, int index){
++        if (index>=nums) {
++            return null;
++        }
++        root = new TreeNode(index);
++        root.left = buildTree(root.left, nums, 2*index);
++        root.right = buildTree(root.right, nums, 2*index+1);
++        return root;
++    }
++    public  boolean getPathToTarget(TreeNode node, int target, LinkedList<TreeNode> path) {
++        if (node == null) {
++            return false;
++        }
++
++        path.push(node);
++        node.setV(FuncUtils.getRandomFromZp());
++
++        if (node.val == target) {
++            return true;
++        }
++        // find in left tree
++        if (getPathToTarget(node.left, target, path)) {
++            return true;
++        }
++        // find in right tree
++        if (getPathToTarget(node.right, target, path)) {
++            return true;
++        }
++
++        // this node is not in the path of target
++        // cause leftchild rightchild and itself do not have target node
++        path.pop();
++        return false;
++    }
++
++    public List<Element> getBitString(LinkedList<TreeNode> path){
++        List<Element> res=new ArrayList<>();
++        for (TreeNode treeNode : path) {
++            int val = treeNode.getVal();
++            Element v = treeNode.getV();
++            if(val%2==1){
++                res.add(FuncUtils.getOneFromZp().mul(v));
++            }else {
++                res.add(FuncUtils.getZeroFromZp().mul(v));
++            }
++        }
++        return  res;
++
++    }
++
++    public Element getSt(DDPK pk,int state){
++        LinkedList<TreeNode> path=new LinkedList<>();
++        getPathToTarget(msk.getRoot(),(state+msk.getLeafNum()),path);
++        List<Element> bitlist = getBitString(path);
++        List<Element> vlist = pk.getVlist();
++        Element st=vlist.get(0);
++        for (int i = 1; i < vlist.size(); i++) {
++            st=st.mul(vlist.get(i).powZn(bitlist.get(i-1)));
++        }
++        return st;
++
++    }
++
++
++
++}
+Index: demo01/src/main/java/com/example/SelfDoc/domain/XiongSK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/domain/XiongSK.java b/demo01/src/main/java/com/example/SelfDoc/domain/XiongSK.java
+new file mode 100644
+--- /dev/null	(date 1680069901579)
++++ b/demo01/src/main/java/com/example/SelfDoc/domain/XiongSK.java	(date 1680069901579)
+@@ -0,0 +1,4 @@
++package com.example.SelfDoc.domain;
++
++public class XiongSK {
++}
+Index: demo01/src/main/java/com/example/SelfDoc/service/XiongScheme.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/service/XiongScheme.java b/demo01/src/main/java/com/example/SelfDoc/service/XiongScheme.java
+new file mode 100644
+--- /dev/null	(date 1680069901532)
++++ b/demo01/src/main/java/com/example/SelfDoc/service/XiongScheme.java	(date 1680069901532)
+@@ -0,0 +1,32 @@
++package com.example.SelfDoc.service;
++
++import com.example.SelfDoc.domain.XiongCT;
++import com.example.SelfDoc.domain.XiongMSK;
++import com.example.SelfDoc.domain.XiongPk;
++import com.example.asuredelete.Utils.SizeUtils;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++@Service
++public class XiongScheme {
++    @Autowired
++    private  XiongSetup xiongSetup;
++    @Autowired
++    private XiongEncrypt xiongEncrypt;
++    @Autowired
++    private XiongDecrypt xiongDecrypt;
++
++    public  void XiongDemo(){
++        String filePath="D:\\Desktop\\琐碎\\ab.pdf";
++        String policy="(( 1 and 2) and (3 or 4 or 5) )";
++        int attNum=25;
++        XiongPk pk=new XiongPk();
++        XiongMSK msk=new XiongMSK();
++        xiongSetup.setup(msk,pk,attNum);
++        XiongCT ct = xiongEncrypt.encrypt(pk, msk, filePath, policy, attNum/5);
++        xiongDecrypt.decrypt(ct,pk,filePath,attNum/2);
++        String size = SizeUtils.getSize( pk.toString().getBytes().length+msk.toString().getBytes().length);
++        System.out.println("KGC存储开销："+size);
++
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/doamin/YueTP.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/doamin/YueTP.java b/demo01/src/main/java/com/example/Yue/doamin/YueTP.java
+new file mode 100644
+--- /dev/null	(date 1680069901548)
++++ b/demo01/src/main/java/com/example/Yue/doamin/YueTP.java	(date 1680069901548)
+@@ -0,0 +1,15 @@
++package com.example.Yue.doamin;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class YueTP {
++    String userName;
++    String fileName;
++    Element hr;
++    List<Element> aai;
++
++}
+Index: .idea/libraries/Maven__org_openjdk_jol_jol_core_0_16.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_openjdk_jol_jol_core_0_16.xml b/.idea/libraries/Maven__org_openjdk_jol_jol_core_0_16.xml
+new file mode 100644
+--- /dev/null	(date 1680069901548)
++++ b/.idea/libraries/Maven__org_openjdk_jol_jol_core_0_16.xml	(date 1680069901548)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.openjdk.jol:jol-core:0.16">
++    <CLASSES>
++      <root url="jar://$PROJECT_DIR$/../apache-maven-3.8.4-bin/repository/org/openjdk/jol/jol-core/0.16/jol-core-0.16.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$PROJECT_DIR$/../apache-maven-3.8.4-bin/repository/org/openjdk/jol/jol-core/0.16/jol-core-0.16-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$PROJECT_DIR$/../apache-maven-3.8.4-bin/repository/org/openjdk/jol/jol-core/0.16/jol-core-0.16-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: demo01/src/main/java/com/example/SelfDoc/service/XiongSetup.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/service/XiongSetup.java b/demo01/src/main/java/com/example/SelfDoc/service/XiongSetup.java
+new file mode 100644
+--- /dev/null	(date 1680069901517)
++++ b/demo01/src/main/java/com/example/SelfDoc/service/XiongSetup.java	(date 1680069901517)
+@@ -0,0 +1,38 @@
++package com.example.SelfDoc.service;
++
++import com.example.SelfDoc.domain.XiongMSK;
++import com.example.SelfDoc.domain.XiongPk;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class XiongSetup {
++    @EXCTime
++    public void setup(XiongMSK msk, XiongPk pk,int attNum){
++        Element g = FuncUtils.getRandomFromG1();
++        pk.setG(g);
++        pk.setN(10);
++        pk.setD(5);
++        pk.setU(10);
++        pk.setV(5);
++
++        //msk
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        for (int i = 0; i < attNum; i++) {
++            Element ti = FuncUtils.getRandomFromZp();
++            l1.add(g.powZn(ti));
++            l2.add(ti);
++        }
++        pk.setGtl(l1);
++        msk.setTl(l2);
++        Element y = FuncUtils.getRandomFromZp();
++        msk.setY(y);
++        pk.setEggy(FuncUtils.pairing.pairing(g,g).powZn(y));
++    }
++}
+Index: demo01/src/main/java/com/example/SelfDoc/domain/XiongCT.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/domain/XiongCT.java b/demo01/src/main/java/com/example/SelfDoc/domain/XiongCT.java
+new file mode 100644
+--- /dev/null	(date 1680069901532)
++++ b/demo01/src/main/java/com/example/SelfDoc/domain/XiongCT.java	(date 1680069901532)
+@@ -0,0 +1,13 @@
++package com.example.SelfDoc.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class XiongCT {
++    Element ca;
++    List<Element> l1;
++    List<Element> l2;
++}
+Index: demo01/src/main/java/com/example/Yue/service/YueVerify.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/YueVerify.java b/demo01/src/main/java/com/example/Yue/service/YueVerify.java
+new file mode 100644
+--- /dev/null	(date 1680069901532)
++++ b/demo01/src/main/java/com/example/Yue/service/YueVerify.java	(date 1680069901532)
+@@ -0,0 +1,20 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.YueTP;
++import com.example.asuredelete.Utils.MerkleTrees;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++@Service
++public class YueVerify {
++    @EXCTime
++    public void verify(YueTP tp){
++        Element proof = MerkleTrees.merkle_tree(tp.getAai());
++        if(proof.isEqual(tp.getHr())){
++            System.out.println();
++        }
++
++
++    }
++}
+Index: demo01/src/main/java/com/example/DADDA/service/DADeleteReq.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/service/DADeleteReq.java b/demo01/src/main/java/com/example/DADDA/service/DADeleteReq.java
+new file mode 100644
+--- /dev/null	(date 1680069901501)
++++ b/demo01/src/main/java/com/example/DADDA/service/DADeleteReq.java	(date 1680069901501)
+@@ -0,0 +1,20 @@
++package com.example.DADDA.service;
++
++import com.example.DADDA.domain.DAPK;
++import com.example.DADDA.domain.DAReq;
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++@Service
++public class DADeleteReq {
++    public DAReq deleteReq(DAPK pk,String fileName){
++        DAReq req=new DAReq();
++        Element rand = FuncUtils.getRandomFromZp();
++        req.setRd(pk.getG().powZn(rand));
++        req.setFileName(fileName);
++
++
++        return req;
++    }
++}
+Index: demo01/src/main/java/com/example/DADDA/service/DASetup.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/service/DASetup.java b/demo01/src/main/java/com/example/DADDA/service/DASetup.java
+new file mode 100644
+--- /dev/null	(date 1680069901517)
++++ b/demo01/src/main/java/com/example/DADDA/service/DASetup.java	(date 1680069901517)
+@@ -0,0 +1,24 @@
++package com.example.DADDA.service;
++
++import com.example.DADDA.domain.DAMSK;
++import com.example.DADDA.domain.DAPK;
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++@Service
++public class DASetup {
++    public void setup(DAMSK msk, DAPK pk){
++        Element alpha = FuncUtils.getRandomFromZp();
++        Element beta = FuncUtils.getRandomFromZp();
++        pk.setG(FuncUtils.getRandomFromG1());
++        pk.setH(FuncUtils.getRandomFromG1().powZn(beta));
++        pk.setF(pk.getG().powZn(FuncUtils.getOneFromZp().div(beta)));
++        pk.setEGGA(FuncUtils.pairing.pairing(pk.getG(),pk.getG() ).powZn(alpha));
++        //
++        msk.setBeta(beta);
++        msk.setGAlpha(pk.getG().powZn(alpha));
++
++    }
++
++}
+Index: demo01/src/main/java/com/example/DADDA/service/DAEncrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/service/DAEncrypt.java b/demo01/src/main/java/com/example/DADDA/service/DAEncrypt.java
+new file mode 100644
+--- /dev/null	(date 1680069901517)
++++ b/demo01/src/main/java/com/example/DADDA/service/DAEncrypt.java	(date 1680069901517)
+@@ -0,0 +1,63 @@
++package com.example.DADDA.service;
++
++import com.example.DADDA.domain.DACT;
++import com.example.DADDA.domain.DAPK;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.MerkleTrees;
++import com.example.asuredelete.service.Encrypt;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.SneakyThrows;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.io.File;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++
++@Service
++public class DAEncrypt {
++    @Autowired
++    private Encrypt encrypt;
++    @SneakyThrows
++    public DACT encrypt(DAPK pk, int attNum, String policy, String filePath){
++        DACT ct=new DACT();
++        File file=new File(filePath);
++        byte[] fileBytes = Files.readAllBytes(file.toPath());
++        Element m = FuncUtils.getPairing().getGT().newElementFromBytes(fileBytes);
++        Element s = FuncUtils.getRandomFromZp();
++        Element c1= (pk.getEGGA().powZn(s)).mul(m);
++        Element c2= pk.getH().powZn(s);
++        ct.setC1(c1);
++        ct.setC2(c2);
++        //
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        Element g = pk.getG();
++        for (int i = 0; i < attNum; i++) {
++            Map<String, Element> leafNodes = this.encrypt.genAccessTree(policy);
++            leafNodes.entrySet().parallelStream().forEach(entry->{
++                l1.add(g.powZn(entry.getValue()));
++                l2.add((FuncUtils.hashFromBytesToG1(entry.getKey().getBytes())).powZn(entry.getValue()));
++            });
++        }
++        ct.setC31(l1);
++        ct.setC32(l2);
++        
++        //
++        Element hash = MerkleTrees.merkle_tree(l2);
++        ct.setC4(hash);
++        //
++        Element sd = FuncUtils.getRandomFromZp();
++        List<Element> l3=new ArrayList<>();
++        l3.add(pk.getG().powZn(sd));
++        l3.add(FuncUtils.hashFromStringToG1(FuncUtils.getRandomFromG1().toString()).powZn(sd));
++        ct.setC5(l3);
++
++
++
++        return  ct;
++    }
++
++}
+Index: demo01/src/main/java/com/example/SelfDoc/service/XiongDecrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/service/XiongDecrypt.java b/demo01/src/main/java/com/example/SelfDoc/service/XiongDecrypt.java
+new file mode 100644
+--- /dev/null	(date 1680069901517)
++++ b/demo01/src/main/java/com/example/SelfDoc/service/XiongDecrypt.java	(date 1680069901517)
+@@ -0,0 +1,52 @@
++package com.example.SelfDoc.service;
++
++import com.example.SelfDoc.domain.XiongCT;
++import com.example.SelfDoc.domain.XiongPk;
++import com.example.asuredelete.Utils.AES;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.Lagrange;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.SneakyThrows;
++import org.springframework.stereotype.Service;
++
++import javax.crypto.SecretKey;
++import java.io.File;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class XiongDecrypt {
++    @SneakyThrows
++    @EXCTime
++    public void decrypt(XiongCT ct, XiongPk pk,String filePath,int attNum){
++        Element ca = ct.getCa();
++        Element m = ca.div(pk.getEggy().powZn(FuncUtils.getRandomFromZp()));
++
++
++        recover(attNum);
++        File file=new File(filePath);
++        SecretKey ssk = AES.generateKey();
++        byte[] fileBytes = Files.readAllBytes(file.toPath());
++        byte[] cipher = AES.encrypt(fileBytes.toString(), ssk);
++        String decrypt = AES.decrypt(cipher, ssk);
++        List<Element> list=new ArrayList<>();
++        for (int i = 0; i < attNum*2; i++) {
++            list.add(FuncUtils.getRandomFromG1());
++        }
++        Lagrange.PloyReco(list);
++
++
++    }
++
++    private void recover(int n){
++        List<Element> list=new ArrayList<>();
++        for (int i = 0; i < n; i++) {
++            list.add(FuncUtils.getRandomFromG1());
++        }
++        for (int i = 0; i < n; i++) {
++            Lagrange.PloyReco(list);
++        }
++    }
++}
+Index: demo01/src/main/java/com/example/SelfDoc/service/XiongEncrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/SelfDoc/service/XiongEncrypt.java b/demo01/src/main/java/com/example/SelfDoc/service/XiongEncrypt.java
+new file mode 100644
+--- /dev/null	(date 1680069901501)
++++ b/demo01/src/main/java/com/example/SelfDoc/service/XiongEncrypt.java	(date 1680069901501)
+@@ -0,0 +1,59 @@
++package com.example.SelfDoc.service;
++
++import com.example.SelfDoc.domain.XiongCT;
++import com.example.SelfDoc.domain.XiongMSK;
++import com.example.SelfDoc.domain.XiongPk;
++import com.example.asuredelete.Utils.AES;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.Lagrange;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.SneakyThrows;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.io.File;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++
++@Service
++public class XiongEncrypt {
++    @Autowired
++    private com.example.asuredelete.service.Encrypt encrypt;
++
++
++    @SneakyThrows
++    @EXCTime
++    public XiongCT encrypt(XiongPk pk, XiongMSK msk, String filePath,String policy ,int attNum){
++        XiongCT ct=new XiongCT();
++        byte[] file = Files.readAllBytes(new File(filePath).toPath());
++        byte[] ctSe = AES.encrypt(new String(file), AES.generateKey());
++        Element j = FuncUtils.getRandomFromZp();
++        Element ca = pk.getEggy().powZn(j);
++        ct.setCa(ca);
++
++
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        Element g = pk.getG();
++
++        for (int i = 0; i < attNum; i++) {
++            Map<String, Element> leafNodes = this.encrypt.genAccessTree(policy);
++            leafNodes.entrySet().parallelStream().forEach(entry->{
++                l1.add(g.powZn(entry.getValue()));
++                l2.add((FuncUtils.hashFromBytesToG1(entry.getKey().getBytes())).powZn(entry.getValue()));
++            });
++        }
++        ct.setL1(l1);
++        ct.setL1(l2);
++        for (int i = 0; i < attNum; i++) {
++
++        List<Element> list = Lagrange.PloyDiv(FuncUtils.getRandomFromG1(), attNum, attNum * 5);
++        }
++
++
++        return ct;
++    }
++}
+Index: demo01/src/main/java/com/example/DADDA/service/DAKeyGen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/service/DAKeyGen.java b/demo01/src/main/java/com/example/DADDA/service/DAKeyGen.java
+new file mode 100644
+--- /dev/null	(date 1680069901501)
++++ b/demo01/src/main/java/com/example/DADDA/service/DAKeyGen.java	(date 1680069901501)
+@@ -0,0 +1,43 @@
++package com.example.DADDA.service;
++
++import com.example.DADDA.domain.DAMSK;
++import com.example.DADDA.domain.DAPK;
++import com.example.DADDA.domain.DASK;
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class DAKeyGen {
++    public DASK keyGen(DAPK pk, DAMSK msk, int attNum){
++        DASK sk=new DASK();
++        Element g = pk.getG();
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        Element r = FuncUtils.getRandomFromZp();
++        for (int i = 0; i < attNum; i++) {
++            Element ri = FuncUtils.getRandomFromZp();
++            Element hash = FuncUtils.hashFromBytesToG1(("" + i).getBytes()).powZn(ri);
++            l1.add((g.powZn(r)).mul(hash));
++            l2.add(g.powZn(ri));
++        }
++        sk.setD21(l1);
++        sk.setD22(l2);
++
++        Element gAlpha = msk.getGAlpha();
++        Element div = FuncUtils.getOneFromZp().div(msk.getBeta());
++        sk.setD1((gAlpha.mul(g.powZn(r))).powZn(div));
++        //
++        List<Element> l3=new ArrayList<>();
++        Element rd = FuncUtils.getRandomFromZp();
++        l3.add(g.powZn(r).mul(FuncUtils.hashFromStringToG1(FuncUtils.getRandomFromG1().toString()).powZn(rd)));
++        l3.add(g.powZn(rd));
++        sk.setD3(l3);
++
++
++        return sk;
++    }
++}
+Index: demo01/src/main/java/com/example/DADDA/domain/DASK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/domain/DASK.java b/demo01/src/main/java/com/example/DADDA/domain/DASK.java
+new file mode 100644
+--- /dev/null	(date 1680069901470)
++++ b/demo01/src/main/java/com/example/DADDA/domain/DASK.java	(date 1680069901470)
+@@ -0,0 +1,15 @@
++package com.example.DADDA.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class DASK {
++    Element d1;
++    List<Element> d21;
++    List<Element> d22;
++    List<Element> d3;
++
++}
+Index: demo01/src/test/java/com/example/demo01/XiongTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo01/XiongTest.java b/demo01/src/test/java/com/example/demo01/XiongTest.java
+new file mode 100644
+--- /dev/null	(date 1680069901485)
++++ b/demo01/src/test/java/com/example/demo01/XiongTest.java	(date 1680069901485)
+@@ -0,0 +1,15 @@
++package com.example.demo01;
++
++import com.example.Demo01ApplicationTests;
++import com.example.SelfDoc.service.XiongScheme;
++import org.junit.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++
++public class XiongTest extends Demo01ApplicationTests {
++    @Autowired
++    private XiongScheme xiongScheme;
++    @Test
++    public void Xiong(){
++        xiongScheme.XiongDemo();
++    }
++}
+Index: demo01/src/main/java/com/example/DADDA/service/DAScheme.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/service/DAScheme.java b/demo01/src/main/java/com/example/DADDA/service/DAScheme.java
+new file mode 100644
+--- /dev/null	(date 1680069901485)
++++ b/demo01/src/main/java/com/example/DADDA/service/DAScheme.java	(date 1680069901485)
+@@ -0,0 +1,45 @@
++package com.example.DADDA.service;
++
++import com.example.DADDA.domain.*;
++import com.example.asuredelete.Utils.SizeUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++@Service
++public class DAScheme {
++    @Autowired
++    private DASetup daSetup;
++    @Autowired
++    private DAEncrypt daEncrypt;
++    @Autowired
++    private DAKeyGen daKeyGen;
++    @Autowired
++    private DADeleteReq daDeleteReq;
++    @Autowired
++    private DADeleteExec daDeleteExec;
++    @Autowired
++    private DAVerify daVerify;
++
++
++    public void dadda(){
++        String policy="( 1 and 2) and (3 or 4 or 5) ";
++        String filePath="D:\\Desktop\\琐碎\\ab.pdf";
++        int num=30;
++        DAMSK damsk=new DAMSK();
++        DAPK dapk=new DAPK();
++        long s = System.currentTimeMillis();
++        daSetup.setup(damsk,dapk);
++        DASK dask = daKeyGen.keyGen(dapk, damsk, num);
++        DACT ct = daEncrypt.encrypt(dapk, num, policy, filePath);
++        String size = SizeUtils.getSize(ct.toString().getBytes().length);
++        //System.out.println("CSP存储开销："+size);
++
++        DAReq daReq = daDeleteReq.deleteReq(dapk, filePath);
++        Element proof = daDeleteExec.deleteExec(daReq, ct);
++        boolean res = daVerify.verify(ct, proof);
++        long e = System.currentTimeMillis();
++        System.out.println("总时间:"+(e-s));
++
++    }
++}
+Index: demo01/src/main/java/com/example/DADDA/service/DADeleteExec.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/service/DADeleteExec.java b/demo01/src/main/java/com/example/DADDA/service/DADeleteExec.java
+new file mode 100644
+--- /dev/null	(date 1680069901485)
++++ b/demo01/src/main/java/com/example/DADDA/service/DADeleteExec.java	(date 1680069901485)
+@@ -0,0 +1,32 @@
++package com.example.DADDA.service;
++
++import com.example.DADDA.domain.DACT;
++import com.example.DADDA.domain.DAReq;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.MerkleTrees;
++import it.unisa.dia.gas.jpbc.Element;
++import it.unisa.dia.gas.jpbc.Pairing;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class DADeleteExec {
++    public Element deleteExec(DAReq req, DACT ct){
++        List<Element> c5 = ct.getC5();
++        Pairing pairing = FuncUtils.pairing;
++        Element p1 = pairing.pairing(c5.get(0), req.getRd());
++        Element p2 = pairing.pairing(c5.get(1), req.getRd());
++        c5.set(0,p1);
++        c5.set(1,p2);
++        ct.setC5(c5);
++        //
++        Element hash = MerkleTrees.merkle_tree(ct.getC32());
++        List<Element> lh=new ArrayList<>();
++        lh.add(hash);
++        lh.add(FuncUtils.getRandomFromG1());
++        return MerkleTrees.merkle_tree(lh);
++
++    }
++}
+Index: demo01/src/main/java/com/example/DADDA/domain/DAReq.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/domain/DAReq.java b/demo01/src/main/java/com/example/DADDA/domain/DAReq.java
+new file mode 100644
+--- /dev/null	(date 1680069901454)
++++ b/demo01/src/main/java/com/example/DADDA/domain/DAReq.java	(date 1680069901454)
+@@ -0,0 +1,10 @@
++package com.example.DADDA.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class DAReq {
++    Element Rd;
++    String fileName;
++}
+Index: demo01/src/main/java/com/example/DADDA/service/DAVerify.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/service/DAVerify.java b/demo01/src/main/java/com/example/DADDA/service/DAVerify.java
+new file mode 100644
+--- /dev/null	(date 1680069901470)
++++ b/demo01/src/main/java/com/example/DADDA/service/DAVerify.java	(date 1680069901470)
+@@ -0,0 +1,22 @@
++package com.example.DADDA.service;
++
++import com.example.DADDA.domain.DACT;
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class DAVerify {
++    public boolean verify(DACT ct,Element proof){
++
++        List<Element> l1=new ArrayList<>();
++        l1.add(ct.getC4());
++        byte[] bytes = ct.getC5().get(0).add(ct.getC5().get(0)).toBytes();
++        FuncUtils.hashFromStringToG1(ct.getC4().add(FuncUtils.getPairing().getG1().newElementFromBytes(bytes)).toString());
++
++        return true;
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/domain/DDPK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/domain/DDPK.java b/demo01/src/main/java/com/example/DDSD/domain/DDPK.java
+new file mode 100644
+--- /dev/null	(date 1680069901470)
++++ b/demo01/src/main/java/com/example/DDSD/domain/DDPK.java	(date 1680069901470)
+@@ -0,0 +1,15 @@
++package com.example.DDSD.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class DDPK {
++    Element g;
++    Element h;
++    Element f;
++    Element eggAlpha;
++    List<Element> vlist;
++}
+Index: demo02/src/main/java/com/example/za/Invocation.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/za/Invocation.java b/demo02/src/main/java/com/example/za/Invocation.java
+new file mode 100644
+--- /dev/null	(date 1680069901439)
++++ b/demo02/src/main/java/com/example/za/Invocation.java	(date 1680069901439)
+@@ -0,0 +1,10 @@
++package com.example.za;
++
++public interface Invocation {
++    String name="jack";
++    String age="15";
++    String getName();
++    String getAge();
++    String getSex();
++
++}
+Index: demo01/src/main/java/com/example/DADDA/domain/DAMSK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/domain/DAMSK.java b/demo01/src/main/java/com/example/DADDA/domain/DAMSK.java
+new file mode 100644
+--- /dev/null	(date 1680069901439)
++++ b/demo01/src/main/java/com/example/DADDA/domain/DAMSK.java	(date 1680069901439)
+@@ -0,0 +1,10 @@
++package com.example.DADDA.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class DAMSK {
++    Element beta;
++    Element gAlpha;
++}
+Index: demo01/src/main/java/com/example/DADDA/domain/DAProof.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/domain/DAProof.java b/demo01/src/main/java/com/example/DADDA/domain/DAProof.java
+new file mode 100644
+--- /dev/null	(date 1680069901439)
++++ b/demo01/src/main/java/com/example/DADDA/domain/DAProof.java	(date 1680069901439)
+@@ -0,0 +1,7 @@
++package com.example.DADDA.domain;
++
++import lombok.Data;
++
++@Data
++public class DAProof {
++}
+Index: demo01/src/main/java/com/example/DADDA/domain/DACT.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/domain/DACT.java b/demo01/src/main/java/com/example/DADDA/domain/DACT.java
+new file mode 100644
+--- /dev/null	(date 1680069901454)
++++ b/demo01/src/main/java/com/example/DADDA/domain/DACT.java	(date 1680069901454)
+@@ -0,0 +1,16 @@
++package com.example.DADDA.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class DACT {
++    Element c1;
++    Element c2;
++    List<Element> c31;
++    List<Element> c32;
++    Element c4;
++    List<Element> c5;
++}
+Index: demo01/src/main/java/com/example/DADDA/domain/DAPK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DADDA/domain/DAPK.java b/demo01/src/main/java/com/example/DADDA/domain/DAPK.java
+new file mode 100644
+--- /dev/null	(date 1680069901423)
++++ b/demo01/src/main/java/com/example/DADDA/domain/DAPK.java	(date 1680069901423)
+@@ -0,0 +1,12 @@
++package com.example.DADDA.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class DAPK {
++    private Element g;
++    private Element h;
++    private Element f;
++    private Element eGGA;
++}
+Index: demo02/src/main/java/com/example/za/AmwayFamily.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/za/AmwayFamily.java b/demo02/src/main/java/com/example/za/AmwayFamily.java
+new file mode 100644
+--- /dev/null	(date 1680069901423)
++++ b/demo02/src/main/java/com/example/za/AmwayFamily.java	(date 1680069901423)
+@@ -0,0 +1,38 @@
++package com.example.za;
++
++import java.util.HashMap;
++import java.util.Map;
++
++public class AmwayFamily
++
++{  
++
++    public static void main (String args[])   
++
++    {  
++
++        System.out.println(100 + 100 +"Simplilearn");   
++
++        System.out.println("Amway Company" + 100 + 100);  
++
++    }
++    public void judge(String s){
++        int len=s.length();
++        Map<Character, Integer> map=new HashMap<>();
++
++        for (int i = 0; i < len; i++) {
++            Character c=s.charAt(i);
++            if(map.containsKey(c)){
++                map.put(c,map.get(c)+1);
++            }else {
++                map.put(c,1);
++            }
++        }
++        map.forEach((key, value) -> {
++            if(value>1){
++            System.out.println(key+":"+value);
++            }
++        });
++    }
++
++}
+\ No newline at end of file
+Index: demo02/src/main/java/com/example/za/Invoca.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/za/Invoca.java b/demo02/src/main/java/com/example/za/Invoca.java
+new file mode 100644
+--- /dev/null	(date 1680069901407)
++++ b/demo02/src/main/java/com/example/za/Invoca.java	(date 1680069901407)
+@@ -0,0 +1,19 @@
++package com.example.za;
++
++abstract class Invoca implements Invocation {
++    public String name="bob";
++    @Override
++    public String getName() {
++        return name;
++    }
++
++    @Override
++    public String getAge() {
++        return "10";
++    }
++
++    @Override
++    public String getSex() {
++        return "男";
++    }
++}
+Index: demo01/src/main/java/com/example/asuredelete/service/StorageCost.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/asuredelete/service/StorageCost.java b/demo01/src/main/java/com/example/asuredelete/service/StorageCost.java
+new file mode 100644
+--- /dev/null	(date 1680069901423)
++++ b/demo01/src/main/java/com/example/asuredelete/service/StorageCost.java	(date 1680069901423)
+@@ -0,0 +1,37 @@
++package com.example.asuredelete.service;
++
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.SizeUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.SneakyThrows;
++
++import java.io.File;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
++
++public class StorageCost {
++    @SneakyThrows
++    public static void main(String[] args) {
++        int attnum=5;
++        String filePath="D:\\Desktop\\琐碎\\ab.pdf";
++        List<Element> ct=new ArrayList<>();
++
++
++        File file=new File(filePath);
++        byte[] fileBytes = Files.readAllBytes(file.toPath());
++        Element m = FuncUtils.getPairing().getGT().newElementFromBytes(fileBytes);
++        ct.add(m);
++
++                Element g = FuncUtils.getRandomFromG1();
++                Element a = FuncUtils.getRandomFromZp();
++                Element  b= FuncUtils.getRandomFromZp();
++        for (int i = 0; i < attnum; i++) {
++            for (int j = 0; j < 10; j++) {
++                ct.add((g.powZn(a)).powZn(b));
++            }
++
++        }
++        System.out.println(SizeUtils.getSize(ct.toString().getBytes().length));
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/service/UploadAndDelete.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/UploadAndDelete.java b/demo01/src/main/java/com/example/Yue/service/UploadAndDelete.java
+new file mode 100644
+--- /dev/null	(date 1680069901392)
++++ b/demo01/src/main/java/com/example/Yue/service/UploadAndDelete.java	(date 1680069901392)
+@@ -0,0 +1,57 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.YueMSK;
++import com.example.Yue.doamin.YuePK;
++import com.example.Yue.doamin.YueSK;
++import com.example.Yue.doamin.YueTDR;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++@Service
++public class UploadAndDelete {
++    @EXCTime
++    public YueTDR upload(YueMSK msk,YuePK pk,YueSK sk, String filePath, int ctNum, int time){
++        YueTDR yueTDR = tdrGen(msk, filePath, ctNum, time);
++        if(!verify(yueTDR,msk,pk,filePath,ctNum ,time)){
++            return null;
++        }
++        return yueTDR;
++
++
++    }
++
++    private YueTDR tdrGen(YueMSK msk, String filePath, int ctNum, int time){
++        YueTDR tdr=new YueTDR();
++        tdr.setUserName("user");
++        tdr.setFileName(filePath);
++        StringBuilder sb=new StringBuilder();
++        sb.append(filePath);
++        sb.append(time);
++        for (int i = 0; i < ctNum; i++) {
++            sb.append(i);
++        }
++        Element tag = FuncUtils.hashFromStringToG1(sb.toString());
++        tdr.setTag(tag);
++        tdr.setSig(tag.powZn(msk.getR()));
++        return tdr;
++
++    }
++    private boolean verify(YueTDR tdr, YueMSK msk, YuePK pk,String filePath, int ctNum, int time){
++        Element v1 = FuncUtils.getPairing().pairing(tdr.getTag(), msk.getGr());
++        Element v2 = FuncUtils.getPairing().pairing(tdr.getSig(), pk.getG());
++        StringBuilder sb=new StringBuilder();
++        sb.append(filePath);
++        sb.append(time);
++        for (int i = 0; i < ctNum; i++) {
++            sb.append(i);
++        }
++        Element tagNew = FuncUtils.hashFromStringToG1(sb.toString());
++        if(v1.isEqual(v2)&&tagNew.isEqual(tdr.getTag())){
++            return true;
++        }
++        return false;
++
++    }
++}
+Index: demo02/src/main/java/com/example/za/Abstr.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/za/Abstr.java b/demo02/src/main/java/com/example/za/Abstr.java
+new file mode 100644
+--- /dev/null	(date 1680069901392)
++++ b/demo02/src/main/java/com/example/za/Abstr.java	(date 1680069901392)
+@@ -0,0 +1,9 @@
++package com.example.za;
++
++public class Abstr extends Invoca{
++
++    @Override
++    public String getSex() {
++        return "女";
++    }
++}
+Index: demo02/src/main/java/com/example/za/Ma.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/za/Ma.java b/demo02/src/main/java/com/example/za/Ma.java
+new file mode 100644
+--- /dev/null	(date 1680069901407)
++++ b/demo02/src/main/java/com/example/za/Ma.java	(date 1680069901407)
+@@ -0,0 +1,14 @@
++package com.example.za;
++
++import java.util.Arrays;
++import java.util.List;
++
++public class Ma {
++    public static void main(String[] args) {
++        Abstr ab=new Abstr();
++StringBuilder sb=new StringBuilder();
++        List<Integer> arr= Arrays.asList(3,5,1,4,7,2,3);
++        arr.stream().filter(t->t>3).forEach(s->{sb.append(s);});
++        System.out.println(ab.getAge());
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/doamin/YuePK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/doamin/YuePK.java b/demo01/src/main/java/com/example/Yue/doamin/YuePK.java
+new file mode 100644
+--- /dev/null	(date 1680069901361)
++++ b/demo01/src/main/java/com/example/Yue/doamin/YuePK.java	(date 1680069901361)
+@@ -0,0 +1,13 @@
++package com.example.Yue.doamin;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class YuePK {
++    Element g;
++    Element gBeta;
++    Element gDelta;
++    Element eggAlpha;
++    Element ft;
++}
+Index: demo01/src/main/java/com/example/Yue/doamin/YueSK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/doamin/YueSK.java b/demo01/src/main/java/com/example/Yue/doamin/YueSK.java
+new file mode 100644
+--- /dev/null	(date 1680069901376)
++++ b/demo01/src/main/java/com/example/Yue/doamin/YueSK.java	(date 1680069901376)
+@@ -0,0 +1,12 @@
++package com.example.Yue.doamin;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++@Data
++public class YueSK {
++    Element d1;
++    List<Element> d21;
++    List<Element> d22;
++}
+Index: demo01/src/main/java/com/example/Yue/doamin/YueMSK.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/doamin/YueMSK.java b/demo01/src/main/java/com/example/Yue/doamin/YueMSK.java
+new file mode 100644
+--- /dev/null	(date 1680069901376)
++++ b/demo01/src/main/java/com/example/Yue/doamin/YueMSK.java	(date 1680069901376)
+@@ -0,0 +1,13 @@
++package com.example.Yue.doamin;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class YueMSK {
++    Element gAlpha;
++    Element beta;
++    Element delta;
++    Element r;
++    Element gr;
++}
+Index: demo01/src/main/java/com/example/Yue/service/YueDecrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/YueDecrypt.java b/demo01/src/main/java/com/example/Yue/service/YueDecrypt.java
+new file mode 100644
+--- /dev/null	(date 1680069901392)
++++ b/demo01/src/main/java/com/example/Yue/service/YueDecrypt.java	(date 1680069901392)
+@@ -0,0 +1,53 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.YueCT;
++import com.example.Yue.doamin.YuePK;
++import com.example.Yue.doamin.YueSK;
++import com.example.Yue.doamin.YueTD;
++import com.example.asuredelete.Utils.AES;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.Lagrange;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.SneakyThrows;
++import org.springframework.stereotype.Service;
++
++import javax.crypto.SecretKey;
++import java.io.File;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class YueDecrypt {
++    @SneakyThrows
++    @EXCTime
++    public void decrypt(YueCT ct, YueSK sk, YuePK pk,String filePath, int policyNum){
++        recover(policyNum);
++        Element g = pk.getG();
++        YueTD td = ct.getTd();
++        Element fr = FuncUtils.pairing.pairing(g, g).powZn(td.getY());
++        Element div = FuncUtils.pairing.pairing(ct.getC2(), sk.getD1());
++        Element aessk = ct.getC1().div(div.div(fr));
++        long s = System.currentTimeMillis();
++        SecretKey ssk = AES.generateKey();
++
++
++        File file=new File(filePath);
++        byte[] fileBytes = Files.readAllBytes(file.toPath());
++        byte[] cipher = AES.encrypt(fileBytes.toString(), ssk);
++        System.out.println("AES加密时间："+(System.currentTimeMillis()-s));
++        String decrypt = AES.decrypt(cipher, ssk);
++
++    }
++
++    private void recover(int n){
++        List<Element> list=new ArrayList<>();
++        for (int i = 0; i < n; i++) {
++            list.add(FuncUtils.getRandomFromG1());
++        }
++        for (int i = 0; i < n; i++) {
++            Lagrange.PloyReco(list);
++        }
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/service/YueSetup.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/YueSetup.java b/demo01/src/main/java/com/example/Yue/service/YueSetup.java
+new file mode 100644
+--- /dev/null	(date 1680069901345)
++++ b/demo01/src/main/java/com/example/Yue/service/YueSetup.java	(date 1680069901345)
+@@ -0,0 +1,27 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.YueMSK;
++import com.example.Yue.doamin.YuePK;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++@Service
++public class YueSetup {
++    @EXCTime
++    public void setup(YuePK pk, YueMSK msk){
++        Element g = FuncUtils.getRandomFromG1();
++        Element alpha = FuncUtils.getRandomFromZp();
++        Element beta = FuncUtils.getRandomFromZp();
++        Element delta  = FuncUtils.getRandomFromZp();
++        msk.setGAlpha(g.powZn(alpha));
++        msk.setBeta(beta);
++        msk.setDelta(delta);
++        //
++        pk.setG(g);
++        pk.setGBeta(g.powZn(beta));
++        pk.setGDelta(g.powZn(delta));
++        pk.setEggAlpha(FuncUtils.getPairing().pairing(g,g).powZn(alpha));
++    }
++}
+Index: demo01/src/test/java/com/example/demo01/YueTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo01/YueTest.java b/demo01/src/test/java/com/example/demo01/YueTest.java
+new file mode 100644
+--- /dev/null	(date 1680069901345)
++++ b/demo01/src/test/java/com/example/demo01/YueTest.java	(date 1680069901345)
+@@ -0,0 +1,16 @@
++package com.example.demo01;
++
++import com.example.Demo01ApplicationTests;
++import com.example.Yue.service.YueScheme;
++import org.junit.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++
++public class YueTest extends Demo01ApplicationTests {
++    @Autowired
++    private YueScheme yueScheme;
++    @Test
++    public void YueTest(){
++        yueScheme.YueDemo();
++
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/service/YueKeyGen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/YueKeyGen.java b/demo01/src/main/java/com/example/Yue/service/YueKeyGen.java
+new file mode 100644
+--- /dev/null	(date 1680069901361)
++++ b/demo01/src/main/java/com/example/Yue/service/YueKeyGen.java	(date 1680069901361)
+@@ -0,0 +1,42 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.YueMSK;
++import com.example.Yue.doamin.YuePK;
++import com.example.Yue.doamin.YueSK;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++@Service
++public class YueKeyGen {
++    @EXCTime
++    public YueSK keyGen(YuePK pk, YueMSK msk,int attNum){
++        YueSK sk=new YueSK();
++        Element g = pk.getG();
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        Element r = FuncUtils.getRandomFromZp();
++        msk.setR(r);
++        msk.setGr(g.powZn(r));
++        for (int i = 0; i < attNum; i++) {
++            Element ri = FuncUtils.getRandomFromZp();
++            Element hash = FuncUtils.hashFromBytesToG1(("" + i).getBytes()).powZn(ri);
++            l1.add((g.powZn(r)).mul(hash));
++            l2.add(g.powZn(ri));
++        }
++        sk.setD21(l1);
++        sk.setD22(l2);
++
++        Element gAlpha = msk.getGAlpha();
++        Element div = FuncUtils.getOneFromZp().div(msk.getBeta());
++        sk.setD1((gAlpha.mul(g.powZn(r))).powZn(div));
++
++
++
++
++        return sk;
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/doamin/YueCT.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/doamin/YueCT.java b/demo01/src/main/java/com/example/Yue/doamin/YueCT.java
+new file mode 100644
+--- /dev/null	(date 1680069901361)
++++ b/demo01/src/main/java/com/example/Yue/doamin/YueCT.java	(date 1680069901361)
+@@ -0,0 +1,16 @@
++package com.example.Yue.doamin;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class YueCT {
++    byte[] c0;
++    Element c1;
++    Element c2;
++    List<Element> c31;
++    List<Element> c32;
++    YueTD td;
++}
+Index: demo01/src/main/java/com/example/Yue/service/YueScheme.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/YueScheme.java b/demo01/src/main/java/com/example/Yue/service/YueScheme.java
+new file mode 100644
+--- /dev/null	(date 1680069901329)
++++ b/demo01/src/main/java/com/example/Yue/service/YueScheme.java	(date 1680069901329)
+@@ -0,0 +1,46 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.*;
++import com.example.asuredelete.Utils.SizeUtils;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++@Service
++public class YueScheme {
++
++    @Autowired
++    private YueSetup yueSetup;
++    @Autowired
++    private YueKeyGen yueKeyGen;
++    @Autowired
++    private YueEncrypt yueEncrypt;
++    @Autowired
++    private YueDecrypt yueDecrypt;
++    @Autowired
++    private TimeAndDelete timeAndDelete;
++    @Autowired
++    private UploadAndDelete uploadAndDelete;
++    @Autowired
++    private YueVerify yueVerify;
++
++    public void YueDemo(){
++
++        String filePath="D:\\Desktop\\琐碎\\ab.pdf";
++        String policy="(( 1 and 2) and (3 or 4 or 5) )";
++        int n=4;
++        int attNum=5;
++        int time=1;
++
++        YuePK pk=new YuePK();
++        YueMSK msk=new YueMSK();
++        yueSetup.setup(pk,msk);
++        YueSK sk = yueKeyGen.keyGen(pk, msk, attNum);
++        YueCT ct = yueEncrypt.encrypt(pk, filePath, policy, attNum/5);
++        yueDecrypt.decrypt(ct,sk,pk,filePath,attNum/2);
++        YueTDR tdr = uploadAndDelete.upload(msk, pk, sk, filePath, attNum + 7, time);
++        YueTP tp = timeAndDelete.sendAndDelete( msk, ct, filePath, time);
++        yueVerify.verify(tp);
++        System.out.println("KGC存储开销："+ SizeUtils.getSize(pk.toString().getBytes().length+msk.toString().getBytes().length+tdr.toString().getBytes().length));
++
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/service/YueEncrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/service/YueEncrypt.java b/demo01/src/main/java/com/example/Yue/service/YueEncrypt.java
+new file mode 100644
+--- /dev/null	(date 1680069901329)
++++ b/demo01/src/main/java/com/example/Yue/service/YueEncrypt.java	(date 1680069901329)
+@@ -0,0 +1,70 @@
++package com.example.Yue.service;
++
++import com.example.Yue.doamin.YueCT;
++import com.example.Yue.doamin.YuePK;
++import com.example.Yue.doamin.YueTD;
++import com.example.asuredelete.Utils.AES;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.SneakyThrows;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import javax.crypto.SecretKey;
++import java.io.File;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++@Service
++public class YueEncrypt {
++    @Autowired
++    private com.example.asuredelete.service.Encrypt encrypt;
++    @SneakyThrows
++    @EXCTime
++    public YueCT encrypt(YuePK pk, String filePath,String policy,int attNum){
++        YueCT ct=new YueCT();
++        File file=new File(filePath);
++        byte[] fileBytes = Files.readAllBytes(file.toPath());
++        //AES
++        SecretKey aesSK = AES.generateKey();
++        byte[]   ciphertext  = AES.encrypt(fileBytes.toString(), aesSK);
++
++        ct.setC0(ciphertext);
++        //CP-ABE,加密对称密钥
++        Element m = FuncUtils.getPairing().getGT().newElementFromBytes(aesSK.toString().getBytes());
++        Element s1 = FuncUtils.getRandomFromZp();
++        Element s2 = FuncUtils.getRandomFromZp();
++        Element s3 = FuncUtils.getRandomFromZp();
++        Element sp=s1.mul(s2);
++        ct.setC1(m.mul(pk.getEggAlpha().powZn(sp)));
++
++        ct.setC2(pk.getGBeta().powZn(sp));
++
++
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        Element g = pk.getG();
++        for (int i = 0; i < attNum; i++) {
++            Map<String, Element> leafNodes = this.encrypt.genAccessTree(policy);
++            leafNodes.entrySet().parallelStream().forEach(entry->{
++                l1.add(g.powZn(entry.getValue()));
++                l2.add((FuncUtils.hashFromBytesToG1(entry.getKey().getBytes())).powZn(entry.getValue()));
++            });
++        }
++        ct.setC31(l1);
++        ct.setC32(l2);
++
++
++        //TD
++        Element rt = FuncUtils.getRandomFromZp();
++        YueTD td=new YueTD();
++        td.setX(g.powZn(rt));
++        td.setY(s2);
++        Element temp = FuncUtils.getPairing().pairing(FuncUtils.hashFromBytesToG1("1".getBytes()), pk.getGDelta());
++        td.setZ(s3.add(FuncUtils.hashFromBytesToZp(temp.powZn(rt).toString().getBytes())));
++        ct.setTd(td);
++        return ct;
++    }
++}
+Index: demo01/src/main/java/com/example/Yue/doamin/YueTD.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/doamin/YueTD.java b/demo01/src/main/java/com/example/Yue/doamin/YueTD.java
+new file mode 100644
+--- /dev/null	(date 1680069901345)
++++ b/demo01/src/main/java/com/example/Yue/doamin/YueTD.java	(date 1680069901345)
+@@ -0,0 +1,12 @@
++package com.example.Yue.doamin;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class YueTD {
++    Element x;
++    Element y;
++    Element z;
++
++}
+Index: demo01/src/main/java/com/example/DDSD/domain/TreeNode.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/domain/TreeNode.java b/demo01/src/main/java/com/example/DDSD/domain/TreeNode.java
+new file mode 100644
+--- /dev/null	(date 1680069901298)
++++ b/demo01/src/main/java/com/example/DDSD/domain/TreeNode.java	(date 1680069901298)
+@@ -0,0 +1,16 @@
++package com.example.DDSD.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class TreeNode {
++    public int val;
++    public TreeNode left;
++    public TreeNode right;
++    public Element v;
++    public TreeNode(){}
++    public TreeNode(int val){
++        this.val=val;
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/service/DDSDEncrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/DDSDEncrypt.java b/demo01/src/main/java/com/example/DDSD/service/DDSDEncrypt.java
+new file mode 100644
+--- /dev/null	(date 1680069901298)
++++ b/demo01/src/main/java/com/example/DDSD/service/DDSDEncrypt.java	(date 1680069901298)
+@@ -0,0 +1,63 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.DDCT;
++import com.example.DDSD.domain.DDPK;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.SneakyThrows;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.io.File;
++import java.nio.file.Files;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++
++@Service
++public class DDSDEncrypt {
++
++
++    @Autowired
++    private SKGen skGen;
++    @Autowired
++    private com.example.asuredelete.service.Encrypt encrypt;
++
++
++    public  Element flag;
++    @SneakyThrows
++    @EXCTime
++    public DDCT encrypt(DDPK pk, String filePath,int state,String policy,int attNum){
++        DDCT ct=new DDCT();
++        File file=new File(filePath);
++        byte[] fileBytes = Files.readAllBytes(file.toPath());
++        Element m = FuncUtils.getPairing().getGT().newElementFromBytes(fileBytes);
++        Element s = FuncUtils.getRandomFromZp();
++        ct.setC1(m.mul(pk.getEggAlpha().powZn(s)));
++        Element st = skGen.getSt(pk, state);
++        Element h = pk.getH();
++        this.flag=h.powZn(s);
++
++        ct.setC2t(h.powZn(s.sub(st)));
++
++
++        List<Element> l1=new ArrayList<>();
++        List<Element> l2=new ArrayList<>();
++        Element g = pk.getG();
++        for (int i = 0; i < attNum; i++) {
++            Map<String, Element> leafNodes = encrypt.genAccessTree(policy);
++            leafNodes.entrySet().parallelStream().forEach(entry->{
++                l1.add(g.powZn(entry.getValue()));
++                l2.add((FuncUtils.hashFromBytesToG1(entry.getKey().getBytes())).powZn(entry.getValue()));
++            });
++        }
++
++        ct.setC31(l1);
++        ct.setC32(l2);
++
++
++
++        return ct;
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/service/Solution.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/Solution.java b/demo01/src/main/java/com/example/DDSD/service/Solution.java
+new file mode 100644
+--- /dev/null	(date 1680069901314)
++++ b/demo01/src/main/java/com/example/DDSD/service/Solution.java	(date 1680069901314)
+@@ -0,0 +1,17 @@
++package com.example.DDSD.service;
++
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++
++public class Solution {
++
++    public static void main(String[] args) {
++        Element a = FuncUtils.getRandomFromZp();
++        Element b = FuncUtils.getRandomFromZp();
++        Element g = FuncUtils.getRandomFromG1();
++        Element c = a.powZn(b);
++        g.powZn(c);
++    }
++}
++
++
+Index: demo01/src/main/java/com/example/DDSD/service/Delay.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/Delay.java b/demo01/src/main/java/com/example/DDSD/service/Delay.java
+new file mode 100644
+--- /dev/null	(date 1680069901329)
++++ b/demo01/src/main/java/com/example/DDSD/service/Delay.java	(date 1680069901329)
+@@ -0,0 +1,41 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.*;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Set;
++
++@Service
++public class Delay {
++    @Autowired
++    private  SKGen skGen;
++    @Autowired
++    private UPGen upGen;
++    @Autowired
++    private CTUpdate ctUpdate;
++    @EXCTime
++    public void delay(DDPK pk, DDMSK msk, DDCT ct, Set<TreeNode> rl, int n){
++        TreeNode root=null;
++        TreeNode rootNew = skGen.buildTree(root, 2*n, 1);
++        List<Element> vlist=new ArrayList<>();
++        for (int i = 0; i <=n ; i++) {
++            vlist.add(FuncUtils.getRandomFromG1());
++        }
++        pk.setVlist(vlist);
++        msk.setLeafNum(n);
++        msk.setRoot(rootNew);
++        rl.clear();
++
++        DDUP upNew = upGen.upGen(msk, pk, ct, rl, n);
++        DDCT update = ctUpdate.update(upNew, pk, ct);
++
++
++
++    }
++}
+Index: demo02/src/main/java/com/example/leetcode/Func2.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/leetcode/Func2.java b/demo02/src/main/java/com/example/leetcode/Func2.java
+new file mode 100644
+--- /dev/null	(date 1680069901282)
++++ b/demo02/src/main/java/com/example/leetcode/Func2.java	(date 1680069901282)
+@@ -0,0 +1,225 @@
++package com.example.leetcode;
++
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.List;
++
++public class Func2 {
++
++    public static void main(String[] args) {
++        Func2 f2=new Func2();
++        f2.myAtoi("-2147483647");
++
++    }
++    public void reorderList(ListNode head) {
++        ListNode slow=head;
++        ListNode fast=head;
++        if (slow==null){
++            return;
++        }
++        while (fast.next!=null&&fast.next.next!=null){
++            slow=slow.next;
++            fast=fast.next.next;
++        }
++        ListNode newhead=slow.next;
++        slow.next=null;
++
++        ListNode h2 = reverseNode(newhead);
++        while (h2!=null){
++            System.out.println(h2.val);
++            ListNode temp=h2;
++            h2=h2.next;
++            temp.next=head.next;
++            head.next=temp;
++            head=temp;
++        }
++
++    }
++
++    private ListNode reverseNode(ListNode head){
++        ListNode dummy=new ListNode(-1);
++
++        ListNode tail=null;
++        while (head!=null){
++            ListNode temp=head;
++            head=head.next;
++            temp.next=tail;
++            dummy.next=temp;
++            tail=temp;
++
++
++        }
++        return dummy.next;
++    }
++
++    public List<Integer> rightSideView(TreeNode root) {
++        if(root==null){
++            return new ArrayList<>();
++        }
++        List<List<Integer>> lev=new ArrayList<>();
++        levelTree(lev,1,root);
++        List<Integer> res=new ArrayList<>();
++        for (List<Integer> list : lev) {
++            res.add(list.get(list.size()-1));
++
++        }
++        return res;
++    }
++
++    private void levelTree(List<List<Integer>> lev, int depth, TreeNode root) {
++        if(root==null){
++            return;
++        }
++        if(lev.size()<depth){
++            lev.add(new ArrayList<>());
++        }
++        lev.get(depth-1).add(root.val);
++        levelTree(lev,depth+1,root.left);
++        levelTree(lev,depth+1,root.right);
++    }
++
++    public int climbStairs(int n) {
++        int[] dp=new int[n+1];
++        dp[0]=1;
++        dp[1]=1;
++
++        for (int i = 2; i <= n; i++) {
++            dp[i]=dp[i-1]+dp[i-2];
++        }
++        return dp[n];
++    }
++
++    public int[][] merge(int[][] intervals) {
++        Arrays.sort(intervals, (o1,o2)->o1[0]-o2[0]);
++
++        int[][] res=new int[intervals.length][2];
++        res[0]=intervals[0];
++        int l=0;
++        for (int i = 1; i < intervals.length; i++) {
++            int left=res[l][0];
++            int right=res[l][1];
++            if(left<intervals[i][0]&&intervals[i][0]<right){
++                res[l][1]=Math.max(right,intervals[i][1]);
++                continue;
++            }else {
++                res[++l]=intervals[i];
++            }
++
++        }
++        return Arrays.copyOf(res,l+1);
++    }
++
++    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
++        ListNode dummy=new ListNode(-1);
++        ListNode tail=dummy;
++        int cur=0;
++        while (l1!=null||l2!=null){
++            int a=l1==null?0:l1.val;
++            int b=l2==null?0:l2.val;
++            int temp=a+b+cur;
++            cur=temp/10;
++            tail.next= new ListNode(temp%10);
++            tail=tail.next;
++            if(l1!=null){
++                l1=l1.next;
++            }
++            if(l2!=null){
++                l2=l2.next;
++            }
++        }
++        if(cur>0){
++            tail.next=new ListNode(cur);
++        }
++        return dummy.next;
++    }
++
++    public int mySqrt(int x) {
++        if(x==0||x==1){
++            return x;
++        }
++        int right=x,left=1;
++        while (left<=right){
++            int mid=(left+right)/2;
++            if(mid<=x/mid&&(mid+1)>x/(mid+1)){
++                return mid;
++            }else if(mid<x/mid){
++                left=mid+1;
++            }else if(mid>x/mid){
++                right=mid-1;
++            }
++        }
++        return left;
++    }
++
++    public int myAtoi(String s) {
++        char[] s1 = s.trim().toCharArray();
++        int res=0;
++        int max=Integer.MAX_VALUE;
++        int min=Integer.MIN_VALUE;
++        if (s1.length<1||Character.isLetter(s1[0])) {
++            return  0;
++        }
++        char end = 0;
++        int flag=1;
++        int i=0;
++        if(s1[0]=='-'){
++             i=1;
++             flag=-1;
++        }else if(s1[0]=='+'){
++            i=1;
++        }
++        for (; i < s1.length; i++) {
++            char c=s1[i];
++            if(!Character.isDigit(c)){
++                break;
++            }
++            if(max/10<res||(max/10==res&&(c-'0')>max%10)){
++                return max;
++            }
++            if(min/10>res||(min/10==res&&(c-'0')>-(min%10))){
++                return min;
++            }
++            res=res*10+flag*(c-'0');
++
++        }
++
++
++
++        return res;
++    }
++
++    public ListNode sortList(ListNode head) {
++        if(head==null) {
++            return head;
++        }
++        ListNode slow=head,fast=head;
++        while (fast.next!=null&&fast.next.next!=null){
++            slow=slow.next;
++            fast=fast.next.next;
++        }
++        ListNode tmp=slow.next;
++        slow.next=null;
++        ListNode left=sortList(head);
++        ListNode right=sortList(tmp);
++        //merge两个有序表
++        return mergeTwoListNode(left,right);
++    }
++
++    private ListNode mergeTwoListNode(ListNode left, ListNode right) {
++        ListNode dummy=new ListNode(-1);
++        ListNode temp=dummy;
++        while (left!=null&&right!=null){
++            if(left.val>=right.val){
++                temp.next=right;
++                right=right.next;
++            }else {
++                temp.next=left;
++                left=left.next;
++            }
++            temp=temp.next;
++        }
++        temp.next=left==null?right:left;
++        return dummy.next;
++    }
++
++}
+Index: demo01/src/main/java/com/example/Yue/doamin/YueTDR.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Yue/doamin/YueTDR.java b/demo01/src/main/java/com/example/Yue/doamin/YueTDR.java
+new file mode 100644
+--- /dev/null	(date 1680069901298)
++++ b/demo01/src/main/java/com/example/Yue/doamin/YueTDR.java	(date 1680069901298)
+@@ -0,0 +1,12 @@
++package com.example.Yue.doamin;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++@Data
++public class YueTDR {
++    String userName;
++    String fileName;
++    Element tag;
++    Element sig;
++}
+Index: demo01/src/test/java/com/example/demo01/DDSDTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/test/java/com/example/demo01/DDSDTest.java b/demo01/src/test/java/com/example/demo01/DDSDTest.java
+new file mode 100644
+--- /dev/null	(date 1680069901267)
++++ b/demo01/src/test/java/com/example/demo01/DDSDTest.java	(date 1680069901267)
+@@ -0,0 +1,22 @@
++package com.example.demo01;
++
++import com.example.DDSD.service.DDSDScheme;
++import com.example.asuredelete.aop.EXCTime;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.test.context.junit4.SpringRunner;
++
++@RunWith(SpringRunner.class)
++@SpringBootTest
++public class DDSDTest {
++    @Autowired
++    private DDSDScheme ddsdScheme;
++
++    @Test
++    @EXCTime
++    public void test(){
++        ddsdScheme.ddsdDemo();
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/service/UPGen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/UPGen.java b/demo01/src/main/java/com/example/DDSD/service/UPGen.java
+new file mode 100644
+--- /dev/null	(date 1680069901267)
++++ b/demo01/src/main/java/com/example/DDSD/service/UPGen.java	(date 1680069901267)
+@@ -0,0 +1,73 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.*;
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.HashSet;
++import java.util.LinkedList;
++import java.util.List;
++import java.util.Set;
++
++@Service
++public class UPGen {
++    @Autowired
++    private DDSDEncrypt encrypt;
++
++    @Autowired
++    private SKGen skGen;
++
++
++    public DDUP upGen(DDMSK msk,DDPK pk, DDCT ct, Set<TreeNode> rl, int state){
++        Element f = ct.getC2t().powZn(skGen.stSave);
++        Element flag = encrypt.flag;
++        //verify
++        if(!f.equals(flag)){
++            //System.out.println("验证失败");
++        }
++        Set<TreeNode> ylist = KUNodes(msk.getRoot(), new TreeNode(state + msk.getLeafNum()));
++        LinkedList<TreeNode> path=new LinkedList<>();
++        skGen.getPathToTarget(msk.getRoot(),state + msk.getLeafNum()+1,path);
++        int index=0;
++        for (int i = path.size() - 1; i >= 0; i--) {
++            if(ylist.contains(path.get(i))){
++                index=path.size()-i-1;
++                break;
++            }
++        }
++        //只计算时间，数值不对
++        Element stNew=FuncUtils.getOneFromZp();
++        List<Element> vlist = pk.getVlist();
++        for (int i = index; i < path.size(); i++) {
++            if(path.get(i).getVal()%2==1){
++                stNew=stNew.mul(vlist.get(i).powZn(path.get(i).getV()));
++            }else {
++                Element t = path.get(i).getV().mul(FuncUtils.getZeroFromZp());
++                stNew=stNew.mul(vlist.get(i).powZn(t));
++            }
++        }
++        DDUP up=new DDUP();
++        Element h = pk.getH();
++        up.setUp1(h.powZn(stNew.sub(skGen.stSave)));
++        up.setUp2(h.powZn(skGen.stSave.sub(stNew)));
++
++        return up;
++
++
++    }
++
++    public Set<TreeNode> KUNodes(TreeNode root, TreeNode leaf){
++        Set<TreeNode> res=new HashSet<>();
++        LinkedList<TreeNode> path=new LinkedList<>();
++        skGen.getPathToTarget(root,leaf.val,path);
++        for (TreeNode treeNode : path) {
++            if(treeNode.right!=null){
++                res.add(treeNode.right);
++            }
++        }
++
++        return res;
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/domain/DDCT.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/domain/DDCT.java b/demo01/src/main/java/com/example/DDSD/domain/DDCT.java
+new file mode 100644
+--- /dev/null	(date 1680069901267)
++++ b/demo01/src/main/java/com/example/DDSD/domain/DDCT.java	(date 1680069901267)
+@@ -0,0 +1,15 @@
++package com.example.DDSD.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++import java.util.List;
++
++@Data
++public class DDCT {
++    Element c1;
++    Element c2t;
++    List<Element> c31;
++    List<Element> c32;
++
++}
+Index: demo01/src/main/java/com/example/DDSD/service/CTUpdate.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/CTUpdate.java b/demo01/src/main/java/com/example/DDSD/service/CTUpdate.java
+new file mode 100644
+--- /dev/null	(date 1680069901282)
++++ b/demo01/src/main/java/com/example/DDSD/service/CTUpdate.java	(date 1680069901282)
+@@ -0,0 +1,30 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.DDCT;
++import com.example.DDSD.domain.DDPK;
++import com.example.DDSD.domain.DDUP;
++import com.example.asuredelete.Utils.FuncUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.HashMap;
++import java.util.Map;
++
++@Service
++public class CTUpdate {
++    public DDCT update(DDUP up, DDPK pk, DDCT ct){
++        Element c2t = ct.getC2t();
++        Element proof = c2t.mul(up.getUp2());
++        ct.setC2t(proof);
++        return ct;
++    }
++
++    public static void main(String[] args) {
++        Map<Element,Integer> map=new HashMap<>();
++        Element g = FuncUtils.getRandomFromG1();
++
++        map.put(g,1);
++
++        System.out.println(map.containsKey(g));
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/domain/DDUP.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/domain/DDUP.java b/demo01/src/main/java/com/example/DDSD/domain/DDUP.java
+new file mode 100644
+--- /dev/null	(date 1680069901251)
++++ b/demo01/src/main/java/com/example/DDSD/domain/DDUP.java	(date 1680069901251)
+@@ -0,0 +1,11 @@
++package com.example.DDSD.domain;
++
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.Data;
++
++
++@Data
++public class DDUP {
++    Element up1;
++    Element up2;
++}
+Index: demo02/src/main/java/com/example/leetcode/parent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/leetcode/parent.java b/demo02/src/main/java/com/example/leetcode/parent.java
+new file mode 100644
+--- /dev/null	(date 1680069901251)
++++ b/demo02/src/main/java/com/example/leetcode/parent.java	(date 1680069901251)
+@@ -0,0 +1,20 @@
++package com.example.leetcode;
++
++ public class parent {
++//    String name;
++//    public parent(){
++//        System.out.println(1);
++//    }
++//     public parent(String name){
++//         System.out.println(2);
++//         this.name=name;
++//     }
++
++
++
++
++
++
++
++
++}
+Index: demo01/src/main/java/com/example/DDSD/service/Decrypt.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/Decrypt.java b/demo01/src/main/java/com/example/DDSD/service/Decrypt.java
+new file mode 100644
+--- /dev/null	(date 1680069901236)
++++ b/demo01/src/main/java/com/example/DDSD/service/Decrypt.java	(date 1680069901236)
+@@ -0,0 +1,35 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.DDCT;
++import com.example.DDSD.domain.DDSK;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.Lagrange;
++import com.example.asuredelete.aop.EXCTime;
++import it.unisa.dia.gas.jpbc.Element;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.List;
++
++@Service
++public class Decrypt {
++    @EXCTime
++    public void decrypt(DDCT ct, DDSK sk,int policyNum){
++        recover(policyNum);
++        Element c = sk.getD2t().mul(ct.getC2t());
++        Element e = FuncUtils.pairing.pairing(c, sk.getD1())
++                .div(FuncUtils.pairing.pairing(FuncUtils.getRandomFromG1(), FuncUtils.getRandomFromG1()));
++        Element m = ct.getC1().div(e);
++
++    }
++
++    private void recover(int n){
++        List<Element> list=new ArrayList<>();
++        for (int i = 0; i < n; i++) {
++            list.add(FuncUtils.getRandomFromG1());
++        }
++        for (int i = 0; i < n; i++) {
++            Lagrange.PloyReco(list);
++        }
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/service/Revoke.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/Revoke.java b/demo01/src/main/java/com/example/DDSD/service/Revoke.java
+new file mode 100644
+--- /dev/null	(date 1680069901236)
++++ b/demo01/src/main/java/com/example/DDSD/service/Revoke.java	(date 1680069901236)
+@@ -0,0 +1,25 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.DDMSK;
++import com.example.DDSD.domain.TreeNode;
++import com.example.asuredelete.aop.EXCTime;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.LinkedList;
++import java.util.Set;
++
++@Service
++public class Revoke {
++    @Autowired
++    private SKGen skGen;
++    @EXCTime
++    public Set<TreeNode> revoke(DDMSK msk, Set<TreeNode> rl, int state){
++        LinkedList<TreeNode> path=new LinkedList<>();
++        skGen.getPathToTarget(msk.getRoot(),(msk.getLeafNum()+state),path);
++        for (TreeNode treeNode : path) {
++            rl.add(treeNode);
++        }
++        return rl;
++    }
++}
+Index: demo01/src/main/java/com/example/DDSD/service/DDSDScheme.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/DDSD/service/DDSDScheme.java b/demo01/src/main/java/com/example/DDSD/service/DDSDScheme.java
+new file mode 100644
+--- /dev/null	(date 1680069901236)
++++ b/demo01/src/main/java/com/example/DDSD/service/DDSDScheme.java	(date 1680069901236)
+@@ -0,0 +1,61 @@
++package com.example.DDSD.service;
++
++import com.example.DDSD.domain.*;
++import com.example.asuredelete.Utils.SizeUtils;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.HashSet;
++
++@Service
++@Slf4j
++public class DDSDScheme {
++    @Autowired
++    private DDSDSetup setup;
++    @Autowired
++    private SKGen skGen;
++    @Autowired
++    private DDSDEncrypt encrypt;
++    @Autowired
++    private Decrypt decrypt;
++    @Autowired
++    private CTUpdate ctUpdate;
++    @Autowired
++    private UPGen upGen;
++    @Autowired
++    private Revoke revoke;
++    @Autowired
++    private Delay delay;
++
++    public void ddsdDemo(){
++        String filePath="D:\\Desktop\\琐碎\\ab.pdf";
++        String policy="(( 1 and 2) and (3 or 4 or 5) )";
++        DDPK pk=new DDPK();
++        DDMSK msk=new DDMSK();
++        int n=100;
++        int attNum=5;
++        int state=1;
++        HashSet<TreeNode> rl = new HashSet<>();
++
++        setup.setup(pk,msk,n);
++        long s = System.currentTimeMillis();
++        DDSK sk = skGen.skGen(msk, pk, attNum, state);
++        long s1 = System.currentTimeMillis();
++        System.out.println("skGen:"+(s1-s));
++        DDCT ct = encrypt.encrypt(pk, filePath, state, policy,attNum/5);
++        decrypt.decrypt(ct,sk,attNum/2);
++        long s2 = System.currentTimeMillis();
++        DDUP up = upGen.upGen(msk, pk, ct, rl, state);
++        System.out.println("upGen:"+(System.currentTimeMillis()-s2));
++        long s3 = System.currentTimeMillis();
++        DDCT ctNew = ctUpdate.update(up, pk, ct);
++        System.out.println("CTUpdate:"+(System.currentTimeMillis()-s3));
++        revoke.revoke(msk, rl, state);
++       delay.delay(pk,msk,ct,rl,n);
++        String size =SizeUtils.getSize(msk.toString().getBytes().length+rl.toString().getBytes().length);
++        System.out.println("KGC存储开销："+size);
++
++
++    }
++}
+Index: demo02/src/main/java/com/example/leetcode/huaqi.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo02/src/main/java/com/example/leetcode/huaqi.java b/demo02/src/main/java/com/example/leetcode/huaqi.java
+new file mode 100644
+--- /dev/null	(date 1680069901220)
++++ b/demo02/src/main/java/com/example/leetcode/huaqi.java	(date 1680069901220)
+@@ -0,0 +1,60 @@
++package com.example.leetcode;
++
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.List;
++
++public class huaqi {
++    public static void main(String[] args) {
++
++    }
++    public int minCostWithTimeLimited (int maxTime, int[][] edges, int[] passingFees) {
++        // write code here
++       int inf=Integer.MAX_VALUE;
++       int len=passingFees.length;
++       int[][] dp=new int[maxTime+1][len];
++        for (int i = 0; i < maxTime+1; i++) {
++            Arrays.fill(dp[i],inf);
++        }
++        dp[0][0]=passingFees[0];
++        for (int i = 0; i < maxTime; i++) {
++            for (int j = 0; j < edges.length; j++) {
++                int m=edges[j][0],n=edges[j][1],k=edges[j][2];
++                if(k<=i){
++                    dp[i][m]=Math.min(dp[i-k][n]+passingFees[m],dp[i][m]);
++                    dp[i][n]=Math.min(dp[i-k][m]+passingFees[n],dp[i][n]);
++                }
++            }
++        }
++        int ans=inf;
++        for (int i = 0; i < maxTime; i++) {
++            ans=Math.min(dp[i][len-1],ans);
++        }
++        if(ans==inf){
++            return -1;
++        }
++        return ans;
++
++    }
++    public String merge (int[] nums1, int m, int[] nums2, int n) {
++        // write code here
++        List<Integer> res=new ArrayList<>();
++        for (int i = 0; i < m; i++) {
++            res.add(nums1[i]);
++        }
++        for (int i = 0; i < n; i++) {
++            res.add(nums2[i]);
++        }
++        Collections.sort(res);
++        for (int i = 0; i < nums1.length; i++) {
++            nums1[i]=res.get(i);
++            System.out.print(nums1[i]);
++        }
++        StringBuilder sb=new StringBuilder();
++        for (Integer re : res) {
++            sb.append(re+"");
++        }
++        return sb.toString();
++    }
++}
+Index: demo01/src/main/java/com/example/Tian/service/TianScheme.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo01/src/main/java/com/example/Tian/service/TianScheme.java b/demo01/src/main/java/com/example/Tian/service/TianScheme.java
+new file mode 100644
+--- /dev/null	(date 1680069901220)
++++ b/demo01/src/main/java/com/example/Tian/service/TianScheme.java	(date 1680069901220)
+@@ -0,0 +1,60 @@
++package com.example.Tian.service;
++
++import com.example.Tian.domain.GK;
++import com.example.asuredelete.Utils.FuncUtils;
++import com.example.asuredelete.Utils.SizeUtils;
++import it.unisa.dia.gas.jpbc.Element;
++import lombok.extern.slf4j.Slf4j;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++@Slf4j
++@Service
++public class TianScheme {
++    @Autowired
++    private TianSetup tianSetup;
++    @Autowired
++    private TianUpload tianUpload;
++    @Autowired
++    private TianDownLoad tianDownLoad;
++    @Autowired
++    private TianDel tianDel;
++    @Autowired
++    private TianDelConfirm tianDelConfirm;
++
++    private static int attNum=5;
++    String filePath="D:\\Desktop\\琐碎\\ab.pdf";
++
++    public void tianDemo() {
++        long s = System.currentTimeMillis();
++        List<Element> attTotal = new ArrayList<>();
++        List<Element> att = new ArrayList<>();
++        List<Element> delatt = new ArrayList<>();
++        for (int i = 0; i < attNum; i++) {
++            Element a = FuncUtils.getRandomFromG1();
++            attTotal.add(a);
++            int j = 0;
++            if (j < attNum >> 1) {
++                att.add(a);
++                delatt.add(a);
++            }
++
++        }
++        delatt.remove(delatt.size() - 1);
++        Map<Element, Element> map = new HashMap<>();
++        GK gk = tianSetup.Setup(att, 3, attNum, map);
++        Element ct = tianUpload.upload(gk, filePath);
++        Element file = tianDownLoad.dec(gk, ct, att, map);
++        GK gkNew = tianDel.updateKey(gk, delatt);
++        tianDelConfirm.confirm(gk, delatt, map);
++        long e = System.currentTimeMillis();
++        System.out.println(e - s);
++
++        System.out.println("CSP的存储开销："+ SizeUtils.getSize(ct.toString().getBytes().length));
++    }
++}
